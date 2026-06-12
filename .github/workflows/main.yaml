@@ -46,17 +46,18 @@ jobs:
           docker exec -i govent-postgres psql -U admin -d postgres -c "DROP DATABASE IF EXISTS govent;"
           make db-create
 
-      # 6. ◄— NUEVO PASO: Arrancar el API en segundo plano para forzar la creación de tablas
+      # 6. Arrancar el API en segundo plano para forzar la creación de tablas
       - name: Start API Server in Background (Triggers Auto-Migrations)
         run: |
           make start &
           echo "⏳ Esperando 5 segundos a que el API inicialice y aplique el esquema..."
-          sleep 5
+          sleep 30
 
-      # 7. Lanzar tus tests unitarios y de integración (Ya con las tablas creadas)
       - name: Run Unit Tests
         run: make test
 
-      # 8. Lanzar tests de seguridad (AppSec)
+      # 8. ◄— PASO CORREGIDO: Lanzar tests de seguridad (AppSec) pasando el Secret
       - name: Run Application Security Tests
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # Pasamos el secreto guardado en tu GitHub al entorno del script
         run: make appsec-test
