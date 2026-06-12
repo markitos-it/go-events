@@ -67,8 +67,7 @@ echo "3️⃣  Pulling Messages from Queue..."
 # El worker pide sus mensajes pendientes basándose en el nombre y origen del evento
 PULL_PAYLOAD='{
   "event_name": "EventTest",
-  "source": "EventSource",
-  "limit": 1
+  "source": "EventSource"
 }'
 PULL_RESP=$(grpcurl -plaintext -d "$PULL_PAYLOAD" $SERVER $SERVICE/PullMessages)
 echo "$PULL_RESP"
