@@ -16,7 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Configurar el entorno de Go
+      # 2. Configurar el entorno de Go con la versión exacta
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
@@ -36,23 +36,27 @@ jobs:
           done
           echo "✅ ¡Postgres está 100% operativo!"
 
-      # 5. Limpieza previa y creación del esquema
-      - name: Create Database and Schema
+      # 5. Limpieza previa y creación de la base de datos
+      - name: Create Database
         env:
           PGHOST: 127.0.0.1
           PGUSER: admin
           PGPASSWORD: admin
         run: |
-          # Forzamos el borrado de la BD automática para que 'make db-create' no choque al intentar crearla de nuevo
           docker exec -i govent-postgres psql -U admin -d postgres -c "DROP DATABASE IF EXISTS govent;"
-          
-          # Ahora sí, ejecutamos tu script original de creación
           make db-create
 
-      # 6. Lanzar tests unitarios y de integración
+      # 6. ◄— NUEVO PASO: Arrancar el API en segundo plano para forzar la creación de tablas
+      - name: Start API Server in Background (Triggers Auto-Migrations)
+        run: |
+          make start &
+          echo "⏳ Esperando 5 segundos a que el API inicialice y aplique el esquema..."
+          sleep 5
+
+      # 7. Lanzar tus tests unitarios y de integración (Ya con las tablas creadas)
       - name: Run Unit Tests
         run: make test
 
-      # 7. Lanzar tests de seguridad (AppSec)
+      # 8. Lanzar tests de seguridad (AppSec)
       - name: Run Application Security Tests
         run: make appsec-test
