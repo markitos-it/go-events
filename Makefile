@@ -33,6 +33,9 @@ start:
 test:
 	bash bin/app/test.sh
 
+test-verbose:
+	bash bin/app/test-verbose.sh
+
 proto:
 	bash bin/app/proto.sh
 

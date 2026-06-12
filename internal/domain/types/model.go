@@ -49,3 +49,15 @@ func NewEvent(id, name, content, payload string) (*Event, error) {
 		UpdatedAt: time.Now(),
 	}, nil
 }
+
+func (e *Event) GetName() *EventName {
+	result, _ := NewEventName(e.Name)
+
+	return result
+}
+
+func (e *Event) GetSource() *EventSource {
+	result, _ := NewEventSource(e.Source)
+
+	return result
+}

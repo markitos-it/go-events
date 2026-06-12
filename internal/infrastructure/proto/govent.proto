@@ -18,10 +18,8 @@ message Event {
 service Eventservice {
   rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse);
   rpc GetEvent(GetEventRequest) returns (GetEventResponse);
-  rpc UpdateEvent(UpdateEventRequest) returns (UpdateEventResponse);
   rpc DeleteEvent(DeleteEventRequest) returns (DeleteEventResponse);
-  rpc ListEvents(ListEventsRequest) returns (ListEventsResponse);
-  rpc SearchEvents(SearchEventsRequest) returns (SearchEventsResponse);
+  rpc AllByNameAndSource(AllEventsByNameAndSourceRequest) returns (AllEventsByNameAndSourceResponse);
 }
 
 message CreateEventRequest {
@@ -49,16 +47,6 @@ message GetEventResponse {
   string payload = 4;
 }
 
-message UpdateEventRequest {
-  string id = 1;
-  string name = 2;
-  string source = 3;
-  string payload = 4;
-}
-
-message UpdateEventResponse {
-  string updated = 1;
-}
 
 message DeleteEventRequest {
   string id = 1;
@@ -68,19 +56,11 @@ message DeleteEventResponse {
   string deleted = 1;
 }
 
-message ListEventsRequest {}
-
-message ListEventsResponse {
-  repeated Event events = 1;
+message AllEventsByNameAndSourceRequest {
+  string name = 1;
+  string source = 2;
 }
 
-message SearchEventsRequest {
-  string search_term = 1;
-  int32 page_number = 2;
-  int32 page_size = 3;
-}
-
-message SearchEventsResponse {
+message AllEventsByNameAndSourceResponse {
   repeated Event events = 1;
-  int32 total_results = 2;
 }

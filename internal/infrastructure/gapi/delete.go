@@ -19,7 +19,7 @@ func (s *Server) DeleteEvent(ctx context.Context, in *DeleteEventRequest) (*Dele
 	request := services.EventDeleteRequest{Id: in.Id}
 
 	var service = services.NewEventDeleteService(s.repository)
-	if err := service.Do(request); err != nil {
+	if err := service.Do(ctx, request); err != nil {
 		log.Printf("❌ ERROR (DeleteEvent): %v\n", err)
 		return nil, status.Error(s.GetGRPCCode(err), err.Error())
 	}

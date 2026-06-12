@@ -1,6 +1,7 @@
 package services_test
 
 import (
+	"context"
 	"os"
 	"testing"
 
@@ -9,32 +10,22 @@ import (
 )
 
 type MockSpyEventRepository struct {
-	LastCreatedEventName     *string
-	LastDeleteEventId        *string
-	LastOneEventId           *string
-	LastUpdatedEventId       *string
-	LastUpdatedEventName     *string
-	LastOneForUpdatedEventId *string
-	LastAllHaveBeenCalled    bool
-	LastUpdateHaveBeenCalled bool
-	LastSearchHaveBeenCalled bool
+	LastCreatedEventName   *string
+	LastDeleteEventId      *string
+	LastOneEventId         *string
+	LastAllByNameAndSource []types.Event
 }
 
 func NewMockSpyEventRepository() *MockSpyEventRepository {
 	return &MockSpyEventRepository{
-		LastCreatedEventName:     nil,
-		LastDeleteEventId:        nil,
-		LastOneEventId:           nil,
-		LastUpdatedEventId:       nil,
-		LastUpdatedEventName:     nil,
-		LastOneForUpdatedEventId: nil,
-		LastAllHaveBeenCalled:    false,
-		LastUpdateHaveBeenCalled: false,
-		LastSearchHaveBeenCalled: false,
+		LastCreatedEventName:   nil,
+		LastDeleteEventId:      nil,
+		LastOneEventId:         nil,
+		LastAllByNameAndSource: nil,
 	}
 }
 
-func (m *MockSpyEventRepository) Create(event *types.Event) error {
+func (m *MockSpyEventRepository) Create(ctx context.Context, event *types.Event) error {
 	m.LastCreatedEventName = &event.Name
 
 	return nil
@@ -48,7 +39,7 @@ func (m *MockSpyEventRepository) CreateHaveBeenCalledWith(eventName *string) boo
 	return result
 }
 
-func (m *MockSpyEventRepository) Delete(id *types.EventId) error {
+func (m *MockSpyEventRepository) Delete(ctx context.Context, id *types.EventId) error {
 	value := id.Value()
 	m.LastDeleteEventId = &value
 
@@ -63,46 +54,7 @@ func (m *MockSpyEventRepository) DeleteHaveBeenCalledWith(eventId *string) bool 
 	return result
 }
 
-func (m *MockSpyEventRepository) Update(event *types.Event) error {
-	m.LastUpdateHaveBeenCalled = true
-	m.LastUpdatedEventId = &event.Id
-	m.LastUpdatedEventName = &event.Name
-	m.LastOneForUpdatedEventId = &event.Id
-
-	return nil
-}
-
-func (m *MockSpyEventRepository) UpdateHaveBeenCalledWith(id, name string) bool {
-	var matchCalled = m.LastUpdateHaveBeenCalled
-	var matchId = *m.LastUpdatedEventId == id
-	var matchName = *m.LastUpdatedEventName == name
-
-	m.LastUpdatedEventId = nil
-	m.LastUpdatedEventName = nil
-	m.LastUpdateHaveBeenCalled = false
-
-	return matchCalled && matchId && matchName
-}
-
-func (m *MockSpyEventRepository) UpdateHaveBeenCalled() bool {
-	var matchCalled = m.LastUpdateHaveBeenCalled
-
-	m.LastUpdateHaveBeenCalled = false
-	m.LastUpdatedEventId = nil
-	m.LastUpdatedEventName = nil
-
-	return matchCalled
-}
-
-func (m *MockSpyEventRepository) UpdateHaveBeenCalledOneWith(id string) bool {
-	var matchId = *m.LastOneForUpdatedEventId == id
-
-	m.LastOneForUpdatedEventId = nil
-
-	return matchId
-}
-
-func (m *MockSpyEventRepository) One(id *types.EventId) (*types.Event, error) {
+func (m *MockSpyEventRepository) One(ctx context.Context, id *types.EventId) (*types.Event, error) {
 	value := id.Value()
 	m.LastOneEventId = &value
 
@@ -117,32 +69,18 @@ func (m *MockSpyEventRepository) OneHaveBeenCalledWith(eventId *string) bool {
 	return result
 }
 
-func (m *MockSpyEventRepository) All() ([]*types.Event, error) {
-	m.LastAllHaveBeenCalled = true
+func (m *MockSpyEventRepository) AllByNameAndSource(ctx context.Context, name *types.EventName, source *types.EventSource) ([]*types.Event, error) {
+	anEvent := internal_test.NewRandomEventWithNameAndSource(name.Value(), source.Value())
+	m.LastAllByNameAndSource = append(m.LastAllByNameAndSource, *anEvent)
 
-	return nil, nil
+	return []*types.Event{anEvent}, nil
 }
 
-func (m *MockSpyEventRepository) AllHaveBeenCalled() bool {
-	result := m.LastAllHaveBeenCalled
-	m.LastAllHaveBeenCalled = false
+func (m *MockSpyEventRepository) LastAllByNameAndSourceHaveBeenCalled(name *types.EventName, source *types.EventSource) bool {
+	var result = m.LastAllByNameAndSource[0].Name == name.Value() &&
+		m.LastAllByNameAndSource[0].Source == source.Value()
 
-	return result
-}
-
-func (m *MockSpyEventRepository) SearchAndPaginate(
-	searchTerm string,
-	pageNumber int,
-	pageSize int) ([]*types.Event, error) {
-	m.LastSearchHaveBeenCalled = true
-
-	return nil, nil
-}
-
-func (m *MockSpyEventRepository) SearchHaveBeenCalled() bool {
-	result := m.LastSearchHaveBeenCalled
-
-	m.LastSearchHaveBeenCalled = false
+	m.LastAllByNameAndSource = nil
 
 	return result
 }

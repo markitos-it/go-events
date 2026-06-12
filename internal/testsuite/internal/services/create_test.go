@@ -1,6 +1,7 @@
 package services_test
 
 import (
+	"context"
 	"testing"
 
 	"govent/internal/domain/services"
@@ -19,7 +20,7 @@ func TestCanCreateAUser(t *testing.T) {
 	}
 
 	var service = services.NewEventCreateService(repository)
-	response, err := service.Do(request)
+	response, err := service.Do(context.TODO(), request)
 
 	assert.Nil(t, err)
 	assert.True(t, repository.CreateHaveBeenCalledWith(&request.Name))
@@ -31,7 +32,7 @@ func TestCantCreateWithoutName(t *testing.T) {
 	var request = services.EventCreateRequest{}
 
 	var service = services.NewEventCreateService(repository)
-	_, err := service.Do(request)
+	_, err := service.Do(context.TODO(), request)
 
 	assert.NotNil(t, err)
 	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
@@ -44,7 +45,7 @@ func TestCantCreateWithoutValidName(t *testing.T) {
 	}
 
 	var service = services.NewEventCreateService(repository)
-	_, err := service.Do(request)
+	_, err := service.Do(context.TODO(), request)
 
 	assert.NotNil(t, err)
 	assert.ErrorIs(t, err, shared.ErrEventBadRequest)

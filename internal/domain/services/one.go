@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"govent/internal/domain/types"
 )
 
@@ -22,13 +23,13 @@ func NewEventOneService(repository types.EventRepository) EventOneService {
 	}
 }
 
-func (s EventOneService) Do(request EventOneRequest) (*EventOneResponse, error) {
+func (s EventOneService) Do(ctx context.Context, request EventOneRequest) (*EventOneResponse, error) {
 	securedId, err := types.NewEventId(request.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	event, err := s.Repository.One(securedId)
+	event, err := s.Repository.One(ctx, securedId)
 	if err != nil {
 		return nil, err
 	}

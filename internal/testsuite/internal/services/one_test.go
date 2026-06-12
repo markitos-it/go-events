@@ -1,6 +1,7 @@
 package services_test
 
 import (
+	"context"
 	"testing"
 
 	"govent/internal/domain/services"
@@ -15,7 +16,7 @@ func TestCanGetAResource(t *testing.T) {
 	}
 
 	var service = services.NewEventOneService(repository)
-	event, err := service.Do(request)
+	event, err := service.Do(context.TODO(), request)
 
 	assert.Nil(t, err)
 	assert.IsType(t, services.EventOneResponse{}, *event)
@@ -26,7 +27,7 @@ func TestCantGetWithoutId(t *testing.T) {
 	var request = services.EventOneRequest{}
 
 	var service = services.NewEventOneService(repository)
-	_, err := service.Do(request)
+	_, err := service.Do(context.TODO(), request)
 
 	assert.NotNil(t, err)
 	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
@@ -39,7 +40,7 @@ func TestCantGetWithoutInvalidId(t *testing.T) {
 	}
 
 	var service = services.NewEventOneService(repository)
-	_, err := service.Do(request)
+	_, err := service.Do(context.TODO(), request)
 
 	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.False(t, repository.OneHaveBeenCalledWith(&request.Id))

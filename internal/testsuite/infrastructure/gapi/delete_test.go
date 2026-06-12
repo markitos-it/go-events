@@ -1,6 +1,7 @@
 package gapi_test
 
 import (
+	"log"
 	"testing"
 
 	"govent/internal/domain/shared"
@@ -26,9 +27,17 @@ func TestEventCanDelete(t *testing.T) {
 }
 
 func TestEventCantDeleteValidButNonExistingId(t *testing.T) {
-	_, err := grpcClient.DeleteEvent(ctx, &gapi.DeleteEventRequest{
+	request := &gapi.DeleteEventRequest{
 		Id: shared.UUIDv4(),
-	})
+	}
+
+	ob, err := grpcClient.DeleteEvent(ctx, request)
+
+	log.Println("-----------------------------------------------------")
+	log.Println("request", request)
+	log.Println("err", err)
+	log.Println("ob", ob)
+	log.Println("-----------------------------------------------------")
 
 	require.Error(t, err)
 	st, ok := status.FromError(err)

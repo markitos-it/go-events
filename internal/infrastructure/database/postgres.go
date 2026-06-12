@@ -70,3 +70,18 @@ func (r *EventPostgresRepository) AllByNameAndSource(ctx context.Context, name *
 
 	return events, nil
 }
+
+func (r *EventPostgresRepository) Delete(ctx context.Context, id *types.EventId) error {
+	result := r.db.WithContext(ctx).
+		Where("id = ?", id.Value()).
+		Delete(&types.Event{})
+
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return shared.ErrEventNotFound
+	}
+
+	return nil
+}

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"govent/internal/domain/shared"
 	"govent/internal/domain/types"
 )
@@ -28,14 +29,14 @@ func NewEventCreateService(repository types.EventRepository) EventCreateService 
 	}
 }
 
-func (s EventCreateService) Do(request EventCreateRequest) (*EventCreateResponse, error) {
+func (s EventCreateService) Do(ctx context.Context, request EventCreateRequest) (*EventCreateResponse, error) {
 
 	event, err := types.NewEvent(shared.UUIDv4(), request.Name, request.Source, request.Payload)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := s.Repository.Create(event); err != nil {
+	if err := s.Repository.Create(ctx, event); err != nil {
 		return nil, err
 	}
 

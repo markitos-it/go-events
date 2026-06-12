@@ -68,7 +68,7 @@ func bufDialer(context.Context, string) (net.Conn, error) {
 
 func createPersistedRandomEvent() *types.Event {
 	event := internal_test.NewRandomEvent()
-	_ = testdb.GetRepository().Create(event)
+	_ = testdb.GetRepository().Create(ctx, event)
 
 	return event
 }
@@ -79,5 +79,5 @@ func deletePersistedRandomEvent(eventId string) {
 		return
 	}
 
-	_ = testdb.GetRepository().Delete(id)
+	_ = testdb.GetRepository().Delete(ctx, id)
 }

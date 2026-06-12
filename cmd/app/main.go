@@ -89,7 +89,7 @@ func loadDatabase() {
 	}
 
 	repo := database.NewEventPostgresRepository(db)
-	repository = &repo
+	repository = repo
 }
 
 // #[.'.]:> This function starts the servers and manages their lifecycle

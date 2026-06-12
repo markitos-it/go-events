@@ -354,118 +354,6 @@ func (x *GetEventResponse) GetPayload() string {
 	return ""
 }
 
-type UpdateEventRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Source        string                 `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
-	Payload       string                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateEventRequest) Reset() {
-	*x = UpdateEventRequest{}
-	mi := &file_govent_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateEventRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateEventRequest) ProtoMessage() {}
-
-func (x *UpdateEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateEventRequest.ProtoReflect.Descriptor instead.
-func (*UpdateEventRequest) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *UpdateEventRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *UpdateEventRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *UpdateEventRequest) GetSource() string {
-	if x != nil {
-		return x.Source
-	}
-	return ""
-}
-
-func (x *UpdateEventRequest) GetPayload() string {
-	if x != nil {
-		return x.Payload
-	}
-	return ""
-}
-
-type UpdateEventResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Updated       string                 `protobuf:"bytes,1,opt,name=updated,proto3" json:"updated,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateEventResponse) Reset() {
-	*x = UpdateEventResponse{}
-	mi := &file_govent_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateEventResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateEventResponse) ProtoMessage() {}
-
-func (x *UpdateEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateEventResponse.ProtoReflect.Descriptor instead.
-func (*UpdateEventResponse) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateEventResponse) GetUpdated() string {
-	if x != nil {
-		return x.Updated
-	}
-	return ""
-}
-
 type DeleteEventRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -475,7 +363,7 @@ type DeleteEventRequest struct {
 
 func (x *DeleteEventRequest) Reset() {
 	*x = DeleteEventRequest{}
-	mi := &file_govent_proto_msgTypes[7]
+	mi := &file_govent_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -487,7 +375,7 @@ func (x *DeleteEventRequest) String() string {
 func (*DeleteEventRequest) ProtoMessage() {}
 
 func (x *DeleteEventRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[7]
+	mi := &file_govent_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -500,7 +388,7 @@ func (x *DeleteEventRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteEventRequest.ProtoReflect.Descriptor instead.
 func (*DeleteEventRequest) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{7}
+	return file_govent_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteEventRequest) GetId() string {
@@ -519,7 +407,7 @@ type DeleteEventResponse struct {
 
 func (x *DeleteEventResponse) Reset() {
 	*x = DeleteEventResponse{}
-	mi := &file_govent_proto_msgTypes[8]
+	mi := &file_govent_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -531,7 +419,7 @@ func (x *DeleteEventResponse) String() string {
 func (*DeleteEventResponse) ProtoMessage() {}
 
 func (x *DeleteEventResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[8]
+	mi := &file_govent_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -544,7 +432,7 @@ func (x *DeleteEventResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteEventResponse.ProtoReflect.Descriptor instead.
 func (*DeleteEventResponse) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{8}
+	return file_govent_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DeleteEventResponse) GetDeleted() string {
@@ -554,27 +442,29 @@ func (x *DeleteEventResponse) GetDeleted() string {
 	return ""
 }
 
-type ListEventsRequest struct {
+type AllEventsByNameAndSourceRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Source        string                 `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListEventsRequest) Reset() {
-	*x = ListEventsRequest{}
-	mi := &file_govent_proto_msgTypes[9]
+func (x *AllEventsByNameAndSourceRequest) Reset() {
+	*x = AllEventsByNameAndSourceRequest{}
+	mi := &file_govent_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListEventsRequest) String() string {
+func (x *AllEventsByNameAndSourceRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListEventsRequest) ProtoMessage() {}
+func (*AllEventsByNameAndSourceRequest) ProtoMessage() {}
 
-func (x *ListEventsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[9]
+func (x *AllEventsByNameAndSourceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_govent_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -585,138 +475,47 @@ func (x *ListEventsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListEventsRequest.ProtoReflect.Descriptor instead.
-func (*ListEventsRequest) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{9}
+// Deprecated: Use AllEventsByNameAndSourceRequest.ProtoReflect.Descriptor instead.
+func (*AllEventsByNameAndSourceRequest) Descriptor() ([]byte, []int) {
+	return file_govent_proto_rawDescGZIP(), []int{7}
 }
 
-type ListEventsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Events        []*Event               `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListEventsResponse) Reset() {
-	*x = ListEventsResponse{}
-	mi := &file_govent_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListEventsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListEventsResponse) ProtoMessage() {}
-
-func (x *ListEventsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[10]
+func (x *AllEventsByNameAndSourceRequest) GetName() string {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListEventsResponse.ProtoReflect.Descriptor instead.
-func (*ListEventsResponse) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *ListEventsResponse) GetEvents() []*Event {
-	if x != nil {
-		return x.Events
-	}
-	return nil
-}
-
-type SearchEventsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SearchTerm    string                 `protobuf:"bytes,1,opt,name=search_term,json=searchTerm,proto3" json:"search_term,omitempty"`
-	PageNumber    int32                  `protobuf:"varint,2,opt,name=page_number,json=pageNumber,proto3" json:"page_number,omitempty"`
-	PageSize      int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SearchEventsRequest) Reset() {
-	*x = SearchEventsRequest{}
-	mi := &file_govent_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SearchEventsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SearchEventsRequest) ProtoMessage() {}
-
-func (x *SearchEventsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SearchEventsRequest.ProtoReflect.Descriptor instead.
-func (*SearchEventsRequest) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *SearchEventsRequest) GetSearchTerm() string {
-	if x != nil {
-		return x.SearchTerm
+		return x.Name
 	}
 	return ""
 }
 
-func (x *SearchEventsRequest) GetPageNumber() int32 {
+func (x *AllEventsByNameAndSourceRequest) GetSource() string {
 	if x != nil {
-		return x.PageNumber
+		return x.Source
 	}
-	return 0
+	return ""
 }
 
-func (x *SearchEventsRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-type SearchEventsResponse struct {
+type AllEventsByNameAndSourceResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Events        []*Event               `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
-	TotalResults  int32                  `protobuf:"varint,2,opt,name=total_results,json=totalResults,proto3" json:"total_results,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SearchEventsResponse) Reset() {
-	*x = SearchEventsResponse{}
-	mi := &file_govent_proto_msgTypes[12]
+func (x *AllEventsByNameAndSourceResponse) Reset() {
+	*x = AllEventsByNameAndSourceResponse{}
+	mi := &file_govent_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SearchEventsResponse) String() string {
+func (x *AllEventsByNameAndSourceResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SearchEventsResponse) ProtoMessage() {}
+func (*AllEventsByNameAndSourceResponse) ProtoMessage() {}
 
-func (x *SearchEventsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[12]
+func (x *AllEventsByNameAndSourceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_govent_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -727,23 +526,16 @@ func (x *SearchEventsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SearchEventsResponse.ProtoReflect.Descriptor instead.
-func (*SearchEventsResponse) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{12}
+// Deprecated: Use AllEventsByNameAndSourceResponse.ProtoReflect.Descriptor instead.
+func (*AllEventsByNameAndSourceResponse) Descriptor() ([]byte, []int) {
+	return file_govent_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *SearchEventsResponse) GetEvents() []*Event {
+func (x *AllEventsByNameAndSourceResponse) GetEvents() []*Event {
 	if x != nil {
 		return x.Events
 	}
 	return nil
-}
-
-func (x *SearchEventsResponse) GetTotalResults() int32 {
-	if x != nil {
-		return x.TotalResults
-	}
-	return 0
 }
 
 var File_govent_proto protoreflect.FileDescriptor
@@ -776,38 +568,21 @@ const file_govent_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
 	"\x06source\x18\x03 \x01(\tR\x06source\x12\x18\n" +
-	"\apayload\x18\x04 \x01(\tR\apayload\"j\n" +
-	"\x12UpdateEventRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
-	"\x06source\x18\x03 \x01(\tR\x06source\x12\x18\n" +
-	"\apayload\x18\x04 \x01(\tR\apayload\"/\n" +
-	"\x13UpdateEventResponse\x12\x18\n" +
-	"\aupdated\x18\x01 \x01(\tR\aupdated\"$\n" +
+	"\apayload\x18\x04 \x01(\tR\apayload\"$\n" +
 	"\x12DeleteEventRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"/\n" +
 	"\x13DeleteEventResponse\x12\x18\n" +
-	"\adeleted\x18\x01 \x01(\tR\adeleted\"\x13\n" +
-	"\x11ListEventsRequest\":\n" +
-	"\x12ListEventsResponse\x12$\n" +
-	"\x06events\x18\x01 \x03(\v2\f.event.EventR\x06events\"t\n" +
-	"\x13SearchEventsRequest\x12\x1f\n" +
-	"\vsearch_term\x18\x01 \x01(\tR\n" +
-	"searchTerm\x12\x1f\n" +
-	"\vpage_number\x18\x02 \x01(\x05R\n" +
-	"pageNumber\x12\x1b\n" +
-	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\"a\n" +
-	"\x14SearchEventsResponse\x12$\n" +
-	"\x06events\x18\x01 \x03(\v2\f.event.EventR\x06events\x12#\n" +
-	"\rtotal_results\x18\x02 \x01(\x05R\ftotalResults2\xa9\x03\n" +
+	"\adeleted\x18\x01 \x01(\tR\adeleted\"M\n" +
+	"\x1fAllEventsByNameAndSourceRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
+	"\x06source\x18\x02 \x01(\tR\x06source\"H\n" +
+	" AllEventsByNameAndSourceResponse\x12$\n" +
+	"\x06events\x18\x01 \x03(\v2\f.event.EventR\x06events2\xbe\x02\n" +
 	"\fEventservice\x12D\n" +
 	"\vCreateEvent\x12\x19.event.CreateEventRequest\x1a\x1a.event.CreateEventResponse\x12;\n" +
 	"\bGetEvent\x12\x16.event.GetEventRequest\x1a\x17.event.GetEventResponse\x12D\n" +
-	"\vUpdateEvent\x12\x19.event.UpdateEventRequest\x1a\x1a.event.UpdateEventResponse\x12D\n" +
-	"\vDeleteEvent\x12\x19.event.DeleteEventRequest\x1a\x1a.event.DeleteEventResponse\x12A\n" +
-	"\n" +
-	"ListEvents\x12\x18.event.ListEventsRequest\x1a\x19.event.ListEventsResponse\x12G\n" +
-	"\fSearchEvents\x12\x1a.event.SearchEventsRequest\x1a\x1b.event.SearchEventsResponseB!Z\x1fmarkitos-it-svc-event-grpc/gapib\x06proto3"
+	"\vDeleteEvent\x12\x19.event.DeleteEventRequest\x1a\x1a.event.DeleteEventResponse\x12e\n" +
+	"\x12AllByNameAndSource\x12&.event.AllEventsByNameAndSourceRequest\x1a'.event.AllEventsByNameAndSourceResponseB!Z\x1fmarkitos-it-svc-event-grpc/gapib\x06proto3"
 
 var (
 	file_govent_proto_rawDescOnce sync.Once
@@ -821,45 +596,36 @@ func file_govent_proto_rawDescGZIP() []byte {
 	return file_govent_proto_rawDescData
 }
 
-var file_govent_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_govent_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_govent_proto_goTypes = []any{
-	(*Event)(nil),                 // 0: event.Event
-	(*CreateEventRequest)(nil),    // 1: event.CreateEventRequest
-	(*CreateEventResponse)(nil),   // 2: event.CreateEventResponse
-	(*GetEventRequest)(nil),       // 3: event.GetEventRequest
-	(*GetEventResponse)(nil),      // 4: event.GetEventResponse
-	(*UpdateEventRequest)(nil),    // 5: event.UpdateEventRequest
-	(*UpdateEventResponse)(nil),   // 6: event.UpdateEventResponse
-	(*DeleteEventRequest)(nil),    // 7: event.DeleteEventRequest
-	(*DeleteEventResponse)(nil),   // 8: event.DeleteEventResponse
-	(*ListEventsRequest)(nil),     // 9: event.ListEventsRequest
-	(*ListEventsResponse)(nil),    // 10: event.ListEventsResponse
-	(*SearchEventsRequest)(nil),   // 11: event.SearchEventsRequest
-	(*SearchEventsResponse)(nil),  // 12: event.SearchEventsResponse
-	(*timestamppb.Timestamp)(nil), // 13: google.protobuf.Timestamp
+	(*Event)(nil),                            // 0: event.Event
+	(*CreateEventRequest)(nil),               // 1: event.CreateEventRequest
+	(*CreateEventResponse)(nil),              // 2: event.CreateEventResponse
+	(*GetEventRequest)(nil),                  // 3: event.GetEventRequest
+	(*GetEventResponse)(nil),                 // 4: event.GetEventResponse
+	(*DeleteEventRequest)(nil),               // 5: event.DeleteEventRequest
+	(*DeleteEventResponse)(nil),              // 6: event.DeleteEventResponse
+	(*AllEventsByNameAndSourceRequest)(nil),  // 7: event.AllEventsByNameAndSourceRequest
+	(*AllEventsByNameAndSourceResponse)(nil), // 8: event.AllEventsByNameAndSourceResponse
+	(*timestamppb.Timestamp)(nil),            // 9: google.protobuf.Timestamp
 }
 var file_govent_proto_depIdxs = []int32{
-	13, // 0: event.Event.created_at:type_name -> google.protobuf.Timestamp
-	13, // 1: event.Event.updated_at:type_name -> google.protobuf.Timestamp
-	0,  // 2: event.ListEventsResponse.events:type_name -> event.Event
-	0,  // 3: event.SearchEventsResponse.events:type_name -> event.Event
-	1,  // 4: event.Eventservice.CreateEvent:input_type -> event.CreateEventRequest
-	3,  // 5: event.Eventservice.GetEvent:input_type -> event.GetEventRequest
-	5,  // 6: event.Eventservice.UpdateEvent:input_type -> event.UpdateEventRequest
-	7,  // 7: event.Eventservice.DeleteEvent:input_type -> event.DeleteEventRequest
-	9,  // 8: event.Eventservice.ListEvents:input_type -> event.ListEventsRequest
-	11, // 9: event.Eventservice.SearchEvents:input_type -> event.SearchEventsRequest
-	2,  // 10: event.Eventservice.CreateEvent:output_type -> event.CreateEventResponse
-	4,  // 11: event.Eventservice.GetEvent:output_type -> event.GetEventResponse
-	6,  // 12: event.Eventservice.UpdateEvent:output_type -> event.UpdateEventResponse
-	8,  // 13: event.Eventservice.DeleteEvent:output_type -> event.DeleteEventResponse
-	10, // 14: event.Eventservice.ListEvents:output_type -> event.ListEventsResponse
-	12, // 15: event.Eventservice.SearchEvents:output_type -> event.SearchEventsResponse
-	10, // [10:16] is the sub-list for method output_type
-	4,  // [4:10] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	9, // 0: event.Event.created_at:type_name -> google.protobuf.Timestamp
+	9, // 1: event.Event.updated_at:type_name -> google.protobuf.Timestamp
+	0, // 2: event.AllEventsByNameAndSourceResponse.events:type_name -> event.Event
+	1, // 3: event.Eventservice.CreateEvent:input_type -> event.CreateEventRequest
+	3, // 4: event.Eventservice.GetEvent:input_type -> event.GetEventRequest
+	5, // 5: event.Eventservice.DeleteEvent:input_type -> event.DeleteEventRequest
+	7, // 6: event.Eventservice.AllByNameAndSource:input_type -> event.AllEventsByNameAndSourceRequest
+	2, // 7: event.Eventservice.CreateEvent:output_type -> event.CreateEventResponse
+	4, // 8: event.Eventservice.GetEvent:output_type -> event.GetEventResponse
+	6, // 9: event.Eventservice.DeleteEvent:output_type -> event.DeleteEventResponse
+	8, // 10: event.Eventservice.AllByNameAndSource:output_type -> event.AllEventsByNameAndSourceResponse
+	7, // [7:11] is the sub-list for method output_type
+	3, // [3:7] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_govent_proto_init() }
@@ -873,7 +639,7 @@ func file_govent_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_govent_proto_rawDesc), len(file_govent_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

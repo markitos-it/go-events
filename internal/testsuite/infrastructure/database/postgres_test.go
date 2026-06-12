@@ -1,6 +1,7 @@
 package database_test
 
 import (
+	"context"
 	"testing"
 	"time"
 
@@ -15,7 +16,7 @@ import (
 
 func TestEventCreate(t *testing.T) {
 	var event = internal_test.NewRandomEvent()
-	err := testdb.GetRepository().Create(event)
+	err := testdb.GetRepository().Create(context.TODO(), event)
 	require.NoError(t, err)
 
 	var result types.Event
@@ -31,48 +32,28 @@ func TestEventCreate(t *testing.T) {
 
 func TestEventDelete(t *testing.T) {
 	var event = internal_test.NewRandomEvent()
-	_ = testdb.GetRepository().Create(event)
+	_ = testdb.GetRepository().Create(context.TODO(), event)
 
 	repository := database.NewEventPostgresRepository(testdb.GetDB())
 
 	id, _ := types.NewEventId(event.Id)
-	err := repository.Delete(id)
+	err := repository.Delete(context.TODO(), id)
 	require.NoError(t, err)
 }
 
 func TestEventOne(t *testing.T) {
 	var event = internal_test.NewRandomEvent()
-	_ = testdb.GetRepository().Create(event)
+	_ = testdb.GetRepository().Create(context.TODO(), event)
 
 	repository := database.NewEventPostgresRepository(testdb.GetDB())
 	id, _ := types.NewEventId(event.Id)
 
-	result, err := repository.One(id)
+	result, err := repository.One(context.TODO(), id)
 	require.NoError(t, err)
 	require.NotNil(t, result)
 	require.Equal(t, event.Id, result.Id)
 	require.Equal(t, event.Name, result.Name)
 
-	err = repository.Delete(id)
-	require.NoError(t, err)
-}
-
-func TestEventUpdate(t *testing.T) {
-	var event = internal_test.NewRandomEvent()
-	_ = testdb.GetRepository().Create(event)
-
-	repository := database.NewEventPostgresRepository(testdb.GetDB())
-
-	event.Name = event.Name + "Updated"
-	err := repository.Update(event)
-	require.NoError(t, err)
-
-	var result types.Event
-	err = testdb.GetDB().First(&result, "id = ?", event.Id).Error
-	require.NoError(t, err)
-	require.Equal(t, event.Name, result.Name)
-
-	id, _ := types.NewEventId(event.Id)
-	err = repository.Delete(id)
+	err = repository.Delete(context.TODO(), id)
 	require.NoError(t, err)
 }

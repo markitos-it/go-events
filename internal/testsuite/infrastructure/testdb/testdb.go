@@ -83,7 +83,7 @@ func GetRepository() types.EventRepository {
 	repoOnce.Do(func() {
 		db := GetDB()
 		repo := database.NewEventPostgresRepository(db)
-		repoInstance = &repo
+		repoInstance = repo
 		log.Printf("['.']:> 📦 Repositorio de prueba inicializado")
 	})
 

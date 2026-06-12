@@ -18,7 +18,7 @@ func (s *Server) GetEvent(ctx context.Context, in *GetEventRequest) (*GetEventRe
 	request := services.EventOneRequest{Id: in.Id}
 
 	var service = services.NewEventOneService(s.repository)
-	response, err := service.Do(request)
+	response, err := service.Do(ctx, request)
 	if err != nil {
 		return nil, status.Error(s.GetGRPCCode(err), err.Error())
 

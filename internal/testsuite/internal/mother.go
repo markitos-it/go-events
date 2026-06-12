@@ -21,6 +21,16 @@ func NewRandomOnlyNameEvent() *types.Event {
 
 	return event
 }
+func NewRandomEventWithNameAndSource(name, source string) *types.Event {
+	event, _ := types.NewEvent(
+		shared.UUIDv4(),
+		name,
+		source,
+		"",
+	)
+
+	return event
+}
 
 func NewRandomEventWithCustomId(eventId *types.EventId) *types.Event {
 	event, _ := types.NewEvent(

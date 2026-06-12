@@ -1,6 +1,7 @@
 package services_test
 
 import (
+	"context"
 	"testing"
 
 	"govent/internal/domain/services"
@@ -15,7 +16,7 @@ func TestCanDeleteAUser(t *testing.T) {
 	}
 
 	var service = services.NewEventDeleteService(repository)
-	err := service.Do(request)
+	err := service.Do(context.TODO(), request)
 	assert.Nil(t, err)
 	assert.True(t, repository.DeleteHaveBeenCalledWith(&request.Id))
 }
@@ -24,7 +25,7 @@ func TestCantDeleteWithoutId(t *testing.T) {
 	var request = services.EventDeleteRequest{}
 
 	var service = services.NewEventDeleteService(repository)
-	err := service.Do(request)
+	err := service.Do(context.TODO(), request)
 
 	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.NotNil(t, err)
@@ -37,7 +38,7 @@ func TestCantDeleteWithInvalidId(t *testing.T) {
 	}
 
 	var service = services.NewEventDeleteService(repository)
-	err := service.Do(request)
+	err := service.Do(context.TODO(), request)
 
 	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.False(t, repository.DeleteHaveBeenCalledWith(&request.Id))

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"govent/internal/domain/types"
 )
 
@@ -18,13 +19,13 @@ func NewEventDeleteService(repository types.EventRepository) EventDeleteService 
 	}
 }
 
-func (s EventDeleteService) Do(request EventDeleteRequest) error {
+func (s EventDeleteService) Do(ctx context.Context, request EventDeleteRequest) error {
 	securedId, err := types.NewEventId(request.Id)
 	if err != nil {
 		return err
 	}
 
-	if err := s.Repository.Delete(securedId); err != nil {
+	if err := s.Repository.Delete(ctx, securedId); err != nil {
 		return err
 	}
 
