@@ -8,90 +8,75 @@ source $ENVIRONMENT_FILE
 SERVER="localhost:30000"
 SERVICE="event.Eventservice"
 
-echo "🚀 Iniciando Test E2E gRPC para $SERVICE en $SERVER..."
+echo "🚀 Starting E2E gRPC Test for $SERVICE at $SERVER..."
 
 UPLOADS_DIR=${EVENT_UPLOADS_BASEDIR:-./uploads}
 mkdir -p $UPLOADS_DIR
 
-# Garantizar que el directorio por defecto exista en caso de que el server no tenga las variables de entorno
+# Ensure the default directory exists in case the server does not have the environment variables
 mkdir -p /tmp/events
 
 # Check dependencies
 if ! command -v grpcurl &> /dev/null; then
-    echo "❌ grpcurl no está instalado. Ejecuta 'make support-install-grpc-tools' primero."
+    echo "❌ grpcurl is not installed. Run 'make support-install-grpc-tools' first."
     exit 1
 fi
 
 if ! command -v jq &> /dev/null; then
-    echo "❌ jq no está instalado. Por favor instálalo (ej. sudo apt install jq / brew install jq)."
+    echo "❌ jq is not installed. Please install it (e.g., sudo apt install jq / brew install jq)."
     exit 1
 fi
 
 echo "--------------------------------------------------"
-echo "1️⃣  Creando un nuevo Event..."
+echo "1️⃣  Creating a new Event..."
 CREATE_PAYLOAD='{
   "name": "EventTest",
-  "content": "EventSource",
-  "poster_data": ""__CUSTOM_E2E_FIELDS_CREATE__
+  "source": "EventSource",
+  "payload": ""
 }'
 PLACEHOLDER_CREATE="__CUSTOM_E2E_""FIELDS_CREATE__"
-echo "🔍 Placeholders encontrados: $PLACEHOLDER_CREATE"
+echo "🔍 Placeholders found: $PLACEHOLDER_CREATE"
 CREATE_PAYLOAD="${CREATE_PAYLOAD//$PLACEHOLDER_CREATE/}"
-echo "🔍 Payload enviado: $CREATE_PAYLOAD"
+echo "🔍 Payload sent: $CREATE_PAYLOAD"
 CREATE_RESP=$(grpcurl -plaintext -d "$CREATE_PAYLOAD" $SERVER $SERVICE/CreateEvent)
 
 echo "$CREATE_RESP"
 EVENT_ID=$(echo "$CREATE_RESP" | jq -r '.id')
 
 if [ -z "$EVENT_ID" ] || [ "$EVENT_ID" == "null" ]; then
-    echo "❌ Error: No se pudo extraer el ID de la respuesta."
+    echo "❌ Error: Could not extract the ID from the response."
     exit 1
 fi
-echo "✅ Creado exitosamente con ID: $EVENT_ID"
+echo "✅ Successfully created with ID: $EVENT_ID"
 echo "--------------------------------------------------"
 
-echo "2️⃣  Obteniendo Event por ID..."
+echo "2️⃣  Getting Event by ID..."
 grpcurl -plaintext -d "{\"id\": \"$EVENT_ID\"}" $SERVER $SERVICE/GetEvent
-echo "✅ Get exitoso."
+echo "✅ Get successful."
 echo "--------------------------------------------------"
 
-echo "3️⃣  Actualizando Event..."
-UPDATE_PAYLOAD="{
-  \"id\": \"$EVENT_ID\",
-  \"name\": \"EventTestUpdated\",
-  \"content\": \"EventSourceUpdated\",
-  \"poster_data\": \"\"__CUSTOM_E2E_FIELDS_UPDATE__
-}"
-PLACEHOLDER_UPDATE="__CUSTOM_E2E_""FIELDS_UPDATE__"
-UPDATE_PAYLOAD="${UPDATE_PAYLOAD//$PLACEHOLDER_UPDATE/}"
-
-echo "🔍 Payload enviado: $UPDATE_PAYLOAD"
-grpcurl -plaintext -d "$UPDATE_PAYLOAD" $SERVER $SERVICE/UpdateEvent
-echo "✅ Update exitoso."
+echo "4️⃣  Listing Events..."
+grpcurl -plaintext -d "{\"name\": \"EventTest\", \"source\": \"EventSource\"}" $SERVER $SERVICE/AllByNameAndSource
+echo "✅ List successful."
 echo "--------------------------------------------------"
 
-echo "4️⃣  Listando Events..."
-grpcurl -plaintext $SERVER $SERVICE/ListEvents
-echo "✅ List exitoso."
-echo "--------------------------------------------------"
-
-echo "5️⃣  Borrando Event..."
+echo "5️⃣  Deleting Event..."
 grpcurl -plaintext -d "{\"id\": \"$EVENT_ID\"}" $SERVER $SERVICE/DeleteEvent
-echo "✅ Delete exitoso."
+echo "✅ Delete successful."
 echo "--------------------------------------------------"
 
-echo "6️⃣  Verificando que fue borrado..."
+echo "6️⃣  Verifying that it was deleted..."
 set +e
 GET_DELETED_RESP=$(grpcurl -plaintext -d "{\"id\": \"$EVENT_ID\"}" $SERVER $SERVICE/GetEvent 2>&1)
 set -e
 
 if echo "$GET_DELETED_RESP" | grep -i -q "not found\|notfound"; then
-    echo "✅ Verificación exitosa: El registro ya no existe."
+    echo "✅ Verification successful: The record no longer exists."
 else
-    echo "❌ Advertencia: El registro podría seguir existiendo o ocurrió un error inesperado:"
+    echo "❌ Warning: The record might still exist or an unexpected error occurred:"
     echo "$GET_DELETED_RESP"
     exit 1
 fi
 
 echo "--------------------------------------------------"
-echo "🎉 ¡Todos los tests E2E pasaron exitosamente!"
+echo "🎉 All E2E tests passed successfully!"
