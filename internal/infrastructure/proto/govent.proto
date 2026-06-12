@@ -89,7 +89,6 @@ message CreateSubscriptionResponse {
 message PullMessagesRequest {
   string event_name = 1;
   string source = 2;
-  int32 limit = 3;
 }
 
 message PullMessagesResponse {

@@ -10,10 +10,8 @@ SERVICE="event.Eventservice"
 
 echo "🚀 Starting E2E gRPC Test for $SERVICE at $SERVER..."
 
-# Ensure the default directory exists in case the server does not have the environment variables
 mkdir -p /tmp/events
 
-# Check dependencies
 if ! command -v grpcurl &> /dev/null; then
     echo "❌ grpcurl is not installed. Run 'make support-install-grpc-tools' first."
     exit 1
