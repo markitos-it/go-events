@@ -69,6 +69,9 @@ build:
 clean:
 	bash bin/app/clean.sh
 
+appsec-test:
+	bash bin/appsec/test.sh
+
 appsec-install:
 	bash bin/appsec/install.sh
 
