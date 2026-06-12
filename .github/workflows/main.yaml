@@ -12,28 +12,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Clonar el repositorio en el runner de GitHub
+      # 1. Clonar el repositorio
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Configurar el entorno de Go con la versión exacta
+      # 2. Configurar Go
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: '1.26.4'
-          cache: true # Activa la caché de dependencias para acelerar las ejecuciones
+          cache: true
 
-      # 3. Levantar y preparar la Base de Datos Postgres
+      # 3. Levantar Postgres
       - name: Start Postgres Database
         run: make db-start
 
+      # 4. ◄— NUEVO PASO: Esperar a que Postgres acepte conexiones
+      - name: Wait for Postgres to be ready
+        run: |
+          echo "⏳ Esperando a que Postgres inicialice..."
+          until docker exec govent-postgres pg_isready -U govent; do
+            sleep 1
+          done
+          echo "✅ ¡Postgres está listo para recibir comandos!"
+
+      # 5. Crear la Base de Datos y el Esquema
       - name: Create Database and Schema
         run: make db-create
 
-      # 4. Lanzar tus tests unitarios / de integración (ya con la BD lista)
+      # 6. Lanzar tests
       - name: Run Unit Tests
         run: make test
 
-      # 5. Lanzar tus tests de seguridad (SAST, dependencias, etc.)
+      # 7. Tests de seguridad
       - name: Run Application Security Tests
         run: make appsec-test
