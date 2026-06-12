@@ -10,8 +10,10 @@ SERVICE="event.Eventservice"
 
 echo "🚀 Starting E2E gRPC Test for $SERVICE at $SERVER..."
 
+# Ensure the default directory exists in case the server does not have the environment variables
 mkdir -p /tmp/events
 
+# Check dependencies
 if ! command -v grpcurl &> /dev/null; then
     echo "❌ grpcurl is not installed. Run 'make support-install-grpc-tools' first."
     exit 1
@@ -23,6 +25,17 @@ if ! command -v jq &> /dev/null; then
 fi
 
 echo "--------------------------------------------------"
+echo "0️⃣  Creating a new Subscription..."
+# Creamos la suscripción antes para que el Fan-Out se entere al crear el evento
+SUB_PAYLOAD='{
+  "subscriber_name": "marco",
+  "event_name": "EventTest",
+  "source": "EventSource"
+}'
+grpcurl -plaintext -d "$SUB_PAYLOAD" $SERVER $SERVICE/CreateSubscription
+echo "✅ Subscription created successfully."
+echo "--------------------------------------------------"
+
 echo "1️⃣  Creating a new Event..."
 CREATE_PAYLOAD='{
   "name": "EventTest",
@@ -48,6 +61,40 @@ echo "--------------------------------------------------"
 echo "2️⃣  Getting Event by ID..."
 grpcurl -plaintext -d "{\"id\": \"$EVENT_ID\"}" $SERVER $SERVICE/GetEvent
 echo "✅ Get successful."
+echo "--------------------------------------------------"
+
+echo "3️⃣  Pulling Messages from Queue..."
+# El worker pide sus mensajes pendientes basándose en el nombre y origen del evento
+PULL_PAYLOAD='{
+  "event_name": "EventTest",
+  "source": "EventSource",
+  "limit": 1
+}'
+PULL_RESP=$(grpcurl -plaintext -d "$PULL_PAYLOAD" $SERVER $SERVICE/PullMessages)
+echo "$PULL_RESP"
+
+# Extraemos el queueId del primer mensaje (grpcurl mapea snake_case a lowerCamelCase)
+QUEUE_ID=$(echo "$PULL_RESP" | jq -r '.messages[0].queueId')
+
+if [ -z "$QUEUE_ID" ] || [ "$QUEUE_ID" == "null" ]; then
+    echo "❌ Error: Could not extract queueId from PullMessages response."
+    exit 1
+fi
+echo "✅ Successfully pulled message with Queue ID: $QUEUE_ID"
+echo "--------------------------------------------------"
+
+echo "3️⃣b Acknowledging Message..."
+# Confirmamos el procesamiento usando el ID único de la cola obtenido en el paso anterior
+ACK_PAYLOAD="{\"queue_id\": \"$QUEUE_ID\"}"
+ACK_RESP=$(grpcurl -plaintext -d "$ACK_PAYLOAD" $SERVER $SERVICE/AckMessage)
+echo "$ACK_RESP"
+
+ACK_SUCCESS=$(echo "$ACK_RESP" | jq -r '.success')
+if [ "$ACK_SUCCESS" != "true" ]; then
+    echo "❌ Error: AckMessage returned success=false."
+    exit 1
+fi
+echo "✅ Message acknowledged successfully."
 echo "--------------------------------------------------"
 
 echo "4️⃣  Listing Events..."
