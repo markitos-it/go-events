@@ -51,13 +51,18 @@ jobs:
         run: |
           make start &
           echo "⏳ Esperando 5 segundos a que el API inicialice y aplique el esquema..."
-          sleep 30
+          sleep 10
 
+      # 7. Lanzar tus tests unitarios y de integración
       - name: Run Unit Tests
         run: make test
 
-      # 8. ◄— PASO CORREGIDO: Lanzar tests de seguridad (AppSec) pasando el Secret
+      # 8. ◄— NUEVO PASO: Instalar Snyk CLI para evitar el Error 127
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      # 9. Lanzar tests de seguridad (AppSec) pasando el Secret
       - name: Run Application Security Tests
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} # Pasamos el secreto guardado en tu GitHub al entorno del script
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: make appsec-test
