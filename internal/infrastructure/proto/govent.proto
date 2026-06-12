@@ -15,12 +15,22 @@ message Event {
   string payload = 6;
 }
 
+message QueueMessage {
+  string queue_id = 1;
+  string event_id = 2;
+  string name = 3;
+  string source = 4;
+  string payload = 5;
+}
+
 service Eventservice {
   rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse);
   rpc GetEvent(GetEventRequest) returns (GetEventResponse);
   rpc DeleteEvent(DeleteEventRequest) returns (DeleteEventResponse);
   rpc AllByNameAndSource(AllEventsByNameAndSourceRequest) returns (AllEventsByNameAndSourceResponse);
   rpc CreateSubscription(CreateSubscriptionRequest) returns (CreateSubscriptionResponse);
+  rpc PullMessages(PullMessagesRequest) returns (PullMessagesResponse);
+  rpc AckMessage(AckMessageRequest) returns (AckMessageResponse);
 }
 
 message CreateEventRequest {
@@ -74,4 +84,22 @@ message CreateSubscriptionRequest {
 message CreateSubscriptionResponse {
   bool success = 1;
   string message = 2;
+}
+
+message PullMessagesRequest {
+  string event_name = 1;
+  string source = 2;
+  int32 limit = 3;
+}
+
+message PullMessagesResponse {
+  repeated QueueMessage messages = 1;
+}
+
+message AckMessageRequest {
+  string queue_id = 1;
+}
+
+message AckMessageResponse {
+  bool success = 1;
 }

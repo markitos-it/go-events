@@ -1,6 +1,8 @@
 package types
 
-import "context"
+import (
+	"context"
+)
 
 type EventRepository interface {
 	Create(ctx context.Context, event *Event) error
@@ -8,4 +10,6 @@ type EventRepository interface {
 	AllByNameAndSource(ctx context.Context, name *EventName, source *EventSource) ([]*Event, error)
 	Delete(ctx context.Context, id *SharedId) error
 	CreateSubscription(ctx context.Context, sub *Subscription) error
+	PullMessages(ctx context.Context, name *EventName, source *EventSource) ([]*QueueMessage, error)
+	AckMessage(ctx context.Context, id *SharedId) error
 }

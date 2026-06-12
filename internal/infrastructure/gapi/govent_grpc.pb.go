@@ -24,6 +24,8 @@ const (
 	Eventservice_DeleteEvent_FullMethodName        = "/event.Eventservice/DeleteEvent"
 	Eventservice_AllByNameAndSource_FullMethodName = "/event.Eventservice/AllByNameAndSource"
 	Eventservice_CreateSubscription_FullMethodName = "/event.Eventservice/CreateSubscription"
+	Eventservice_PullMessages_FullMethodName       = "/event.Eventservice/PullMessages"
+	Eventservice_AckMessage_FullMethodName         = "/event.Eventservice/AckMessage"
 )
 
 // EventserviceClient is the client API for Eventservice service.
@@ -35,6 +37,8 @@ type EventserviceClient interface {
 	DeleteEvent(ctx context.Context, in *DeleteEventRequest, opts ...grpc.CallOption) (*DeleteEventResponse, error)
 	AllByNameAndSource(ctx context.Context, in *AllEventsByNameAndSourceRequest, opts ...grpc.CallOption) (*AllEventsByNameAndSourceResponse, error)
 	CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*CreateSubscriptionResponse, error)
+	PullMessages(ctx context.Context, in *PullMessagesRequest, opts ...grpc.CallOption) (*PullMessagesResponse, error)
+	AckMessage(ctx context.Context, in *AckMessageRequest, opts ...grpc.CallOption) (*AckMessageResponse, error)
 }
 
 type eventserviceClient struct {
@@ -95,6 +99,26 @@ func (c *eventserviceClient) CreateSubscription(ctx context.Context, in *CreateS
 	return out, nil
 }
 
+func (c *eventserviceClient) PullMessages(ctx context.Context, in *PullMessagesRequest, opts ...grpc.CallOption) (*PullMessagesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PullMessagesResponse)
+	err := c.cc.Invoke(ctx, Eventservice_PullMessages_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *eventserviceClient) AckMessage(ctx context.Context, in *AckMessageRequest, opts ...grpc.CallOption) (*AckMessageResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AckMessageResponse)
+	err := c.cc.Invoke(ctx, Eventservice_AckMessage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EventserviceServer is the server API for Eventservice service.
 // All implementations must embed UnimplementedEventserviceServer
 // for forward compatibility.
@@ -104,6 +128,8 @@ type EventserviceServer interface {
 	DeleteEvent(context.Context, *DeleteEventRequest) (*DeleteEventResponse, error)
 	AllByNameAndSource(context.Context, *AllEventsByNameAndSourceRequest) (*AllEventsByNameAndSourceResponse, error)
 	CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error)
+	PullMessages(context.Context, *PullMessagesRequest) (*PullMessagesResponse, error)
+	AckMessage(context.Context, *AckMessageRequest) (*AckMessageResponse, error)
 	mustEmbedUnimplementedEventserviceServer()
 }
 
@@ -128,6 +154,12 @@ func (UnimplementedEventserviceServer) AllByNameAndSource(context.Context, *AllE
 }
 func (UnimplementedEventserviceServer) CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateSubscription not implemented")
+}
+func (UnimplementedEventserviceServer) PullMessages(context.Context, *PullMessagesRequest) (*PullMessagesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PullMessages not implemented")
+}
+func (UnimplementedEventserviceServer) AckMessage(context.Context, *AckMessageRequest) (*AckMessageResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AckMessage not implemented")
 }
 func (UnimplementedEventserviceServer) mustEmbedUnimplementedEventserviceServer() {}
 func (UnimplementedEventserviceServer) testEmbeddedByValue()                      {}
@@ -240,6 +272,42 @@ func _Eventservice_CreateSubscription_Handler(srv interface{}, ctx context.Conte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Eventservice_PullMessages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PullMessagesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EventserviceServer).PullMessages(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Eventservice_PullMessages_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EventserviceServer).PullMessages(ctx, req.(*PullMessagesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Eventservice_AckMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AckMessageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EventserviceServer).AckMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Eventservice_AckMessage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EventserviceServer).AckMessage(ctx, req.(*AckMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Eventservice_ServiceDesc is the grpc.ServiceDesc for Eventservice service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +334,14 @@ var Eventservice_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateSubscription",
 			Handler:    _Eventservice_CreateSubscription_Handler,
+		},
+		{
+			MethodName: "PullMessages",
+			Handler:    _Eventservice_PullMessages_Handler,
+		},
+		{
+			MethodName: "AckMessage",
+			Handler:    _Eventservice_AckMessage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -15,6 +15,9 @@ type MockSpyEventRepository struct {
 	LastOneEventId               *string
 	LastAllByNameAndSource       []types.Event
 	LastCreatedSubscriptionEvent *string
+	LastAckMessageId             *string
+	LastPullMessagesName         *string
+	LastPullMessagesSource       *string
 }
 
 func NewMockSpyEventRepository() *MockSpyEventRepository {
@@ -24,7 +27,24 @@ func NewMockSpyEventRepository() *MockSpyEventRepository {
 		LastOneEventId:               nil,
 		LastAllByNameAndSource:       nil,
 		LastCreatedSubscriptionEvent: nil,
+		LastAckMessageId:             nil,
+		LastPullMessagesName:         nil,
+		LastPullMessagesSource:       nil,
 	}
+}
+
+func (m *MockSpyEventRepository) PullMessages(ctx context.Context, name *types.EventName, source *types.EventSource) ([]*types.QueueMessage, error) {
+	n := name.Value()
+	s := source.Value()
+	m.LastPullMessagesName = &n
+	m.LastPullMessagesSource = &s
+	return []*types.QueueMessage{}, nil
+}
+
+func (m *MockSpyEventRepository) AckMessage(ctx context.Context, id *types.SharedId) error {
+	v := id.Value()
+	m.LastAckMessageId = &v
+	return nil
 }
 
 func (m *MockSpyEventRepository) Create(ctx context.Context, event *types.Event) error {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"govent/internal/domain/shared"
 	"govent/internal/domain/types"
@@ -12,6 +13,14 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
+
+type PulledMessage struct {
+	QueueId string
+	EventId string
+	Name    string
+	Source  string
+	Payload string
+}
 
 type EventPostgresRepository struct {
 	db *gorm.DB
@@ -110,4 +119,36 @@ func (r *EventPostgresRepository) CreateSubscription(ctx context.Context, sub *t
 		Table("subscriptions").
 		Clauses(clause.OnConflict{DoNothing: true}).
 		Create(sub).Error
+}
+
+func (r *EventPostgresRepository) PullMessages(
+	ctx context.Context,
+	eventName *types.EventName,
+	source *types.EventSource,
+) ([]*types.QueueMessage, error) {
+
+	var results []*types.QueueMessage
+
+	err := r.db.WithContext(ctx).
+		Table("queue q").
+		Joins("JOIN events e ON q.event_id = e.id").
+		Where("e.name = ? AND e.source = ? AND q.status = ?", eventName.Value(), source.Value(), "pending").
+		Clauses(clause.Locking{Strength: "UPDATE", Options: "SKIP LOCKED"}).
+		Find(&results).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	return results, nil
+}
+
+func (r *EventPostgresRepository) AckMessage(ctx context.Context, id *types.SharedId) error {
+	return r.db.WithContext(ctx).
+		Table("queue").
+		Where("id = ?", id.Value()).
+		Updates(map[string]interface{}{
+			"status":     "processed",
+			"updated_at": time.Now(),
+		}).Error
 }
