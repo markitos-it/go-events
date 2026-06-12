@@ -144,11 +144,20 @@ func (r *EventPostgresRepository) PullMessages(
 }
 
 func (r *EventPostgresRepository) AckMessage(ctx context.Context, id *types.SharedId) error {
-	return r.db.WithContext(ctx).
+	result := r.db.WithContext(ctx).
 		Table("queue").
-		Where("id = ?", id.Value()).
+		Where("id = ? AND status = ?", id.Value(), "pending").
 		Updates(map[string]interface{}{
 			"status":     "processed",
 			"updated_at": time.Now(),
-		}).Error
+		})
+
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return shared.ErrQueueMessageNotFound
+	}
+
+	return nil
 }
