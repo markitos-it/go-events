@@ -69,7 +69,7 @@ jobs:
       - name: Run Unit Tests
         run: make test
 
-      # 8. PASO DEFINITIVO: Instalación dinámica de herramientas de última generación
+      # 8. PASO CORREGIDO: Instalación limpia de herramientas
       - name: Install Security & Linting Tools (Snyk, Gitleaks, GolangCI-Lint)
         run: |
           echo "📦 Instalando Snyk a través de NPM..."
@@ -78,14 +78,14 @@ jobs:
           echo "📦 Instalando Gitleaks (Última versión)..."
           GITLEAKS_VERSION=$(curl -s https://api.github.com/repos/gitleaks/gitleaks/releases/latest | grep tag_name | cut -d '"' -f 4 | sed 's/v//')
           curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" | tar -xz
+          # Al desempaquetar, el binario 'gitleaks' ya queda en la raíz (./). Solo lo copiamos también al path del sistema:
           sudo cp gitleaks /usr/local/bin/
-          cp gitleaks ./ # Lo dejamos también en la raíz por si el script lo busca localmente
 
           echo "📦 Instalando GolangCI-Lint (Última versión compatible con Go 1.26+)..."
           GOLANGCI_VERSION=$(curl -s https://api.github.com/repos/golangci/golangci-lint/releases/latest | grep tag_name | cut -d '"' -f 4 | sed 's/v//')
           curl -sSfL "https://github.com/golangci/golangci-lint/releases/download/v${GOLANGCI_VERSION}/golangci-lint-${GOLANGCI_VERSION}-linux-amd64.tar.gz" | tar -xz
           sudo cp "golangci-lint-${GOLANGCI_VERSION}-linux-amd64/golangci-lint" /usr/local/bin/
-          cp "golangci-lint-${GOLANGCI_VERSION}-linux-amd64/golangci-lint" ./ # Lo dejamos también en la raíz
+          cp "golangci-lint-${GOLANGCI_VERSION}-linux-amd64/golangci-lint" ./
           
           echo "🧹 Limpiando archivos temporales..."
           rm -rf golangci-lint-${GOLANGCI_VERSION}-linux-amd64
