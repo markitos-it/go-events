@@ -46,12 +46,25 @@ jobs:
           docker exec -i govent-postgres psql -U admin -d postgres -c "DROP DATABASE IF EXISTS govent;"
           make db-create
 
-      # 6. Arrancar el API en segundo plano (Auto-Migrations)
-      - name: Start API Server in Background
+      # 6. ◄— PASO OPTIMIZADO: Arranca el API y espera activamente al puerto 30000
+      - name: Start API Server & Wait for Port 30000
         run: |
           make start &
-          echo "⏳ Esperando 5 segundos a que el API inicialice y aplique el esquema..."
-          sleep 30
+          
+          echo "⏳ Esperando de forma dinámica a que el API responda en el puerto 30000..."
+          # Intenta conectarse al puerto 30000 cada 0.5 segundos hasta un máximo de 15 intentos
+          FORKS=0
+          until nc -z 127.0.0.1 30000 || [ $FORKS -eq 15 ]; do
+            sleep 0.5
+            FORKS=$((FORKS + 1))
+          done
+          
+          if nc -z 127.0.0.1 30000; then
+            echo "✅ ¡El API ha levantado con éxito y las tablas están listas!"
+          else
+            echo "❌ ERROR: El API no logró iniciar en el puerto 30000 a tiempo."
+            exit 1
+          fi
 
       # 7. Lanzar tests unitarios y de integración
       - name: Run Unit Tests
@@ -61,7 +74,7 @@ jobs:
       - name: Install Snyk CLI
         run: npm install -g snyk
 
-      # 9. ◄— PASO BLINDADO: Detecta si falta el token para evitar el cuelgue eterna
+      # 9. Lanzar tests de seguridad (Validando que el token no venga vacío)
       - name: Run Application Security Tests
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -75,7 +88,7 @@ jobs:
           fi
           make appsec-test
 
-      # 10. Generar el reporte visual en la interfaz de GitHub (Se ejecutará siempre)
+      # 10. Generar el reporte visual en la interfaz de GitHub (Se ejecuta siempre)
       - name: Generate Beautiful Job Summary
         if: always()
         run: |
@@ -87,7 +100,7 @@ jobs:
           echo "| 🦫 **Entorno Core** | Go v1.26.4 (Caché Activa) |" >> $GITHUB_STEP_SUMMARY
           echo "| 🐘 **Base de Datos** | Postgres 17 (Docker Alpine) |" >> $GITHUB_STEP_SUMMARY
           echo "| 🛠️ **Esquema SQL** | Creado desde cero con éxito |" >> $GITHUB_STEP_SUMMARY
-          echo "| ⚡ **ORM Migrations** | Aplicadas (API arrancada en Background) |" >> $GITHUB_STEP_SUMMARY
+          echo "| ⚡ **ORM Migrations** | Aplicadas (Puerto :30000 validado de forma dinámica) |" >> $GITHUB_STEP_SUMMARY
           echo "| 🛡️ **AppSec Scan** | Revisar estado en los pasos del Job |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "---" >> $GITHUB_STEP_SUMMARY
