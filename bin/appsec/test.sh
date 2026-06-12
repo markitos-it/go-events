@@ -72,7 +72,7 @@ fi
 
 # --- GITLEAKS ---
 # Nota: Si es para pre-commit, recuerda cambiar 'detect --source .' por 'protect --staged'
-if gitleaks detect --source . --no-git > /dev/null 2>&1; then
+if gitleaks detect > /dev/null 2>&1; then
     print_result "Gitleaks (Secretos)" 0
 else
     print_result "Gitleaks (Secretos)" 1 && GLOBAL_EXIT=1
