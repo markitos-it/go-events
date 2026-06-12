@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+TEST_SCRIPT="$ROOT_DIR/bin/appsec/pre-push.sh"
+cd "$ROOT_DIR"
+
+if [[ ! -x "$TEST_SCRIPT" ]]; then
+    echo "[ERROR] test script not found or not executable: $TEST_SCRIPT" >&2
+    exit 1
+fi
+
+echo "[INFO] Running repository security checks before push..."
+"$TEST_SCRIPT"
+EXIT_CODE=$?
+if [[ $EXIT_CODE -ne 0 ]]; then
+    echo "[FAIL] Pre-push security checks failed (exit code: $EXIT_CODE). push aborted." >&2
+    exit $EXIT_CODE
+fi
+
+echo "[PASS] Pre-push security checks passed. Proceeding with push."
+exit 0

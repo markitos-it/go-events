@@ -1,0 +1,63 @@
+#:[.'.]:-------------------------------------------------------------------
+#:[.'.]:- file for golangci-lint configuration (DevSecOps Kit v2 format)
+#:[.'.]:-------------------------------------------------------------------
+# LINTERS ACTIVADOS:
+# - errcheck:    Encuentra errores no comprobados (vital en Go)
+# - govet:       El linter oficial de Go, detecta código sospechoso
+# - ineffassign: Detecta asignaciones de variables inútiles
+# - staticcheck: Un analizador estático excelente y robusto
+# - unused:      Encuentra constantes, variables, funciones y tipos que no se usan
+# - gosec:       Analiza posibles problemas de seguridad en tu código
+# - misspell:    Detecta errores tipográficos comunes en inglés (comentarios, variables)
+#
+# FORMATTERS ACTIVADOS:
+# - gofmt:       Verifica que el código esté formateado correctamente (simplify: true)
+# - goimports:   Verifica que los imports estén ordenados agrupando locales (local-prefixes: govent)
+#
+# NOTA DE ESTILO: El linter staticcheck te obligará a usar asignación corta (:=) 
+# en variables donde el tipo se infiera directamente para mantener el estilo idiomático de Go.
+#:[.'.]:-------------------------------------------------------------------
+
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+  skip-dirs:
+    - bin
+  skip-files:
+    - ".*\\.pb\\.go$"
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - gosec
+    - misspell
+  settings:
+    govet:
+      check-shadowing: true
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    gofmt:
+      simplify: true
+    goimports:
+      local-prefixes: govent
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  exclude-rules:
+    # FILTRO DEFINITIVO: Empareja por archivo y por el contenido de la línea de código (source)
+    - path: internal/testsuite/.*
+      linters:
+        - gosec
+      source: "sanitizedDSN"
