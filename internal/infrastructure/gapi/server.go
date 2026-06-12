@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"govent/internal/domain/shared"
+	sharedDomain "govent/internal/domain/shared"
 	"govent/internal/domain/types"
 	"govent/internal/infrastructure/configuration"
 
@@ -17,32 +17,30 @@ type Server struct {
 	address    string
 	repository types.EventRepository
 	config     configuration.EventConfiguration
+	logger     types.Logger
 }
 
-func NewServer(address string, repository types.EventRepository, config configuration.EventConfiguration) *Server {
+func NewServer(address string, repository types.EventRepository, config configuration.EventConfiguration, logger types.Logger) *Server {
 	apiGRPC := &Server{
 		address:    address,
 		repository: repository,
 		config:     config,
+		logger:     logger,
 	}
 
 	return apiGRPC
-}
-
-func (s *Server) Repository() types.EventRepository {
-	return s.repository
 }
 
 func (s *Server) GetGRPCCode(err error) codes.Code {
 	var code = codes.Internal
 
 	switch {
-	case errors.Is(err, shared.ErrEventNotFound):
+	case errors.Is(err, sharedDomain.ErrEventNotFound):
 		code = codes.NotFound
-	case errors.Is(err, shared.ErrInvalidEventId),
-		errors.Is(err, shared.ErrInvalidEventName),
-		errors.Is(err, shared.ErrInvalidPageNumber),
-		errors.Is(err, shared.ErrInvalidPageSize),
+	case errors.Is(err, sharedDomain.ErrInvalidEventId),
+		errors.Is(err, sharedDomain.ErrInvalidEventName),
+		errors.Is(err, sharedDomain.ErrInvalidPageNumber),
+		errors.Is(err, sharedDomain.ErrInvalidPageSize),
 		strings.Contains(err.Error(), "invalid"),
 		strings.Contains(err.Error(), "Invalid"),
 		strings.Contains(err.Error(), "illegal"),

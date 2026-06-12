@@ -109,7 +109,6 @@ func (x *Event) GetPayload() string {
 type CreateEventRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
 	Source        string                 `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
 	Payload       string                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -149,13 +148,6 @@ func (*CreateEventRequest) Descriptor() ([]byte, []int) {
 func (x *CreateEventRequest) GetName() string {
 	if x != nil {
 		return x.Name
-	}
-	return ""
-}
-
-func (x *CreateEventRequest) GetContent() string {
-	if x != nil {
-		return x.Content
 	}
 	return ""
 }
@@ -551,10 +543,9 @@ const file_govent_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x16\n" +
 	"\x06source\x18\x05 \x01(\tR\x06source\x12\x18\n" +
-	"\apayload\x18\x06 \x01(\tR\apayload\"t\n" +
+	"\apayload\x18\x06 \x01(\tR\apayload\"Z\n" +
 	"\x12CreateEventRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\x12\x16\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
 	"\x06source\x18\x03 \x01(\tR\x06source\x12\x18\n" +
 	"\apayload\x18\x04 \x01(\tR\apayload\"k\n" +
 	"\x13CreateEventResponse\x12\x0e\n" +

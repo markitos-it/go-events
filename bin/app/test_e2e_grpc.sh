@@ -10,9 +10,6 @@ SERVICE="event.Eventservice"
 
 echo "🚀 Starting E2E gRPC Test for $SERVICE at $SERVER..."
 
-UPLOADS_DIR=${EVENT_UPLOADS_BASEDIR:-./uploads}
-mkdir -p $UPLOADS_DIR
-
 # Ensure the default directory exists in case the server does not have the environment variables
 mkdir -p /tmp/events
 

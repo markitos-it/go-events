@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-
 	"govent/internal/domain/types"
 )
 

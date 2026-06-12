@@ -1,7 +1,7 @@
 package configuration
 
 import (
-	"fmt"
+	"govent/internal/domain/types"
 	"os"
 
 	"github.com/spf13/viper"
@@ -31,7 +31,7 @@ type EventConfiguration struct {
 // [.'.]:> 🔄 Función principal que carga toda la configuración
 // [.'.]:> Recibe la ruta donde buscar el archivo app.env y devuelve la configuración completa
 // [.'.]:> Si hay algún error durante la carga, lo devuelve para que la aplicación pueda manejarlo
-func LoadConfiguration(configFilesPath string) (config EventConfiguration, err error) {
+func LoadConfiguration(configFilesPath string, logger types.Logger) (config EventConfiguration, err error) {
 	viper.New()
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
@@ -40,7 +40,7 @@ func LoadConfiguration(configFilesPath string) (config EventConfiguration, err e
 	_ = viper.BindEnv("GRPC_SERVER_ADDRESS")
 	viper.AutomaticEnv()
 
-	if err := loadConfigFile(); err != nil {
+	if err := loadConfigFile(logger); err != nil {
 		return config, err
 	}
 
@@ -48,11 +48,11 @@ func LoadConfiguration(configFilesPath string) (config EventConfiguration, err e
 
 	err = viper.Unmarshal(&config)
 	if err == nil {
-		fmt.Println("['.']:> ✨ Configuración cargada correctamente ✨")
-		fmt.Println("['.']:> ----------------------------------------")
-		fmt.Printf("['.']:> 🚀 gRPC Server.: %s\n", config.GRPCServerAddress)
-		fmt.Printf("['.']:> 📁 Database DSN: %s\n", config.DatabaseDsn)
-		fmt.Println("['.']:> ----------------------------------------")
+		logger.Info("['.']:> ✨ Configuración cargada correctamente ✨")
+		logger.Info("['.']:> ----------------------------------------")
+		logger.Info("['.']:> 🚀 gRPC Server.: " + config.GRPCServerAddress + "\n")
+		logger.Info("['.']:> 📁 Database DSN: " + config.DatabaseDsn + "\n")
+		logger.Info("['.']:> ----------------------------------------")
 		applyFallbackEnvVars(&config)
 	}
 
@@ -62,14 +62,14 @@ func LoadConfiguration(configFilesPath string) (config EventConfiguration, err e
 // [.'.]:> 📄 Intenta cargar el archivo de configuración app.env
 // [.'.]:> Si el archivo no existe, lo maneja elegantemente y permite continuar
 // [.'.]:> usando solo variables de entorno
-func loadConfigFile() error {
+func loadConfigFile(logger types.Logger) error {
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
 			return err
 		}
-		fmt.Println("['.']:> 📋 Archivo de configuración no encontrado, usando solo variables de entorno")
+		logger.Info("['.']:> 📋 Archivo de configuración no encontrado, usando solo variables de entorno")
 	} else {
-		fmt.Println("['.']:> 📋 Archivo de configuración cargado correctamente")
+		logger.Info("['.']:> 📋 Archivo de configuración cargado correctamente")
 	}
 
 	return nil

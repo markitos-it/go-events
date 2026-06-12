@@ -3,6 +3,8 @@ module govent
 go 1.26.4
 
 require (
+	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.3
+	github.com/lmittmann/tint v1.1.3
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
 	google.golang.org/grpc v1.81.1
@@ -35,5 +37,6 @@ require (
 	golang.org/x/sys v0.44.0 // indirect
 	golang.org/x/text v0.37.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260226221140-a57be14db171 // indirect
+	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

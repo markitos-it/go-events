@@ -24,7 +24,6 @@ service Eventservice {
 
 message CreateEventRequest {
   string name = 1;
-  string content = 2;
   string source = 3;
   string payload = 4;
 }

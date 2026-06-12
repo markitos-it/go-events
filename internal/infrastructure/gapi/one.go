@@ -14,7 +14,6 @@ func (s *Server) GetEvent(ctx context.Context, in *GetEventRequest) (*GetEventRe
 	if _, err := types.NewEventId(in.Id); err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
-
 	request := services.EventOneRequest{Id: in.Id}
 
 	var service = services.NewEventOneService(s.repository)

@@ -10,6 +10,7 @@ import (
 	"govent/internal/domain/types"
 	"govent/internal/infrastructure/configuration"
 	"govent/internal/infrastructure/gapi"
+	slogcolored "govent/internal/infrastructure/logging/slog-colored"
 	"govent/internal/testsuite/infrastructure/testdb"
 	internal_test "govent/internal/testsuite/internal"
 
@@ -40,7 +41,7 @@ func setup() {
 	grpcServer = grpc.NewServer()
 
 	config := &configuration.EventConfiguration{}
-	server := gapi.NewServer(":8080", testdb.GetRepository(), *config)
+	server := gapi.NewServer(":8080", testdb.GetRepository(), *config, slogcolored.NewColoredSLogger())
 	gapi.RegisterEventserviceServer(grpcServer, server)
 
 	go func() {

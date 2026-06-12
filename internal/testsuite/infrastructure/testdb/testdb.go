@@ -10,6 +10,7 @@ import (
 	"govent/internal/domain/types"
 	"govent/internal/infrastructure/configuration"
 	"govent/internal/infrastructure/database"
+	slogcolored "govent/internal/infrastructure/logging/slog-colored"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -39,7 +40,8 @@ func GetDB() *gorm.DB {
 			configSource = "ENV VARS"
 			log.Println("['.']:> 🌟 ORIGEN DE CONFIGURACIÓN: VARIABLES DE ENTORNO")
 		} else {
-			config, err := configuration.LoadConfiguration("../../..")
+			logger := slogcolored.NewColoredSLogger()
+			config, err := configuration.LoadConfiguration("../../..", logger)
 			if err != nil {
 				log.Printf("['.']:> ⚠️ No se pudo cargar la configuración: %v", err)
 				dsn = "host=localhost user=admin password=admin dbname=markitos-it-svc-event sslmode=disable"

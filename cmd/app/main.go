@@ -2,22 +2,28 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"govent/internal/domain/types"
+	"govent/internal/infrastructure/configuration"
+	"govent/internal/infrastructure/database"
+	"govent/internal/infrastructure/gapi"
+	slogcolored "govent/internal/infrastructure/logging/slog-colored"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 	"sync"
 	"syscall"
+	"time"
 
-	"govent/internal/domain/types"
-	"govent/internal/infrastructure/configuration"
-	"govent/internal/infrastructure/database"
-	"govent/internal/infrastructure/gapi"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	gormLogger "gorm.io/gorm/logger"
 )
 
 var repository types.EventRepository
@@ -35,21 +41,18 @@ var config configuration.EventConfiguration
 // #[.'.]:> STEP 5: Show shutdown banner when finished
 // #[.'.]:> These logs clearly mark the end of the service execution
 func main() {
-	log.Println("['.']:>")
-	log.Println("['.']:>--------------------------------------------")
-	log.Println("['.']:>--- <starting markitos-it-svc-event>  ---")
+	logger := slogcolored.NewColoredSLogger()
+	logger.OpenGroup("main")
 
-	loadConfiguration()
-	log.Println("['.']:>------- configuration loaded")
-
-	loadDatabase()
-	log.Println("['.']:>------- database initialized")
-
-	startServers()
-
-	log.Println("['.']:>--------------------------------------------")
-	log.Println("['.']:>--- <markitos-it-svc-event stopped>  ---")
-	log.Println("['.']:>")
+	logger.Info("['.']:>--------------------------------------------")
+	logger.Info("['.']:>--- <starting markitos-it-svc-event>  ---")
+	logger.Info("['.']:>------- logger loaded")
+	loadConfiguration(logger)
+	loadDatabase(logger)
+	startServers(logger)
+	logger.Info("['.']:>--------------------------------------------")
+	logger.Info("['.']:>--- <markitos-it-svc-event stopped>  ---")
+	logger.Info("['.']:>")
 }
 
 // #[.'.]:> This function loads the service configuration
@@ -59,13 +62,16 @@ func main() {
 // #[.'.]:> Can't operate without valid configuration
 // #[.'.]:> STEP 2: Store configuration in a global variable
 // #[.'.]:> Makes it accessible to the rest of the program functions
-func loadConfiguration() {
-	loadedConfig, err := configuration.LoadConfiguration(".")
+func loadConfiguration(logger types.Logger) {
+	loadedConfig, err := configuration.LoadConfiguration(".", logger)
 	if err != nil {
-		log.Fatal("['.']:>------- unable to load configuration: ", err)
+		logger.Error("['.']:>------- unable to load configuration: " + err.Error())
+		os.Exit(1)
 	}
 
 	config = loadedConfig
+	logger.Info("['.']:>------- configuration loaded")
+
 }
 
 // #[.'.]:> This function initializes the database and repository
@@ -77,19 +83,34 @@ func loadConfiguration() {
 // #[.'.]:> If migrations fail, can't continue
 // #[.'.]:> STEP 3: Create a repository instance with the database connection
 // #[.'.]:> The repository encapsulates all data access logic
-func loadDatabase() {
-	db, err := gorm.Open(postgres.Open(config.DatabaseDsn), &gorm.Config{})
+func loadDatabase(logger types.Logger) {
+	customLogger := gormLogger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
+		gormLogger.Config{
+			SlowThreshold:             time.Second,
+			LogLevel:                  gormLogger.Warn,
+			IgnoreRecordNotFoundError: true,
+			ParameterizedQueries:      false,
+			Colorful:                  true,
+		},
+	)
+
+	db, err := gorm.Open(postgres.Open(config.DatabaseDsn), &gorm.Config{
+		Logger: customLogger,
+	})
 	if err != nil {
-		log.Fatal("['.']:> error unable to connect to database:", err)
+		logger.Fatal("['.']:> error unable to connect to database:" + err.Error())
 	}
 
 	err = db.AutoMigrate(&types.Event{})
 	if err != nil {
-		log.Fatal("['.']:> error unable to migrate database:", err)
+		logger.Fatal("['.']:> error unable to migrate database:" + err.Error())
 	}
 
 	repo := database.NewEventPostgresRepository(db)
 	repository = repo
+
+	logger.Info("['.']:>------- database initialized")
 }
 
 // #[.'.]:> This function starts the servers and manages their lifecycle
@@ -106,7 +127,7 @@ func loadDatabase() {
 // #[.'.]:> This sends the termination signal to both servers
 // #[.'.]:> STEP 7: Wait for both servers to fully stop
 // #[.'.]:> Won't exit until both servers have completed their shutdown
-func startServers() {
+func startServers(logger types.Logger) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -118,12 +139,12 @@ func startServers() {
 
 	go func() {
 		defer wg.Done()
-		if err := runGRPCServer(ctx); err != nil {
-			log.Printf("['.']:> error running gRPC server: %v", err)
+		if err := runGRPCServer(ctx, logger); err != nil {
+			logger.Fatal("['.']:> error running gRPC server: " + err.Error())
 		}
 	}()
 	<-stop
-	log.Println("['.']:>------- shutting down servers gracefully...")
+	logger.Info("['.']:>------- shutting down servers gracefully...")
 	cancel()
 	wg.Wait()
 }
@@ -131,7 +152,7 @@ func startServers() {
 // #[.'.]:> This function starts and manages the gRPC server lifecycle
 // #[.'.]:> STEP 1: Create a network listener
 // #[.'.]:> This listener will listen for TCP requests at the configured address and port
-// #[.'.]:> STEP 2: Create a new gRPC server instance
+// #[.'.]:> STEP 2: Create a new gRPC server instance with a generic unary interceptor
 // #[.'.]:> This object is the heart of the server and will handle all requests
 // #[.'.]:> STEP 3: Create the implementation of our service
 // #[.'.]:> This part contains the actual business logic
@@ -150,23 +171,67 @@ func startServers() {
 // #[.'.]:> STEP 7: Log that the server is running
 // #[.'.]:> STEP 8: Start the server (this method blocks until an error occurs)
 // #[.'.]:> The server now actively listens for incoming requests
-func runGRPCServer(ctx context.Context) error {
+func runGRPCServer(ctx context.Context, logger types.Logger) error {
 	listener, err := net.Listen("tcp", config.GRPCServerAddress)
 	if err != nil {
 		return err
 	}
 
-	grpcServer := grpc.NewServer()
-	server := gapi.NewServer(config.GRPCServerAddress, repository, config)
+	genericUnaryInterceptor := func(
+		ctx context.Context,
+		req any,
+		info *grpc.UnaryServerInfo,
+		handler grpc.UnaryHandler,
+	) (any, error) {
+		startTime := time.Now()
+
+		var reqJSON string
+		if protoReq, ok := req.(proto.Message); ok {
+			reqJSON = protojson.MarshalOptions{EmitUnpopulated: true}.Format(protoReq)
+		} else {
+			reqJSON = fmt.Sprintf("%v", req)
+		}
+
+		logger.Info(fmt.Sprintf("gRPC start call ➜ %s | input: %s", info.FullMethod, reqJSON))
+
+		resp, err := handler(ctx, req)
+
+		duration := time.Since(startTime)
+
+		var respJSON string
+		if err == nil {
+			if protoResp, ok := resp.(proto.Message); ok {
+				respJSON = protojson.MarshalOptions{EmitUnpopulated: true}.Format(protoResp)
+			} else {
+				respJSON = fmt.Sprintf("%v", resp)
+			}
+		}
+
+		if err != nil {
+			logger.Error(fmt.Sprintf("gRPC finish call ❌ %s | duration: %v | error: %v", info.FullMethod, duration, err))
+		} else {
+			logger.Info(fmt.Sprintf("gRPC finish call  %s | duration: %v | output: %s", info.FullMethod, duration, respJSON))
+		}
+
+		return resp, err
+	}
+
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(genericUnaryInterceptor),
+	)
+
+	server := gapi.NewServer(config.GRPCServerAddress, repository, config, logger)
 	gapi.RegisterEventserviceServer(grpcServer, server)
 	reflection.Register(grpcServer)
 
 	go func() {
 		<-ctx.Done()
-		log.Println("['.']:> shutting down gRPC server...")
+		logger.Info("['.']:> shutting down gRPC server...")
 		grpcServer.GracefulStop()
 	}()
-	log.Printf("['.']:> gRPC server running at %s", config.GRPCServerAddress)
+
+	logger.Info("['.']:> gRPC server running at address: " + config.GRPCServerAddress)
+	logger.CloseGroup("main")
 
 	return grpcServer.Serve(listener)
 }

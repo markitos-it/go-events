@@ -33,26 +33,10 @@ func (r *EventPostgresRepository) One(ctx context.Context, id *types.EventId) (*
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, shared.ErrEventNotFound
 		}
-		return nil, err
-	}
-
-	return &event, nil
-}
-
-func (r *EventPostgresRepository) AllByName(ctx context.Context, name *types.EventName) ([]*types.Event, error) {
-	var events []*types.Event
-
-	err := r.db.WithContext(ctx).
-		Where("name = ?", name.Value()).
-		Order("created_at DESC").
-		Find(&events).
-		Error
-
-	if err != nil {
 		return nil, shared.ErrEventBadRequest
 	}
 
-	return events, nil
+	return &event, nil
 }
 
 func (r *EventPostgresRepository) AllByNameAndSource(ctx context.Context, name *types.EventName, source *types.EventSource) ([]*types.Event, error) {
@@ -65,6 +49,9 @@ func (r *EventPostgresRepository) AllByNameAndSource(ctx context.Context, name *
 		Error
 
 	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, shared.ErrEventNotFound
+		}
 		return nil, shared.ErrEventBadRequest
 	}
 

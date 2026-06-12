@@ -2,7 +2,6 @@ package services_test
 
 import (
 	"context"
-	"log"
 	"testing"
 
 	"govent/internal/domain/services"
@@ -23,13 +22,5 @@ func TestCanGetAllResources(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.IsType(t, services.EventAllResponse{}, *event)
-
-	log.Println("----------------------------")
-	log.Println("event.Data[0].GetName()", event.Data[0].GetName())
-	log.Println("anyName", anyName)
-	log.Println("anySource", anySource)
-	log.Println("event.Data[0].GetSource()", event.Data[0].GetSource())
-	log.Println("----------------------------")
-
 	assert.True(t, repository.LastAllByNameAndSourceHaveBeenCalled(event.Data[0].GetName(), event.Data[0].GetSource()))
 }
