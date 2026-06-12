@@ -22,22 +22,22 @@ func TestCanSearchWithPattern(t *testing.T) {
 		id := shared.UUIDv4()
 		ids = append(ids, id)
 		name := pattern + shared.RandomPersonalName()
-		golden, _ := types.NewGolden(id, name, shared.RandomString())
+		event, _ := types.NewEvent(id, name, shared.RandomString(), "")
 
-		_ = testdb.GetRepository().Create(golden)
+		_ = testdb.GetRepository().Create(event)
 	}
 
-	resp, err := grpcClient.SearchGoldens(ctx, &gapi.SearchGoldensRequest{
+	resp, err := grpcClient.SearchEvents(ctx, &gapi.SearchEventsRequest{
 		SearchTerm: pattern,
 		PageNumber: 1,
 		PageSize:   6,
 	})
 
 	require.NoError(t, err)
-	require.Equal(t, 5, len(resp.Goldens))
+	require.Equal(t, 5, len(resp.Events))
 
 	foundCount := 0
-	for _, b := range resp.Goldens {
+	for _, b := range resp.Events {
 		for _, id := range ids {
 			if b.Id == id {
 				foundCount++
@@ -48,12 +48,12 @@ func TestCanSearchWithPattern(t *testing.T) {
 	require.Equal(t, 5, foundCount)
 
 	for _, id := range ids {
-		deletePersistedRandomGolden(id)
+		deletePersistedRandomEvent(id)
 	}
 }
 
 func TestCantSearchWithInvalidOptionalPage(t *testing.T) {
-	_, err := grpcClient.SearchGoldens(ctx, &gapi.SearchGoldensRequest{
+	_, err := grpcClient.SearchEvents(ctx, &gapi.SearchEventsRequest{
 		PageNumber: -1,
 		PageSize:   10,
 	})

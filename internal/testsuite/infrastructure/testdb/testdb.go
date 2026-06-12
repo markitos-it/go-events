@@ -18,7 +18,7 @@ import (
 var (
 	dbInstance   *gorm.DB
 	dbOnce       sync.Once
-	repoInstance types.GoldenRepository
+	repoInstance types.EventRepository
 	repoOnce     sync.Once
 )
 
@@ -42,7 +42,7 @@ func GetDB() *gorm.DB {
 			config, err := configuration.LoadConfiguration("../../..")
 			if err != nil {
 				log.Printf("['.']:> ⚠️ No se pudo cargar la configuración: %v", err)
-				dsn = "host=localhost user=admin password=admin dbname=markitos-it-svc-golden sslmode=disable"
+				dsn = "host=localhost user=admin password=admin dbname=markitos-it-svc-event sslmode=disable"
 				configSource = "HARDCODED DEFAULTS"
 				log.Println("['.']:> 🌟 ORIGEN DE CONFIGURACIÓN: VALORES PREDETERMINADOS INTERNOS")
 			} else {
@@ -71,7 +71,7 @@ func GetDB() *gorm.DB {
 		log.Println("['.']:> ==============================================")
 
 		dbInstance = db
-		_ = dbInstance.AutoMigrate(&types.Golden{})
+		_ = dbInstance.AutoMigrate(&types.Event{})
 	})
 
 	return dbInstance
@@ -79,10 +79,10 @@ func GetDB() *gorm.DB {
 
 // [.'.]:> 🔄 Obtiene el repositorio para pruebas
 // [.'.]:> Reutiliza la conexión a la base de datos
-func GetRepository() types.GoldenRepository {
+func GetRepository() types.EventRepository {
 	repoOnce.Do(func() {
 		db := GetDB()
-		repo := database.NewGoldenPostgresRepository(db)
+		repo := database.NewEventPostgresRepository(db)
 		repoInstance = &repo
 		log.Printf("['.']:> 📦 Repositorio de prueba inicializado")
 	})

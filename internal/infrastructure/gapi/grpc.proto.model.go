@@ -6,8 +6,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func NewGRPCGolden(in *types.Golden) *Golden {
-	return &Golden{
+func NewGRPCEvent(in *types.Event) *Event {
+	return &Event{
 		Id:        in.Id,
 		Name:      in.Name,
 		CreatedAt: timestamppb.New(in.CreatedAt),

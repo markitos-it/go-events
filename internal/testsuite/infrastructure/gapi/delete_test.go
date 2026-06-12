@@ -11,22 +11,22 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func TestGoldenCanDelete(t *testing.T) {
-	golden := createPersistedRandomGolden()
+func TestEventCanDelete(t *testing.T) {
+	event := createPersistedRandomEvent()
 
-	resp, err := grpcClient.DeleteGolden(ctx, &gapi.DeleteGoldenRequest{
-		Id: golden.Id,
+	resp, err := grpcClient.DeleteEvent(ctx, &gapi.DeleteEventRequest{
+		Id: event.Id,
 	})
 
 	require.NoError(t, err)
-	require.Equal(t, golden.Id, resp.Deleted)
+	require.Equal(t, event.Id, resp.Deleted)
 
-	_, err = grpcClient.GetGolden(ctx, &gapi.GetGoldenRequest{Id: golden.Id})
+	_, err = grpcClient.GetEvent(ctx, &gapi.GetEventRequest{Id: event.Id})
 	require.Error(t, err)
 }
 
-func TestGoldenCantDeleteValidButNonExistingId(t *testing.T) {
-	_, err := grpcClient.DeleteGolden(ctx, &gapi.DeleteGoldenRequest{
+func TestEventCantDeleteValidButNonExistingId(t *testing.T) {
+	_, err := grpcClient.DeleteEvent(ctx, &gapi.DeleteEventRequest{
 		Id: shared.UUIDv4(),
 	})
 
@@ -36,8 +36,8 @@ func TestGoldenCantDeleteValidButNonExistingId(t *testing.T) {
 	require.Equal(t, codes.NotFound, st.Code())
 }
 
-func TestGoldenCantDeleteInvalidGoldenId(t *testing.T) {
-	_, err := grpcClient.DeleteGolden(ctx, &gapi.DeleteGoldenRequest{
+func TestEventCantDeleteInvalidEventId(t *testing.T) {
+	_, err := grpcClient.DeleteEvent(ctx, &gapi.DeleteEventRequest{
 		Id: "an-invalid-id-format",
 	})
 

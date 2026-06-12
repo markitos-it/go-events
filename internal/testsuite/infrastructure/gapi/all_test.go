@@ -8,27 +8,27 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGoldenCanListAllResources(t *testing.T) {
-	golden1 := createPersistedRandomGolden()
-	golden2 := createPersistedRandomGolden()
+func TestEventCanListAllResources(t *testing.T) {
+	event1 := createPersistedRandomEvent()
+	event2 := createPersistedRandomEvent()
 
-	resp, err := grpcClient.ListGoldens(ctx, &gapi.ListGoldensRequest{})
+	resp, err := grpcClient.ListEvents(ctx, &gapi.ListEventsRequest{})
 
 	require.NoError(t, err)
-	require.NotNil(t, resp.Goldens)
+	require.NotNil(t, resp.Events)
 
 	found1, found2 := false, false
-	for _, b := range resp.Goldens {
-		if b.Id == golden1.Id {
+	for _, b := range resp.Events {
+		if b.Id == event1.Id {
 			found1 = true
 		}
-		if b.Id == golden2.Id {
+		if b.Id == event2.Id {
 			found2 = true
 		}
 	}
-	require.True(t, found1, "First golden not found in response")
-	require.True(t, found2, "Second golden not found in response")
+	require.True(t, found1, "First event not found in response")
+	require.True(t, found2, "Second event not found in response")
 
-	deletePersistedRandomGolden(golden1.Id)
-	deletePersistedRandomGolden(golden2.Id)
+	deletePersistedRandomEvent(event1.Id)
+	deletePersistedRandomEvent(event2.Id)
 }

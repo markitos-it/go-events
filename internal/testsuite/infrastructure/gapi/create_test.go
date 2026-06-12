@@ -11,23 +11,23 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func TestGoldenCanCreate(t *testing.T) {
-	golden := internal_test.NewRandomOnlyNameGolden()
+func TestEventCanCreate(t *testing.T) {
+	event := internal_test.NewRandomOnlyNameEvent()
 
-	resp, err := grpcClient.CreateGolden(ctx, &gapi.CreateGoldenRequest{
-		Name: golden.Name,
+	resp, err := grpcClient.CreateEvent(ctx, &gapi.CreateEventRequest{
+		Name: event.Name,
 		/* ___CUSTOM_TEST_FIELDS___*/
 	})
 
 	require.NoError(t, err)
 	require.NotEmpty(t, resp.Id)
-	require.Equal(t, golden.Name, resp.Name)
+	require.Equal(t, event.Name, resp.Name)
 
-	deletePersistedRandomGolden(resp.Id)
+	deletePersistedRandomEvent(resp.Id)
 }
 
-func TestGoldenCantCreateWithoutName(t *testing.T) {
-	_, err := grpcClient.CreateGolden(ctx, &gapi.CreateGoldenRequest{
+func TestEventCantCreateWithoutName(t *testing.T) {
+	_, err := grpcClient.CreateEvent(ctx, &gapi.CreateEventRequest{
 		Name: "",
 		/* ___CUSTOM_REQUIRED_VALUES___*/
 	})
@@ -38,8 +38,8 @@ func TestGoldenCantCreateWithoutName(t *testing.T) {
 	require.Equal(t, codes.InvalidArgument, st.Code())
 }
 
-func TestGoldenCantCreateWithoutValidName(t *testing.T) {
-	_, err := grpcClient.CreateGolden(ctx, &gapi.CreateGoldenRequest{
+func TestEventCantCreateWithoutValidName(t *testing.T) {
+	_, err := grpcClient.CreateEvent(ctx, &gapi.CreateEventRequest{
 		Name: "!!!!!invalid!!!name!!!",
 		/* ___CUSTOM_REQUIRED_VALUES___*/
 	})

@@ -13,66 +13,66 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestGoldenCreate(t *testing.T) {
-	var golden = internal_test.NewRandomGolden()
-	err := testdb.GetRepository().Create(golden)
+func TestEventCreate(t *testing.T) {
+	var event = internal_test.NewRandomEvent()
+	err := testdb.GetRepository().Create(event)
 	require.NoError(t, err)
 
-	var result types.Golden
-	err = testdb.GetDB().First(&result, "id = ?", golden.Id).Error
+	var result types.Event
+	err = testdb.GetDB().First(&result, "id = ?", event.Id).Error
 	require.NoError(t, err)
-	require.Equal(t, golden.Id, result.Id)
-	require.Equal(t, golden.Name, result.Name)
-	require.WithinDuration(t, golden.CreatedAt, result.CreatedAt, time.Second)
-	require.WithinDuration(t, golden.UpdatedAt, result.UpdatedAt, time.Second)
+	require.Equal(t, event.Id, result.Id)
+	require.Equal(t, event.Name, result.Name)
+	require.WithinDuration(t, event.CreatedAt, result.CreatedAt, time.Second)
+	require.WithinDuration(t, event.UpdatedAt, result.UpdatedAt, time.Second)
 
 	testdb.GetDB().Delete(&result)
 }
 
-func TestGoldenDelete(t *testing.T) {
-	var golden = internal_test.NewRandomGolden()
-	_ = testdb.GetRepository().Create(golden)
+func TestEventDelete(t *testing.T) {
+	var event = internal_test.NewRandomEvent()
+	_ = testdb.GetRepository().Create(event)
 
-	repository := database.NewGoldenPostgresRepository(testdb.GetDB())
+	repository := database.NewEventPostgresRepository(testdb.GetDB())
 
-	id, _ := types.NewGoldenId(golden.Id)
+	id, _ := types.NewEventId(event.Id)
 	err := repository.Delete(id)
 	require.NoError(t, err)
 }
 
-func TestGoldenOne(t *testing.T) {
-	var golden = internal_test.NewRandomGolden()
-	_ = testdb.GetRepository().Create(golden)
+func TestEventOne(t *testing.T) {
+	var event = internal_test.NewRandomEvent()
+	_ = testdb.GetRepository().Create(event)
 
-	repository := database.NewGoldenPostgresRepository(testdb.GetDB())
+	repository := database.NewEventPostgresRepository(testdb.GetDB())
+	id, _ := types.NewEventId(event.Id)
 
-	result, err := repository.One(golden.GetId())
+	result, err := repository.One(id)
 	require.NoError(t, err)
 	require.NotNil(t, result)
-	require.Equal(t, golden.Id, result.Id)
-	require.Equal(t, golden.Name, result.Name)
+	require.Equal(t, event.Id, result.Id)
+	require.Equal(t, event.Name, result.Name)
 
-	id, _ := types.NewGoldenId(golden.Id)
 	err = repository.Delete(id)
 	require.NoError(t, err)
 }
 
-func TestGoldenUpdate(t *testing.T) {
-	var golden = internal_test.NewRandomGolden()
-	_ = testdb.GetRepository().Create(golden)
+func TestEventUpdate(t *testing.T) {
+	var event = internal_test.NewRandomEvent()
+	_ = testdb.GetRepository().Create(event)
 
-	repository := database.NewGoldenPostgresRepository(testdb.GetDB())
+	repository := database.NewEventPostgresRepository(testdb.GetDB())
 
-	golden.Name = golden.Name + "Updated"
-	err := repository.Update(golden)
+	event.Name = event.Name + "Updated"
+	err := repository.Update(event)
 	require.NoError(t, err)
 
-	var result types.Golden
-	err = testdb.GetDB().First(&result, "id = ?", golden.Id).Error
+	var result types.Event
+	err = testdb.GetDB().First(&result, "id = ?", event.Id).Error
 	require.NoError(t, err)
-	require.Equal(t, golden.Name, result.Name)
+	require.Equal(t, event.Name, result.Name)
 
-	id, _ := types.NewGoldenId(golden.Id)
+	id, _ := types.NewEventId(event.Id)
 	err = repository.Delete(id)
 	require.NoError(t, err)
 }

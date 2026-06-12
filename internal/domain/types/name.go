@@ -6,23 +6,23 @@ import (
 	"govent/internal/domain/shared"
 )
 
-type GoldenName struct {
+type EventName struct {
 	value string
 }
 
-const GOLDEN_NAME_MAX_LENGTH = 100
-const GOLDEN_NAME_MIN_LENGTH = 3
+const EVENT_NAME_MAX_LENGTH = 100
+const EVENT_NAME_MIN_LENGTH = 3
 
-func NewGoldenName(value string) (*GoldenName, error) {
-	if isValidGoldenName(value) {
-		return &GoldenName{value}, nil
+func NewEventName(value string) (*EventName, error) {
+	if isValidEventName(value) {
+		return &EventName{value}, nil
 	}
 
-	return nil, shared.ErrGoldenBadRequest
+	return nil, shared.ErrEventBadRequest
 }
 
-func isValidGoldenName(value string) bool {
-	if len(value) > GOLDEN_NAME_MAX_LENGTH || len(value) < GOLDEN_NAME_MIN_LENGTH {
+func isValidEventName(value string) bool {
+	if len(value) > EVENT_NAME_MAX_LENGTH || len(value) < EVENT_NAME_MIN_LENGTH {
 		return false
 	}
 
@@ -35,6 +35,6 @@ func isValidGoldenName(value string) bool {
 	return matched
 }
 
-func (b *GoldenName) Value() string {
+func (b *EventName) Value() string {
 	return b.value
 }

@@ -11,22 +11,22 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func TestGoldenCanGetOne(t *testing.T) {
-	golden := createPersistedRandomGolden()
+func TestEventCanGetOne(t *testing.T) {
+	event := createPersistedRandomEvent()
 
-	resp, err := grpcClient.GetGolden(ctx, &gapi.GetGoldenRequest{
-		Id: golden.Id,
+	resp, err := grpcClient.GetEvent(ctx, &gapi.GetEventRequest{
+		Id: event.Id,
 	})
 
 	require.NoError(t, err)
-	require.Equal(t, golden.Name, resp.Name)
-	require.Equal(t, golden.Id, resp.Id)
+	require.Equal(t, event.Name, resp.Name)
+	require.Equal(t, event.Id, resp.Id)
 
-	deletePersistedRandomGolden(resp.Id)
+	deletePersistedRandomEvent(resp.Id)
 }
 
-func TestGoldenCantGetInvalidId(t *testing.T) {
-	_, err := grpcClient.GetGolden(ctx, &gapi.GetGoldenRequest{
+func TestEventCantGetInvalidId(t *testing.T) {
+	_, err := grpcClient.GetEvent(ctx, &gapi.GetEventRequest{
 		Id: "an-invalid-id",
 	})
 
@@ -36,8 +36,8 @@ func TestGoldenCantGetInvalidId(t *testing.T) {
 	require.Equal(t, codes.InvalidArgument, st.Code())
 }
 
-func TestGoldenCantGetValidIdButNonExistingResource(t *testing.T) {
-	_, err := grpcClient.GetGolden(ctx, &gapi.GetGoldenRequest{
+func TestEventCantGetValidIdButNonExistingResource(t *testing.T) {
+	_, err := grpcClient.GetEvent(ctx, &gapi.GetEventRequest{
 		Id: shared.UUIDv4(),
 	})
 

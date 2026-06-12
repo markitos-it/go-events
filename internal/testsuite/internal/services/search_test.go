@@ -9,10 +9,10 @@ import (
 )
 
 func TestCanSearchResources(t *testing.T) {
-	var service = services.NewGoldensearchService(repository)
-	golden, err := service.Do(services.GoldensearchRequest{})
+	var service = services.NewEventsearchService(repository)
+	event, err := service.Do(services.EventsearchRequest{})
 
 	assert.Nil(t, err)
-	assert.IsType(t, services.GoldensearchResponse{}, *golden)
+	assert.IsType(t, services.EventsearchResponse{}, *event)
 	assert.True(t, repository.SearchHaveBeenCalled())
 }

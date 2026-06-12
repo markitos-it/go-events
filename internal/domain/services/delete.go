@@ -4,22 +4,22 @@ import (
 	"govent/internal/domain/types"
 )
 
-type GoldenDeleteRequest struct {
+type EventDeleteRequest struct {
 	Id string `json:"id"`
 }
 
-type GoldenDeleteService struct {
-	Repository types.GoldenRepository
+type EventDeleteService struct {
+	Repository types.EventRepository
 }
 
-func NewGoldenDeleteService(repository types.GoldenRepository) GoldenDeleteService {
-	return GoldenDeleteService{
+func NewEventDeleteService(repository types.EventRepository) EventDeleteService {
+	return EventDeleteService{
 		Repository: repository,
 	}
 }
 
-func (s GoldenDeleteService) Do(request GoldenDeleteRequest) error {
-	securedId, err := types.NewGoldenId(request.Id)
+func (s EventDeleteService) Do(request EventDeleteRequest) error {
+	securedId, err := types.NewEventId(request.Id)
 	if err != nil {
 		return err
 	}

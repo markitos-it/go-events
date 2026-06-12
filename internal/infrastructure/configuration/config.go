@@ -23,7 +23,7 @@ import (
 
 // [.'.]:> 🧩 Estructura que contiene toda la configuración de la aplicación
 // [.'.]:> Cada campo se mapea a una variable de entorno o valor en app.env del mismo nombre
-type GoldenConfiguration struct {
+type EventConfiguration struct {
 	DatabaseDsn       string `mapstructure:"DATABASE_DSN"`
 	GRPCServerAddress string `mapstructure:"GRPC_SERVER_ADDRESS"`
 }
@@ -31,7 +31,7 @@ type GoldenConfiguration struct {
 // [.'.]:> 🔄 Función principal que carga toda la configuración
 // [.'.]:> Recibe la ruta donde buscar el archivo app.env y devuelve la configuración completa
 // [.'.]:> Si hay algún error durante la carga, lo devuelve para que la aplicación pueda manejarlo
-func LoadConfiguration(configFilesPath string) (config GoldenConfiguration, err error) {
+func LoadConfiguration(configFilesPath string) (config EventConfiguration, err error) {
 	viper.New()
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
@@ -93,7 +93,7 @@ func overrideWithEnvVars() {
 // [.'.]:> 🔒 Aplica valores de respaldo directamente desde variables de entorno
 // [.'.]:> como última red de seguridad para los campos que aún estén vacíos
 // [.'.]:> después de procesar el archivo y las variables a través de viper
-func applyFallbackEnvVars(config *GoldenConfiguration) {
+func applyFallbackEnvVars(config *EventConfiguration) {
 	if config.DatabaseDsn == "" {
 		config.DatabaseDsn = os.Getenv("DATABASE_DSN")
 	}

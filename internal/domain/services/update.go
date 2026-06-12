@@ -4,46 +4,52 @@ import (
 	"govent/internal/domain/types"
 )
 
-type GoldenUpdateRequest struct {
-	Id         string `json:"id" binding:"required"`
-	Name       string `json:"name" binding:"required"`
-	Content    string `json:"content"`
-	PosterData string `json:"poster_data"`
+type EventUpdateRequest struct {
+	Id      string `json:"id" binding:"required"`
+	Name    string `json:"name" binding:"required"`
+	Source  string `json:"source" binding:"required"`
+	Payload string `json:"payload" binding:"required"`
 }
 
-type GoldenUpdateService struct {
-	Repository types.GoldenRepository
+type EventUpdateService struct {
+	Repository types.EventRepository
 }
 
-func NewGoldenUpdateService(repository types.GoldenRepository) GoldenUpdateService {
-	return GoldenUpdateService{
+func NewEventUpdateService(repository types.EventRepository) EventUpdateService {
+	return EventUpdateService{
 		Repository: repository,
 	}
 }
 
-func (s GoldenUpdateService) Do(request GoldenUpdateRequest) error {
-	securedId, err := types.NewGoldenId(request.Id)
+func (s EventUpdateService) Do(request EventUpdateRequest) error {
+	securedId, err := types.NewEventId(request.Id)
 	if err != nil {
 		return err
 	}
 
-	securedName, err := types.NewGoldenName(request.Name)
+	securedName, err := types.NewEventName(request.Name)
 	if err != nil {
 		return err
 	}
 
-	securedContent, err := types.NewGoldenContent(request.Content)
+	securedSource, err := types.NewEventSource(request.Source)
 	if err != nil {
 		return err
 	}
 
-	golden, err := s.Repository.One(securedId)
+	securedPayload, err := types.NewEventPayload(request.Payload)
 	if err != nil {
 		return err
 	}
 
-	golden.Name = securedName.Value()
-	golden.Content = securedContent.Value()
+	event, err := s.Repository.One(securedId)
+	if err != nil {
+		return err
+	}
 
-	return s.Repository.Update(golden)
+	event.Name = securedName.Value()
+	event.Source = securedSource.Value()
+	event.Payload = securedPayload.Value()
+
+	return s.Repository.Update(event)
 }

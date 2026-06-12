@@ -10,37 +10,37 @@ import (
 )
 
 func TestCanGetAResource(t *testing.T) {
-	var request = services.GoldenOneRequest{
+	var request = services.EventOneRequest{
 		Id: shared.UUIDv4(),
 	}
 
-	var service = services.NewGoldenOneService(repository)
-	golden, err := service.Do(request)
+	var service = services.NewEventOneService(repository)
+	event, err := service.Do(request)
 
 	assert.Nil(t, err)
-	assert.IsType(t, services.GoldenOneResponse{}, *golden)
+	assert.IsType(t, services.EventOneResponse{}, *event)
 	assert.True(t, repository.OneHaveBeenCalledWith(&request.Id))
 }
 
 func TestCantGetWithoutId(t *testing.T) {
-	var request = services.GoldenOneRequest{}
+	var request = services.EventOneRequest{}
 
-	var service = services.NewGoldenOneService(repository)
+	var service = services.NewEventOneService(repository)
 	_, err := service.Do(request)
 
 	assert.NotNil(t, err)
-	assert.ErrorIs(t, err, shared.ErrGoldenBadRequest)
+	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.False(t, repository.OneHaveBeenCalledWith(&request.Id))
 }
 
 func TestCantGetWithoutInvalidId(t *testing.T) {
-	var request = services.GoldenOneRequest{
+	var request = services.EventOneRequest{
 		Id: "invalid-id",
 	}
 
-	var service = services.NewGoldenOneService(repository)
+	var service = services.NewEventOneService(repository)
 	_, err := service.Do(request)
 
-	assert.ErrorIs(t, err, shared.ErrGoldenBadRequest)
+	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.False(t, repository.OneHaveBeenCalledWith(&request.Id))
 }

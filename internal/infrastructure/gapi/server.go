@@ -13,13 +13,13 @@ import (
 )
 
 type Server struct {
-	UnimplementedGoldenserviceServer
+	UnimplementedEventserviceServer
 	address    string
-	repository types.GoldenRepository
-	config     configuration.GoldenConfiguration
+	repository types.EventRepository
+	config     configuration.EventConfiguration
 }
 
-func NewServer(address string, repository types.GoldenRepository, config configuration.GoldenConfiguration) *Server {
+func NewServer(address string, repository types.EventRepository, config configuration.EventConfiguration) *Server {
 	apiGRPC := &Server{
 		address:    address,
 		repository: repository,
@@ -29,7 +29,7 @@ func NewServer(address string, repository types.GoldenRepository, config configu
 	return apiGRPC
 }
 
-func (s *Server) Repository() types.GoldenRepository {
+func (s *Server) Repository() types.EventRepository {
 	return s.repository
 }
 
@@ -37,10 +37,10 @@ func (s *Server) GetGRPCCode(err error) codes.Code {
 	var code = codes.Internal
 
 	switch {
-	case errors.Is(err, shared.ErrGoldenNotFound):
+	case errors.Is(err, shared.ErrEventNotFound):
 		code = codes.NotFound
-	case errors.Is(err, shared.ErrInvalidGoldenId),
-		errors.Is(err, shared.ErrInvalidGoldenName),
+	case errors.Is(err, shared.ErrInvalidEventId),
+		errors.Is(err, shared.ErrInvalidEventName),
 		errors.Is(err, shared.ErrInvalidPageNumber),
 		errors.Is(err, shared.ErrInvalidPageSize),
 		strings.Contains(err.Error(), "invalid"),
@@ -53,21 +53,22 @@ func (s *Server) GetGRPCCode(err error) codes.Code {
 	return code
 }
 
-func (s *Server) ToProtos(domainGoldens []*types.Golden) []*Golden {
-	var protoGoldens []*Golden
-	for _, golden := range domainGoldens {
-		protoGoldens = append(protoGoldens, s.ToProto(golden))
+func (s *Server) ToProtos(domainEvents []*types.Event) []*Event {
+	var protoEvents []*Event
+	for _, event := range domainEvents {
+		protoEvents = append(protoEvents, s.ToProto(event))
 	}
 
-	return protoGoldens
+	return protoEvents
 }
 
-func (s *Server) ToProto(domainGolden *types.Golden) *Golden {
-	return &Golden{
-		Id:        domainGolden.Id,
-		Name:      domainGolden.Name,
-		Content:   domainGolden.Content,
-		CreatedAt: timestamppb.New(domainGolden.CreatedAt),
-		UpdatedAt: timestamppb.New(domainGolden.UpdatedAt),
+func (s *Server) ToProto(domainEvent *types.Event) *Event {
+	return &Event{
+		Id:        domainEvent.Id,
+		Name:      domainEvent.Name,
+		Source:    domainEvent.Source,
+		Payload:   domainEvent.Payload,
+		CreatedAt: timestamppb.New(domainEvent.CreatedAt),
+		UpdatedAt: timestamppb.New(domainEvent.UpdatedAt),
 	}
 }

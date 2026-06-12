@@ -5,43 +5,44 @@ import (
 	"govent/internal/domain/types"
 )
 
-type GoldenCreateRequest struct {
-	Name       string
-	Content    string
-	PosterData string
-	/* ___CUSTOM_STRUCT_FIELDS___*/
+type EventCreateRequest struct {
+	Name    string
+	Source  string
+	Payload string
 }
 
-type GoldenCreateResponse struct {
+type EventCreateResponse struct {
 	Id      string `json:"id"`
 	Name    string `json:"name"`
-	Content string `json:"content"`
+	Source  string `json:"source"`
+	Payload string `json:"payload"`
 }
 
-type GoldenCreateService struct {
-	Repository types.GoldenRepository
+type EventCreateService struct {
+	Repository types.EventRepository
 }
 
-func NewGoldenCreateService(repository types.GoldenRepository) GoldenCreateService {
-	return GoldenCreateService{
+func NewEventCreateService(repository types.EventRepository) EventCreateService {
+	return EventCreateService{
 		Repository: repository,
 	}
 }
 
-func (s GoldenCreateService) Do(request GoldenCreateRequest) (*GoldenCreateResponse, error) {
+func (s EventCreateService) Do(request EventCreateRequest) (*EventCreateResponse, error) {
 
-	golden, err := types.NewGolden(shared.UUIDv4(), request.Name, request.Content)
+	event, err := types.NewEvent(shared.UUIDv4(), request.Name, request.Source, request.Payload)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := s.Repository.Create(golden); err != nil {
+	if err := s.Repository.Create(event); err != nil {
 		return nil, err
 	}
 
-	return &GoldenCreateResponse{
-		Id:      golden.Id,
-		Name:    golden.Name,
-		Content: golden.Content,
+	return &EventCreateResponse{
+		Id:      event.Id,
+		Name:    event.Name,
+		Source:  event.Source,
+		Payload: event.Payload,
 	}, nil
 }

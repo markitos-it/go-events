@@ -19,291 +19,291 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Goldenservice_CreateGolden_FullMethodName  = "/golden.Goldenservice/CreateGolden"
-	Goldenservice_GetGolden_FullMethodName     = "/golden.Goldenservice/GetGolden"
-	Goldenservice_UpdateGolden_FullMethodName  = "/golden.Goldenservice/UpdateGolden"
-	Goldenservice_DeleteGolden_FullMethodName  = "/golden.Goldenservice/DeleteGolden"
-	Goldenservice_ListGoldens_FullMethodName   = "/golden.Goldenservice/ListGoldens"
-	Goldenservice_SearchGoldens_FullMethodName = "/golden.Goldenservice/SearchGoldens"
+	Eventservice_CreateEvent_FullMethodName  = "/event.Eventservice/CreateEvent"
+	Eventservice_GetEvent_FullMethodName     = "/event.Eventservice/GetEvent"
+	Eventservice_UpdateEvent_FullMethodName  = "/event.Eventservice/UpdateEvent"
+	Eventservice_DeleteEvent_FullMethodName  = "/event.Eventservice/DeleteEvent"
+	Eventservice_ListEvents_FullMethodName   = "/event.Eventservice/ListEvents"
+	Eventservice_SearchEvents_FullMethodName = "/event.Eventservice/SearchEvents"
 )
 
-// GoldenserviceClient is the client API for Goldenservice service.
+// EventserviceClient is the client API for Eventservice service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type GoldenserviceClient interface {
-	CreateGolden(ctx context.Context, in *CreateGoldenRequest, opts ...grpc.CallOption) (*CreateGoldenResponse, error)
-	GetGolden(ctx context.Context, in *GetGoldenRequest, opts ...grpc.CallOption) (*GetGoldenResponse, error)
-	UpdateGolden(ctx context.Context, in *UpdateGoldenRequest, opts ...grpc.CallOption) (*UpdateGoldenResponse, error)
-	DeleteGolden(ctx context.Context, in *DeleteGoldenRequest, opts ...grpc.CallOption) (*DeleteGoldenResponse, error)
-	ListGoldens(ctx context.Context, in *ListGoldensRequest, opts ...grpc.CallOption) (*ListGoldensResponse, error)
-	SearchGoldens(ctx context.Context, in *SearchGoldensRequest, opts ...grpc.CallOption) (*SearchGoldensResponse, error)
+type EventserviceClient interface {
+	CreateEvent(ctx context.Context, in *CreateEventRequest, opts ...grpc.CallOption) (*CreateEventResponse, error)
+	GetEvent(ctx context.Context, in *GetEventRequest, opts ...grpc.CallOption) (*GetEventResponse, error)
+	UpdateEvent(ctx context.Context, in *UpdateEventRequest, opts ...grpc.CallOption) (*UpdateEventResponse, error)
+	DeleteEvent(ctx context.Context, in *DeleteEventRequest, opts ...grpc.CallOption) (*DeleteEventResponse, error)
+	ListEvents(ctx context.Context, in *ListEventsRequest, opts ...grpc.CallOption) (*ListEventsResponse, error)
+	SearchEvents(ctx context.Context, in *SearchEventsRequest, opts ...grpc.CallOption) (*SearchEventsResponse, error)
 }
 
-type goldenserviceClient struct {
+type eventserviceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGoldenserviceClient(cc grpc.ClientConnInterface) GoldenserviceClient {
-	return &goldenserviceClient{cc}
+func NewEventserviceClient(cc grpc.ClientConnInterface) EventserviceClient {
+	return &eventserviceClient{cc}
 }
 
-func (c *goldenserviceClient) CreateGolden(ctx context.Context, in *CreateGoldenRequest, opts ...grpc.CallOption) (*CreateGoldenResponse, error) {
+func (c *eventserviceClient) CreateEvent(ctx context.Context, in *CreateEventRequest, opts ...grpc.CallOption) (*CreateEventResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CreateGoldenResponse)
-	err := c.cc.Invoke(ctx, Goldenservice_CreateGolden_FullMethodName, in, out, cOpts...)
+	out := new(CreateEventResponse)
+	err := c.cc.Invoke(ctx, Eventservice_CreateEvent_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *goldenserviceClient) GetGolden(ctx context.Context, in *GetGoldenRequest, opts ...grpc.CallOption) (*GetGoldenResponse, error) {
+func (c *eventserviceClient) GetEvent(ctx context.Context, in *GetEventRequest, opts ...grpc.CallOption) (*GetEventResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetGoldenResponse)
-	err := c.cc.Invoke(ctx, Goldenservice_GetGolden_FullMethodName, in, out, cOpts...)
+	out := new(GetEventResponse)
+	err := c.cc.Invoke(ctx, Eventservice_GetEvent_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *goldenserviceClient) UpdateGolden(ctx context.Context, in *UpdateGoldenRequest, opts ...grpc.CallOption) (*UpdateGoldenResponse, error) {
+func (c *eventserviceClient) UpdateEvent(ctx context.Context, in *UpdateEventRequest, opts ...grpc.CallOption) (*UpdateEventResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateGoldenResponse)
-	err := c.cc.Invoke(ctx, Goldenservice_UpdateGolden_FullMethodName, in, out, cOpts...)
+	out := new(UpdateEventResponse)
+	err := c.cc.Invoke(ctx, Eventservice_UpdateEvent_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *goldenserviceClient) DeleteGolden(ctx context.Context, in *DeleteGoldenRequest, opts ...grpc.CallOption) (*DeleteGoldenResponse, error) {
+func (c *eventserviceClient) DeleteEvent(ctx context.Context, in *DeleteEventRequest, opts ...grpc.CallOption) (*DeleteEventResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DeleteGoldenResponse)
-	err := c.cc.Invoke(ctx, Goldenservice_DeleteGolden_FullMethodName, in, out, cOpts...)
+	out := new(DeleteEventResponse)
+	err := c.cc.Invoke(ctx, Eventservice_DeleteEvent_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *goldenserviceClient) ListGoldens(ctx context.Context, in *ListGoldensRequest, opts ...grpc.CallOption) (*ListGoldensResponse, error) {
+func (c *eventserviceClient) ListEvents(ctx context.Context, in *ListEventsRequest, opts ...grpc.CallOption) (*ListEventsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListGoldensResponse)
-	err := c.cc.Invoke(ctx, Goldenservice_ListGoldens_FullMethodName, in, out, cOpts...)
+	out := new(ListEventsResponse)
+	err := c.cc.Invoke(ctx, Eventservice_ListEvents_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *goldenserviceClient) SearchGoldens(ctx context.Context, in *SearchGoldensRequest, opts ...grpc.CallOption) (*SearchGoldensResponse, error) {
+func (c *eventserviceClient) SearchEvents(ctx context.Context, in *SearchEventsRequest, opts ...grpc.CallOption) (*SearchEventsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SearchGoldensResponse)
-	err := c.cc.Invoke(ctx, Goldenservice_SearchGoldens_FullMethodName, in, out, cOpts...)
+	out := new(SearchEventsResponse)
+	err := c.cc.Invoke(ctx, Eventservice_SearchEvents_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GoldenserviceServer is the server API for Goldenservice service.
-// All implementations must embed UnimplementedGoldenserviceServer
+// EventserviceServer is the server API for Eventservice service.
+// All implementations must embed UnimplementedEventserviceServer
 // for forward compatibility.
-type GoldenserviceServer interface {
-	CreateGolden(context.Context, *CreateGoldenRequest) (*CreateGoldenResponse, error)
-	GetGolden(context.Context, *GetGoldenRequest) (*GetGoldenResponse, error)
-	UpdateGolden(context.Context, *UpdateGoldenRequest) (*UpdateGoldenResponse, error)
-	DeleteGolden(context.Context, *DeleteGoldenRequest) (*DeleteGoldenResponse, error)
-	ListGoldens(context.Context, *ListGoldensRequest) (*ListGoldensResponse, error)
-	SearchGoldens(context.Context, *SearchGoldensRequest) (*SearchGoldensResponse, error)
-	mustEmbedUnimplementedGoldenserviceServer()
+type EventserviceServer interface {
+	CreateEvent(context.Context, *CreateEventRequest) (*CreateEventResponse, error)
+	GetEvent(context.Context, *GetEventRequest) (*GetEventResponse, error)
+	UpdateEvent(context.Context, *UpdateEventRequest) (*UpdateEventResponse, error)
+	DeleteEvent(context.Context, *DeleteEventRequest) (*DeleteEventResponse, error)
+	ListEvents(context.Context, *ListEventsRequest) (*ListEventsResponse, error)
+	SearchEvents(context.Context, *SearchEventsRequest) (*SearchEventsResponse, error)
+	mustEmbedUnimplementedEventserviceServer()
 }
 
-// UnimplementedGoldenserviceServer must be embedded to have
+// UnimplementedEventserviceServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedGoldenserviceServer struct{}
+type UnimplementedEventserviceServer struct{}
 
-func (UnimplementedGoldenserviceServer) CreateGolden(context.Context, *CreateGoldenRequest) (*CreateGoldenResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method CreateGolden not implemented")
+func (UnimplementedEventserviceServer) CreateEvent(context.Context, *CreateEventRequest) (*CreateEventResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateEvent not implemented")
 }
-func (UnimplementedGoldenserviceServer) GetGolden(context.Context, *GetGoldenRequest) (*GetGoldenResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetGolden not implemented")
+func (UnimplementedEventserviceServer) GetEvent(context.Context, *GetEventRequest) (*GetEventResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetEvent not implemented")
 }
-func (UnimplementedGoldenserviceServer) UpdateGolden(context.Context, *UpdateGoldenRequest) (*UpdateGoldenResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateGolden not implemented")
+func (UnimplementedEventserviceServer) UpdateEvent(context.Context, *UpdateEventRequest) (*UpdateEventResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateEvent not implemented")
 }
-func (UnimplementedGoldenserviceServer) DeleteGolden(context.Context, *DeleteGoldenRequest) (*DeleteGoldenResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method DeleteGolden not implemented")
+func (UnimplementedEventserviceServer) DeleteEvent(context.Context, *DeleteEventRequest) (*DeleteEventResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteEvent not implemented")
 }
-func (UnimplementedGoldenserviceServer) ListGoldens(context.Context, *ListGoldensRequest) (*ListGoldensResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListGoldens not implemented")
+func (UnimplementedEventserviceServer) ListEvents(context.Context, *ListEventsRequest) (*ListEventsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListEvents not implemented")
 }
-func (UnimplementedGoldenserviceServer) SearchGoldens(context.Context, *SearchGoldensRequest) (*SearchGoldensResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method SearchGoldens not implemented")
+func (UnimplementedEventserviceServer) SearchEvents(context.Context, *SearchEventsRequest) (*SearchEventsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchEvents not implemented")
 }
-func (UnimplementedGoldenserviceServer) mustEmbedUnimplementedGoldenserviceServer() {}
-func (UnimplementedGoldenserviceServer) testEmbeddedByValue()                       {}
+func (UnimplementedEventserviceServer) mustEmbedUnimplementedEventserviceServer() {}
+func (UnimplementedEventserviceServer) testEmbeddedByValue()                      {}
 
-// UnsafeGoldenserviceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to GoldenserviceServer will
+// UnsafeEventserviceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to EventserviceServer will
 // result in compilation errors.
-type UnsafeGoldenserviceServer interface {
-	mustEmbedUnimplementedGoldenserviceServer()
+type UnsafeEventserviceServer interface {
+	mustEmbedUnimplementedEventserviceServer()
 }
 
-func RegisterGoldenserviceServer(s grpc.ServiceRegistrar, srv GoldenserviceServer) {
-	// If the following call panics, it indicates UnimplementedGoldenserviceServer was
+func RegisterEventserviceServer(s grpc.ServiceRegistrar, srv EventserviceServer) {
+	// If the following call panics, it indicates UnimplementedEventserviceServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Goldenservice_ServiceDesc, srv)
+	s.RegisterService(&Eventservice_ServiceDesc, srv)
 }
 
-func _Goldenservice_CreateGolden_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateGoldenRequest)
+func _Eventservice_CreateEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateEventRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoldenserviceServer).CreateGolden(ctx, in)
+		return srv.(EventserviceServer).CreateEvent(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Goldenservice_CreateGolden_FullMethodName,
+		FullMethod: Eventservice_CreateEvent_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoldenserviceServer).CreateGolden(ctx, req.(*CreateGoldenRequest))
+		return srv.(EventserviceServer).CreateEvent(ctx, req.(*CreateEventRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Goldenservice_GetGolden_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetGoldenRequest)
+func _Eventservice_GetEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEventRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoldenserviceServer).GetGolden(ctx, in)
+		return srv.(EventserviceServer).GetEvent(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Goldenservice_GetGolden_FullMethodName,
+		FullMethod: Eventservice_GetEvent_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoldenserviceServer).GetGolden(ctx, req.(*GetGoldenRequest))
+		return srv.(EventserviceServer).GetEvent(ctx, req.(*GetEventRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Goldenservice_UpdateGolden_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateGoldenRequest)
+func _Eventservice_UpdateEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateEventRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoldenserviceServer).UpdateGolden(ctx, in)
+		return srv.(EventserviceServer).UpdateEvent(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Goldenservice_UpdateGolden_FullMethodName,
+		FullMethod: Eventservice_UpdateEvent_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoldenserviceServer).UpdateGolden(ctx, req.(*UpdateGoldenRequest))
+		return srv.(EventserviceServer).UpdateEvent(ctx, req.(*UpdateEventRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Goldenservice_DeleteGolden_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteGoldenRequest)
+func _Eventservice_DeleteEvent_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteEventRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoldenserviceServer).DeleteGolden(ctx, in)
+		return srv.(EventserviceServer).DeleteEvent(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Goldenservice_DeleteGolden_FullMethodName,
+		FullMethod: Eventservice_DeleteEvent_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoldenserviceServer).DeleteGolden(ctx, req.(*DeleteGoldenRequest))
+		return srv.(EventserviceServer).DeleteEvent(ctx, req.(*DeleteEventRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Goldenservice_ListGoldens_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListGoldensRequest)
+func _Eventservice_ListEvents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListEventsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoldenserviceServer).ListGoldens(ctx, in)
+		return srv.(EventserviceServer).ListEvents(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Goldenservice_ListGoldens_FullMethodName,
+		FullMethod: Eventservice_ListEvents_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoldenserviceServer).ListGoldens(ctx, req.(*ListGoldensRequest))
+		return srv.(EventserviceServer).ListEvents(ctx, req.(*ListEventsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Goldenservice_SearchGoldens_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SearchGoldensRequest)
+func _Eventservice_SearchEvents_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchEventsRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoldenserviceServer).SearchGoldens(ctx, in)
+		return srv.(EventserviceServer).SearchEvents(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Goldenservice_SearchGoldens_FullMethodName,
+		FullMethod: Eventservice_SearchEvents_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoldenserviceServer).SearchGoldens(ctx, req.(*SearchGoldensRequest))
+		return srv.(EventserviceServer).SearchEvents(ctx, req.(*SearchEventsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Goldenservice_ServiceDesc is the grpc.ServiceDesc for Goldenservice service.
+// Eventservice_ServiceDesc is the grpc.ServiceDesc for Eventservice service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Goldenservice_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "golden.Goldenservice",
-	HandlerType: (*GoldenserviceServer)(nil),
+var Eventservice_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "event.Eventservice",
+	HandlerType: (*EventserviceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateGolden",
-			Handler:    _Goldenservice_CreateGolden_Handler,
+			MethodName: "CreateEvent",
+			Handler:    _Eventservice_CreateEvent_Handler,
 		},
 		{
-			MethodName: "GetGolden",
-			Handler:    _Goldenservice_GetGolden_Handler,
+			MethodName: "GetEvent",
+			Handler:    _Eventservice_GetEvent_Handler,
 		},
 		{
-			MethodName: "UpdateGolden",
-			Handler:    _Goldenservice_UpdateGolden_Handler,
+			MethodName: "UpdateEvent",
+			Handler:    _Eventservice_UpdateEvent_Handler,
 		},
 		{
-			MethodName: "DeleteGolden",
-			Handler:    _Goldenservice_DeleteGolden_Handler,
+			MethodName: "DeleteEvent",
+			Handler:    _Eventservice_DeleteEvent_Handler,
 		},
 		{
-			MethodName: "ListGoldens",
-			Handler:    _Goldenservice_ListGoldens_Handler,
+			MethodName: "ListEvents",
+			Handler:    _Eventservice_ListEvents_Handler,
 		},
 		{
-			MethodName: "SearchGoldens",
-			Handler:    _Goldenservice_SearchGoldens_Handler,
+			MethodName: "SearchEvents",
+			Handler:    _Eventservice_SearchEvents_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

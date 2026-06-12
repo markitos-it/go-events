@@ -2,27 +2,27 @@ package services
 
 import "govent/internal/domain/types"
 
-type GoldenAllResponse struct {
-	Data []*types.Golden `json:"data"`
+type EventAllResponse struct {
+	Data []*types.Event `json:"data"`
 }
 
-type GoldenAllService struct {
-	Repository types.GoldenRepository
+type EventAllService struct {
+	Repository types.EventRepository
 }
 
-func NewGoldenAllService(repository types.GoldenRepository) GoldenAllService {
-	return GoldenAllService{
+func NewEventAllService(repository types.EventRepository) EventAllService {
+	return EventAllService{
 		Repository: repository,
 	}
 }
 
-func (s GoldenAllService) Do() (*GoldenAllResponse, error) {
-	goldens, err := s.Repository.All()
+func (s EventAllService) Do() (*EventAllResponse, error) {
+	events, err := s.Repository.All()
 	if err != nil {
 		return nil, err
 	}
 
-	return &GoldenAllResponse{
-		Data: goldens,
+	return &EventAllResponse{
+		Data: events,
 	}, nil
 }

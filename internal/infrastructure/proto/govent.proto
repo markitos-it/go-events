@@ -1,90 +1,86 @@
 syntax = "proto3";
 
-package golden;
+package event;
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "markitos-it-svc-golden-grpc/gapi";
+option go_package = "markitos-it-svc-event-grpc/gapi";
 
-message Golden {
+message Event {
   string id = 1;
   string name = 2;
   google.protobuf.Timestamp created_at = 3;
   google.protobuf.Timestamp updated_at = 4;
-  string content = 5;
-  string poster = 6;
-  /* ___CUSTOM_FIELDS___*/ 
+  string source = 5;
+  string payload = 6;
 }
 
-service Goldenservice {
-  rpc CreateGolden(CreateGoldenRequest) returns (CreateGoldenResponse);
-  rpc GetGolden(GetGoldenRequest) returns (GetGoldenResponse);
-  rpc UpdateGolden(UpdateGoldenRequest) returns (UpdateGoldenResponse);
-  rpc DeleteGolden(DeleteGoldenRequest) returns (DeleteGoldenResponse);
-  rpc ListGoldens(ListGoldensRequest) returns (ListGoldensResponse);
-  rpc SearchGoldens(SearchGoldensRequest) returns (SearchGoldensResponse);
+service Eventservice {
+  rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse);
+  rpc GetEvent(GetEventRequest) returns (GetEventResponse);
+  rpc UpdateEvent(UpdateEventRequest) returns (UpdateEventResponse);
+  rpc DeleteEvent(DeleteEventRequest) returns (DeleteEventResponse);
+  rpc ListEvents(ListEventsRequest) returns (ListEventsResponse);
+  rpc SearchEvents(SearchEventsRequest) returns (SearchEventsResponse);
 }
 
-message CreateGoldenRequest {
+message CreateEventRequest {
   string name = 1;
   string content = 2;
-  string poster_data = 3;
-  /* ___CUSTOM_FIELDS___*/ 
+  string source = 3;
+  string payload = 4;
 }
 
-message CreateGoldenResponse {
+message CreateEventResponse {
   string id = 1;
   string name = 2;
-  string content = 3;
-  string poster = 4;
-  /* ___CUSTOM_FIELDS___*/ 
+  string source = 3;
+  string payload = 4;
 }
 
-message GetGoldenRequest {
+message GetEventRequest {
   string id = 1;
 }
 
-message GetGoldenResponse {
-  string id = 1;
-  string name = 2;
-  string content = 3;
-  string poster = 4;
-  /* ___CUSTOM_FIELDS___*/ 
-}
-
-message UpdateGoldenRequest {
+message GetEventResponse {
   string id = 1;
   string name = 2;
-  string content = 3;
-  string poster_data = 4;
-  /* ___CUSTOM_FIELDS___*/ 
+  string source = 3;
+  string payload = 4;
 }
 
-message UpdateGoldenResponse {
+message UpdateEventRequest {
+  string id = 1;
+  string name = 2;
+  string source = 3;
+  string payload = 4;
+}
+
+message UpdateEventResponse {
   string updated = 1;
 }
 
-message DeleteGoldenRequest {
+message DeleteEventRequest {
   string id = 1;
 }
 
-message DeleteGoldenResponse {
+message DeleteEventResponse {
   string deleted = 1;
 }
 
-message ListGoldensRequest {}
+message ListEventsRequest {}
 
-message ListGoldensResponse {
-  repeated Golden goldens = 1;
+message ListEventsResponse {
+  repeated Event events = 1;
 }
 
-message SearchGoldensRequest {
+message SearchEventsRequest {
   string search_term = 1;
   int32 page_number = 2;
   int32 page_size = 3;
 }
 
-message SearchGoldensResponse {
-  repeated Golden goldens = 1;
+message SearchEventsResponse {
+  repeated Event events = 1;
   int32 total_results = 2;
 }

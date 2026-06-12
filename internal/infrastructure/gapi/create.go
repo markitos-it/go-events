@@ -9,22 +9,23 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) CreateGolden(ctx context.Context, req *CreateGoldenRequest) (*CreateGoldenResponse, error) {
-	var request = services.GoldenCreateRequest{
-		Name:    req.Name,
-		Content: req.Content,
+func (s *Server) CreateEvent(ctx context.Context, req *CreateEventRequest) (*CreateEventResponse, error) {
+	var request = services.EventCreateRequest{
+		Name:   req.Name,
+		Source: req.Content,
 	}
 
-	var service = services.NewGoldenCreateService(s.repository)
+	var service = services.NewEventCreateService(s.repository)
 	entity, err := service.Do(request)
 	if err != nil {
-		log.Printf("❌ ERROR (CreateGolden): %v\n", err)
+		log.Printf("❌ ERROR (CreateEvent): %v\n", err)
 		return nil, status.Error(s.GetGRPCCode(err), err.Error())
 	}
 
-	return &CreateGoldenResponse{
+	return &CreateEventResponse{
 		Id:      entity.Id,
 		Name:    entity.Name,
-		Content: entity.Content,
+		Source:  entity.Source,
+		Payload: entity.Payload,
 	}, nil
 }

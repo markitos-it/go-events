@@ -22,7 +22,7 @@ const bufSize = 1024 * 1024
 
 var lis *bufconn.Listener
 var grpcServer *grpc.Server
-var grpcClient gapi.GoldenserviceClient
+var grpcClient gapi.EventserviceClient
 var ctx context.Context
 
 func TestMain(m *testing.M) {
@@ -39,9 +39,9 @@ func setup() {
 
 	grpcServer = grpc.NewServer()
 
-	config := &configuration.GoldenConfiguration{}
+	config := &configuration.EventConfiguration{}
 	server := gapi.NewServer(":8080", testdb.GetRepository(), *config)
-	gapi.RegisterGoldenserviceServer(grpcServer, server)
+	gapi.RegisterEventserviceServer(grpcServer, server)
 
 	go func() {
 		if err := grpcServer.Serve(lis); err != nil {
@@ -58,7 +58,7 @@ func setup() {
 		log.Fatalf("['.']:> Failed to dial bufnet: %v", err)
 	}
 
-	grpcClient = gapi.NewGoldenserviceClient(conn)
+	grpcClient = gapi.NewEventserviceClient(conn)
 	ctx = context.Background()
 }
 
@@ -66,15 +66,15 @@ func bufDialer(context.Context, string) (net.Conn, error) {
 	return lis.Dial()
 }
 
-func createPersistedRandomGolden() *types.Golden {
-	golden := internal_test.NewRandomGolden()
-	_ = testdb.GetRepository().Create(golden)
+func createPersistedRandomEvent() *types.Event {
+	event := internal_test.NewRandomEvent()
+	_ = testdb.GetRepository().Create(event)
 
-	return golden
+	return event
 }
 
-func deletePersistedRandomGolden(goldenId string) {
-	id, err := types.NewGoldenId(goldenId)
+func deletePersistedRandomEvent(eventId string) {
+	id, err := types.NewEventId(eventId)
 	if err != nil {
 		return
 	}

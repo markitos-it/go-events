@@ -11,23 +11,24 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) UpdateGolden(ctx context.Context, in *UpdateGoldenRequest) (*UpdateGoldenResponse, error) {
-	if _, err := types.NewGoldenId(in.Id); err != nil {
+func (s *Server) UpdateEvent(ctx context.Context, in *UpdateEventRequest) (*UpdateEventResponse, error) {
+	if _, err := types.NewEventId(in.Id); err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	var service = services.NewGoldenUpdateService(s.repository)
-	var request = services.GoldenUpdateRequest{
+	var service = services.NewEventUpdateService(s.repository)
+	var request = services.EventUpdateRequest{
 		Id:      in.Id,
 		Name:    in.Name,
-		Content: in.Content,
+		Source:  in.Source,
+		Payload: in.Payload,
 	}
 	if err := service.Do(request); err != nil {
-		log.Printf("❌ ERROR (UpdateGolden): %v\n", err)
+		log.Printf("❌ ERROR (UpdateEvent): %v\n", err)
 		return nil, status.Error(s.GetGRPCCode(err), err.Error())
 	}
 
-	return &UpdateGoldenResponse{
+	return &UpdateEventResponse{
 		Updated: request.Id,
 	}, nil
 }

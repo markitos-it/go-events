@@ -8,138 +8,138 @@ import (
 	internal_test "govent/internal/testsuite/internal"
 )
 
-type MockSpyGoldenRepository struct {
-	LastCreatedGoldenName     *string
-	LastDeleteGoldenId        *string
-	LastOneGoldenId           *string
-	LastUpdatedGoldenId       *string
-	LastUpdatedGoldenName     *string
-	LastOneForUpdatedGoldenId *string
-	LastAllHaveBeenCalled     bool
-	LastUpdateHaveBeenCalled  bool
-	LastSearchHaveBeenCalled  bool
+type MockSpyEventRepository struct {
+	LastCreatedEventName     *string
+	LastDeleteEventId        *string
+	LastOneEventId           *string
+	LastUpdatedEventId       *string
+	LastUpdatedEventName     *string
+	LastOneForUpdatedEventId *string
+	LastAllHaveBeenCalled    bool
+	LastUpdateHaveBeenCalled bool
+	LastSearchHaveBeenCalled bool
 }
 
-func NewMockSpyGoldenRepository() *MockSpyGoldenRepository {
-	return &MockSpyGoldenRepository{
-		LastCreatedGoldenName:     nil,
-		LastDeleteGoldenId:        nil,
-		LastOneGoldenId:           nil,
-		LastUpdatedGoldenId:       nil,
-		LastUpdatedGoldenName:     nil,
-		LastOneForUpdatedGoldenId: nil,
-		LastAllHaveBeenCalled:     false,
-		LastUpdateHaveBeenCalled:  false,
-		LastSearchHaveBeenCalled:  false,
+func NewMockSpyEventRepository() *MockSpyEventRepository {
+	return &MockSpyEventRepository{
+		LastCreatedEventName:     nil,
+		LastDeleteEventId:        nil,
+		LastOneEventId:           nil,
+		LastUpdatedEventId:       nil,
+		LastUpdatedEventName:     nil,
+		LastOneForUpdatedEventId: nil,
+		LastAllHaveBeenCalled:    false,
+		LastUpdateHaveBeenCalled: false,
+		LastSearchHaveBeenCalled: false,
 	}
 }
 
-func (m *MockSpyGoldenRepository) Create(golden *types.Golden) error {
-	m.LastCreatedGoldenName = &golden.Name
+func (m *MockSpyEventRepository) Create(event *types.Event) error {
+	m.LastCreatedEventName = &event.Name
 
 	return nil
 }
 
-func (m *MockSpyGoldenRepository) CreateHaveBeenCalledWith(goldenName *string) bool {
-	var result = m.LastCreatedGoldenName != nil && *m.LastCreatedGoldenName == *goldenName
+func (m *MockSpyEventRepository) CreateHaveBeenCalledWith(eventName *string) bool {
+	var result = m.LastCreatedEventName != nil && *m.LastCreatedEventName == *eventName
 
-	m.LastCreatedGoldenName = nil
+	m.LastCreatedEventName = nil
 
 	return result
 }
 
-func (m *MockSpyGoldenRepository) Delete(id *types.GoldenId) error {
+func (m *MockSpyEventRepository) Delete(id *types.EventId) error {
 	value := id.Value()
-	m.LastDeleteGoldenId = &value
+	m.LastDeleteEventId = &value
 
 	return nil
 }
 
-func (m *MockSpyGoldenRepository) DeleteHaveBeenCalledWith(goldenId *string) bool {
-	var result = m.LastDeleteGoldenId != nil && *m.LastDeleteGoldenId == *goldenId
+func (m *MockSpyEventRepository) DeleteHaveBeenCalledWith(eventId *string) bool {
+	var result = m.LastDeleteEventId != nil && *m.LastDeleteEventId == *eventId
 
-	m.LastDeleteGoldenId = nil
+	m.LastDeleteEventId = nil
 
 	return result
 }
 
-func (m *MockSpyGoldenRepository) Update(golden *types.Golden) error {
+func (m *MockSpyEventRepository) Update(event *types.Event) error {
 	m.LastUpdateHaveBeenCalled = true
-	m.LastUpdatedGoldenId = &golden.Id
-	m.LastUpdatedGoldenName = &golden.Name
-	m.LastOneForUpdatedGoldenId = &golden.Id
+	m.LastUpdatedEventId = &event.Id
+	m.LastUpdatedEventName = &event.Name
+	m.LastOneForUpdatedEventId = &event.Id
 
 	return nil
 }
 
-func (m *MockSpyGoldenRepository) UpdateHaveBeenCalledWith(id, name string) bool {
+func (m *MockSpyEventRepository) UpdateHaveBeenCalledWith(id, name string) bool {
 	var matchCalled = m.LastUpdateHaveBeenCalled
-	var matchId = *m.LastUpdatedGoldenId == id
-	var matchName = *m.LastUpdatedGoldenName == name
+	var matchId = *m.LastUpdatedEventId == id
+	var matchName = *m.LastUpdatedEventName == name
 
-	m.LastUpdatedGoldenId = nil
-	m.LastUpdatedGoldenName = nil
+	m.LastUpdatedEventId = nil
+	m.LastUpdatedEventName = nil
 	m.LastUpdateHaveBeenCalled = false
 
 	return matchCalled && matchId && matchName
 }
 
-func (m *MockSpyGoldenRepository) UpdateHaveBeenCalled() bool {
+func (m *MockSpyEventRepository) UpdateHaveBeenCalled() bool {
 	var matchCalled = m.LastUpdateHaveBeenCalled
 
 	m.LastUpdateHaveBeenCalled = false
-	m.LastUpdatedGoldenId = nil
-	m.LastUpdatedGoldenName = nil
+	m.LastUpdatedEventId = nil
+	m.LastUpdatedEventName = nil
 
 	return matchCalled
 }
 
-func (m *MockSpyGoldenRepository) UpdateHaveBeenCalledOneWith(id string) bool {
-	var matchId = *m.LastOneForUpdatedGoldenId == id
+func (m *MockSpyEventRepository) UpdateHaveBeenCalledOneWith(id string) bool {
+	var matchId = *m.LastOneForUpdatedEventId == id
 
-	m.LastOneForUpdatedGoldenId = nil
+	m.LastOneForUpdatedEventId = nil
 
 	return matchId
 }
 
-func (m *MockSpyGoldenRepository) One(id *types.GoldenId) (*types.Golden, error) {
+func (m *MockSpyEventRepository) One(id *types.EventId) (*types.Event, error) {
 	value := id.Value()
-	m.LastOneGoldenId = &value
+	m.LastOneEventId = &value
 
-	return internal_test.NewRandomGoldenWithCustomId(id), nil
+	return internal_test.NewRandomEventWithCustomId(id), nil
 }
 
-func (m *MockSpyGoldenRepository) OneHaveBeenCalledWith(goldenId *string) bool {
-	var result = m.LastOneGoldenId != nil && *m.LastOneGoldenId == *goldenId
+func (m *MockSpyEventRepository) OneHaveBeenCalledWith(eventId *string) bool {
+	var result = m.LastOneEventId != nil && *m.LastOneEventId == *eventId
 
-	m.LastOneGoldenId = nil
+	m.LastOneEventId = nil
 
 	return result
 }
 
-func (m *MockSpyGoldenRepository) All() ([]*types.Golden, error) {
+func (m *MockSpyEventRepository) All() ([]*types.Event, error) {
 	m.LastAllHaveBeenCalled = true
 
 	return nil, nil
 }
 
-func (m *MockSpyGoldenRepository) AllHaveBeenCalled() bool {
+func (m *MockSpyEventRepository) AllHaveBeenCalled() bool {
 	result := m.LastAllHaveBeenCalled
 	m.LastAllHaveBeenCalled = false
 
 	return result
 }
 
-func (m *MockSpyGoldenRepository) SearchAndPaginate(
+func (m *MockSpyEventRepository) SearchAndPaginate(
 	searchTerm string,
 	pageNumber int,
-	pageSize int) ([]*types.Golden, error) {
+	pageSize int) ([]*types.Event, error) {
 	m.LastSearchHaveBeenCalled = true
 
 	return nil, nil
 }
 
-func (m *MockSpyGoldenRepository) SearchHaveBeenCalled() bool {
+func (m *MockSpyEventRepository) SearchHaveBeenCalled() bool {
 	result := m.LastSearchHaveBeenCalled
 
 	m.LastSearchHaveBeenCalled = false
@@ -147,10 +147,10 @@ func (m *MockSpyGoldenRepository) SearchHaveBeenCalled() bool {
 	return result
 }
 
-var repository *MockSpyGoldenRepository
+var repository *MockSpyEventRepository
 
 func TestMain(m *testing.M) {
-	repository = NewMockSpyGoldenRepository()
+	repository = NewMockSpyEventRepository()
 
 	os.Exit(m.Run())
 }

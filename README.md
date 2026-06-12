@@ -1,6 +1,6 @@
 # Govent
 
-Govent (also known internally as `markitos-it-svc-golden`) is a Go-based gRPC microservice. It provides a structured foundation for managing `Golden` resources using a clean architecture approach.
+Govent (also known internally as `markitos-it-svc-event`) is a Go-based gRPC microservice. It provides a structured foundation for managing `Event` resources using a clean architecture approach.
 
 ## 🚀 Technologies
 
@@ -112,14 +112,14 @@ The project includes a `Makefile` with helpful commands to speed up your develop
 
 ## 📡 gRPC Interface
 
-The service definition can be found in `internal/infrastructure/proto/govent.proto`. The `Goldenservice` exposes the following RPC methods:
+The service definition can be found in `internal/infrastructure/proto/govent.proto`. The `Eventservice` exposes the following RPC methods:
 
-* `CreateGolden`
-* `GetGolden`
-* `UpdateGolden`
-* `DeleteGolden`
-* `ListGoldens`
-* `SearchGoldens`
+* `CreateEvent`
+* `GetEvent`
+* `UpdateEvent`
+* `DeleteEvent`
+* `ListEvents`
+* `SearchEvents`
 
 To regenerate the gRPC Go code after modifying the `.proto` file, run:
 

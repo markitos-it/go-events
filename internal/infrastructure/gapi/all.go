@@ -8,14 +8,14 @@ import (
 	status "google.golang.org/grpc/status"
 )
 
-func (s *Server) ListGoldens(ctx context.Context, in *ListGoldensRequest) (*ListGoldensResponse, error) {
-	var service = services.NewGoldenAllService(s.repository)
+func (s *Server) ListEvents(ctx context.Context, in *ListEventsRequest) (*ListEventsResponse, error) {
+	var service = services.NewEventAllService(s.repository)
 	response, err := service.Do()
 	if err != nil {
 		return nil, status.Error(s.GetGRPCCode(err), err.Error())
 	}
 
-	return &ListGoldensResponse{
-		Goldens: s.ToProtos(response.Data),
+	return &ListEventsResponse{
+		Events: s.ToProtos(response.Data),
 	}, nil
 }

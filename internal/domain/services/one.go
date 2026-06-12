@@ -4,34 +4,34 @@ import (
 	"govent/internal/domain/types"
 )
 
-type GoldenOneRequest struct {
+type EventOneRequest struct {
 	Id string `json:"id"`
 }
 
-type GoldenOneResponse struct {
-	Data *types.Golden `json:"data"`
+type EventOneResponse struct {
+	Data *types.Event `json:"data"`
 }
 
-type GoldenOneService struct {
-	Repository types.GoldenRepository
+type EventOneService struct {
+	Repository types.EventRepository
 }
 
-func NewGoldenOneService(repository types.GoldenRepository) GoldenOneService {
-	return GoldenOneService{
+func NewEventOneService(repository types.EventRepository) EventOneService {
+	return EventOneService{
 		Repository: repository,
 	}
 }
 
-func (s GoldenOneService) Do(request GoldenOneRequest) (*GoldenOneResponse, error) {
-	securedId, err := types.NewGoldenId(request.Id)
+func (s EventOneService) Do(request EventOneRequest) (*EventOneResponse, error) {
+	securedId, err := types.NewEventId(request.Id)
 	if err != nil {
 		return nil, err
 	}
 
-	golden, err := s.Repository.One(securedId)
+	event, err := s.Repository.One(securedId)
 	if err != nil {
 		return nil, err
 	}
 
-	return &GoldenOneResponse{golden}, nil
+	return &EventOneResponse{event}, nil
 }

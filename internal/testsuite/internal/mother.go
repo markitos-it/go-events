@@ -5,27 +5,29 @@ import (
 	"govent/internal/domain/types"
 )
 
-func NewRandomGolden() *types.Golden {
-	golden, _ := types.NewGolden(
+func NewRandomEvent() *types.Event {
+	event, _ := types.NewEvent(
 		shared.UUIDv4(),
 		shared.RandomString(),
 		shared.RandomString(),
+		"",
 	)
 
-	return golden
+	return event
 }
 
-func NewRandomOnlyNameGolden() *types.Golden {
-	golden, _ := types.NewGolden(shared.UUIDv4(), shared.RandomString(), "")
+func NewRandomOnlyNameEvent() *types.Event {
+	event, _ := types.NewEvent(shared.UUIDv4(), shared.RandomString(), "", "")
 
-	return golden
+	return event
 }
 
-func NewRandomGoldenWithCustomId(goldenId *types.GoldenId) *types.Golden {
-	golden, _ := types.NewGolden(
-		goldenId.Value(),
+func NewRandomEventWithCustomId(eventId *types.EventId) *types.Event {
+	event, _ := types.NewEvent(
+		eventId.Value(),
 		shared.RandomString(),
 		shared.RandomString(),
+		"",
 	)
-	return golden
+	return event
 }

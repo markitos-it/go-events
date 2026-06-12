@@ -9,13 +9,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCanUpdateAGolden(t *testing.T) {
-	var request = services.GoldenUpdateRequest{
+func TestCanUpdateAEvent(t *testing.T) {
+	var request = services.EventUpdateRequest{
 		Id:   shared.UUIDv4(),
 		Name: shared.RandomPersonalName(),
 	}
 
-	var service = services.NewGoldenUpdateService(repository)
+	var service = services.NewEventUpdateService(repository)
 	err := service.Do(request)
 
 	assert.Nil(t, err)
@@ -24,41 +24,41 @@ func TestCanUpdateAGolden(t *testing.T) {
 }
 
 func TestCantUpdateWithoutName(t *testing.T) {
-	var request = services.GoldenUpdateRequest{
+	var request = services.EventUpdateRequest{
 		Id: shared.UUIDv4(),
 	}
 
-	var service = services.NewGoldenUpdateService(repository)
+	var service = services.NewEventUpdateService(repository)
 	err := service.Do(request)
 
 	assert.NotNil(t, err)
-	assert.ErrorIs(t, err, shared.ErrGoldenBadRequest)
+	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.False(t, repository.UpdateHaveBeenCalled())
 }
 
 func TestCantUpdateWithoutId(t *testing.T) {
-	var request = services.GoldenUpdateRequest{
+	var request = services.EventUpdateRequest{
 		Name: shared.RandomPersonalName(),
 	}
 
-	var service = services.NewGoldenUpdateService(repository)
+	var service = services.NewEventUpdateService(repository)
 	err := service.Do(request)
 
 	assert.NotNil(t, err)
-	assert.ErrorIs(t, err, shared.ErrGoldenBadRequest)
+	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.False(t, repository.UpdateHaveBeenCalled())
 }
 
 func TestCantUpdateWithInvalidId(t *testing.T) {
-	var request = services.GoldenUpdateRequest{
+	var request = services.EventUpdateRequest{
 		Id:   "invalid-id",
 		Name: shared.RandomPersonalName(),
 	}
 
-	var service = services.NewGoldenUpdateService(repository)
+	var service = services.NewEventUpdateService(repository)
 	err := service.Do(request)
 
 	assert.NotNil(t, err)
-	assert.ErrorIs(t, err, shared.ErrGoldenBadRequest)
+	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.False(t, repository.UpdateHaveBeenCalled())
 }

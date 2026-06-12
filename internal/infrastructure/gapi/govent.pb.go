@@ -22,32 +22,32 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Golden struct {
+type Event struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	Content       string                 `protobuf:"bytes,5,opt,name=content,proto3" json:"content,omitempty"`
-	Poster        string                 `protobuf:"bytes,6,opt,name=poster,proto3" json:"poster,omitempty"` // ___CUSTOM_FIELDS___
+	Source        string                 `protobuf:"bytes,5,opt,name=source,proto3" json:"source,omitempty"`
+	Payload       string                 `protobuf:"bytes,6,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Golden) Reset() {
-	*x = Golden{}
+func (x *Event) Reset() {
+	*x = Event{}
 	mi := &file_govent_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Golden) String() string {
+func (x *Event) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Golden) ProtoMessage() {}
+func (*Event) ProtoMessage() {}
 
-func (x *Golden) ProtoReflect() protoreflect.Message {
+func (x *Event) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -59,76 +59,77 @@ func (x *Golden) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Golden.ProtoReflect.Descriptor instead.
-func (*Golden) Descriptor() ([]byte, []int) {
+// Deprecated: Use Event.ProtoReflect.Descriptor instead.
+func (*Event) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Golden) GetId() string {
+func (x *Event) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *Golden) GetName() string {
+func (x *Event) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *Golden) GetCreatedAt() *timestamppb.Timestamp {
+func (x *Event) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
 	}
 	return nil
 }
 
-func (x *Golden) GetUpdatedAt() *timestamppb.Timestamp {
+func (x *Event) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpdatedAt
 	}
 	return nil
 }
 
-func (x *Golden) GetContent() string {
+func (x *Event) GetSource() string {
 	if x != nil {
-		return x.Content
+		return x.Source
 	}
 	return ""
 }
 
-func (x *Golden) GetPoster() string {
+func (x *Event) GetPayload() string {
 	if x != nil {
-		return x.Poster
+		return x.Payload
 	}
 	return ""
 }
 
-type CreateGoldenRequest struct {
+type CreateEventRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Content       string                 `protobuf:"bytes,2,opt,name=content,proto3" json:"content,omitempty"`
-	PosterData    string                 `protobuf:"bytes,3,opt,name=poster_data,json=posterData,proto3" json:"poster_data,omitempty"` // ___CUSTOM_FIELDS___
+	Source        string                 `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
+	Payload       string                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateGoldenRequest) Reset() {
-	*x = CreateGoldenRequest{}
+func (x *CreateEventRequest) Reset() {
+	*x = CreateEventRequest{}
 	mi := &file_govent_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateGoldenRequest) String() string {
+func (x *CreateEventRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateGoldenRequest) ProtoMessage() {}
+func (*CreateEventRequest) ProtoMessage() {}
 
-func (x *CreateGoldenRequest) ProtoReflect() protoreflect.Message {
+func (x *CreateEventRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -140,56 +141,63 @@ func (x *CreateGoldenRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateGoldenRequest.ProtoReflect.Descriptor instead.
-func (*CreateGoldenRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateEventRequest.ProtoReflect.Descriptor instead.
+func (*CreateEventRequest) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateGoldenRequest) GetName() string {
+func (x *CreateEventRequest) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *CreateGoldenRequest) GetContent() string {
+func (x *CreateEventRequest) GetContent() string {
 	if x != nil {
 		return x.Content
 	}
 	return ""
 }
 
-func (x *CreateGoldenRequest) GetPosterData() string {
+func (x *CreateEventRequest) GetSource() string {
 	if x != nil {
-		return x.PosterData
+		return x.Source
 	}
 	return ""
 }
 
-type CreateGoldenResponse struct {
+func (x *CreateEventRequest) GetPayload() string {
+	if x != nil {
+		return x.Payload
+	}
+	return ""
+}
+
+type CreateEventResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Content       string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
-	Poster        string                 `protobuf:"bytes,4,opt,name=poster,proto3" json:"poster,omitempty"` // ___CUSTOM_FIELDS___
+	Source        string                 `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
+	Payload       string                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CreateGoldenResponse) Reset() {
-	*x = CreateGoldenResponse{}
+func (x *CreateEventResponse) Reset() {
+	*x = CreateEventResponse{}
 	mi := &file_govent_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CreateGoldenResponse) String() string {
+func (x *CreateEventResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CreateGoldenResponse) ProtoMessage() {}
+func (*CreateEventResponse) ProtoMessage() {}
 
-func (x *CreateGoldenResponse) ProtoReflect() protoreflect.Message {
+func (x *CreateEventResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -201,60 +209,60 @@ func (x *CreateGoldenResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CreateGoldenResponse.ProtoReflect.Descriptor instead.
-func (*CreateGoldenResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CreateEventResponse.ProtoReflect.Descriptor instead.
+func (*CreateEventResponse) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateGoldenResponse) GetId() string {
+func (x *CreateEventResponse) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *CreateGoldenResponse) GetName() string {
+func (x *CreateEventResponse) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *CreateGoldenResponse) GetContent() string {
+func (x *CreateEventResponse) GetSource() string {
 	if x != nil {
-		return x.Content
+		return x.Source
 	}
 	return ""
 }
 
-func (x *CreateGoldenResponse) GetPoster() string {
+func (x *CreateEventResponse) GetPayload() string {
 	if x != nil {
-		return x.Poster
+		return x.Payload
 	}
 	return ""
 }
 
-type GetGoldenRequest struct {
+type GetEventRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetGoldenRequest) Reset() {
-	*x = GetGoldenRequest{}
+func (x *GetEventRequest) Reset() {
+	*x = GetEventRequest{}
 	mi := &file_govent_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetGoldenRequest) String() string {
+func (x *GetEventRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetGoldenRequest) ProtoMessage() {}
+func (*GetEventRequest) ProtoMessage() {}
 
-func (x *GetGoldenRequest) ProtoReflect() protoreflect.Message {
+func (x *GetEventRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -266,42 +274,42 @@ func (x *GetGoldenRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetGoldenRequest.ProtoReflect.Descriptor instead.
-func (*GetGoldenRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetEventRequest.ProtoReflect.Descriptor instead.
+func (*GetEventRequest) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetGoldenRequest) GetId() string {
+func (x *GetEventRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-type GetGoldenResponse struct {
+type GetEventResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Content       string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
-	Poster        string                 `protobuf:"bytes,4,opt,name=poster,proto3" json:"poster,omitempty"` // ___CUSTOM_FIELDS___
+	Source        string                 `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
+	Payload       string                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetGoldenResponse) Reset() {
-	*x = GetGoldenResponse{}
+func (x *GetEventResponse) Reset() {
+	*x = GetEventResponse{}
 	mi := &file_govent_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetGoldenResponse) String() string {
+func (x *GetEventResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetGoldenResponse) ProtoMessage() {}
+func (*GetEventResponse) ProtoMessage() {}
 
-func (x *GetGoldenResponse) ProtoReflect() protoreflect.Message {
+func (x *GetEventResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -313,63 +321,63 @@ func (x *GetGoldenResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetGoldenResponse.ProtoReflect.Descriptor instead.
-func (*GetGoldenResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetEventResponse.ProtoReflect.Descriptor instead.
+func (*GetEventResponse) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetGoldenResponse) GetId() string {
+func (x *GetEventResponse) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *GetGoldenResponse) GetName() string {
+func (x *GetEventResponse) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *GetGoldenResponse) GetContent() string {
+func (x *GetEventResponse) GetSource() string {
 	if x != nil {
-		return x.Content
+		return x.Source
 	}
 	return ""
 }
 
-func (x *GetGoldenResponse) GetPoster() string {
+func (x *GetEventResponse) GetPayload() string {
 	if x != nil {
-		return x.Poster
+		return x.Payload
 	}
 	return ""
 }
 
-type UpdateGoldenRequest struct {
+type UpdateEventRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Content       string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
-	PosterData    string                 `protobuf:"bytes,4,opt,name=poster_data,json=posterData,proto3" json:"poster_data,omitempty"` // ___CUSTOM_FIELDS___
+	Source        string                 `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
+	Payload       string                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateGoldenRequest) Reset() {
-	*x = UpdateGoldenRequest{}
+func (x *UpdateEventRequest) Reset() {
+	*x = UpdateEventRequest{}
 	mi := &file_govent_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateGoldenRequest) String() string {
+func (x *UpdateEventRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateGoldenRequest) ProtoMessage() {}
+func (*UpdateEventRequest) ProtoMessage() {}
 
-func (x *UpdateGoldenRequest) ProtoReflect() protoreflect.Message {
+func (x *UpdateEventRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -381,60 +389,60 @@ func (x *UpdateGoldenRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateGoldenRequest.ProtoReflect.Descriptor instead.
-func (*UpdateGoldenRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateEventRequest.ProtoReflect.Descriptor instead.
+func (*UpdateEventRequest) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *UpdateGoldenRequest) GetId() string {
+func (x *UpdateEventRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *UpdateGoldenRequest) GetName() string {
+func (x *UpdateEventRequest) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *UpdateGoldenRequest) GetContent() string {
+func (x *UpdateEventRequest) GetSource() string {
 	if x != nil {
-		return x.Content
+		return x.Source
 	}
 	return ""
 }
 
-func (x *UpdateGoldenRequest) GetPosterData() string {
+func (x *UpdateEventRequest) GetPayload() string {
 	if x != nil {
-		return x.PosterData
+		return x.Payload
 	}
 	return ""
 }
 
-type UpdateGoldenResponse struct {
+type UpdateEventResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Updated       string                 `protobuf:"bytes,1,opt,name=updated,proto3" json:"updated,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UpdateGoldenResponse) Reset() {
-	*x = UpdateGoldenResponse{}
+func (x *UpdateEventResponse) Reset() {
+	*x = UpdateEventResponse{}
 	mi := &file_govent_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UpdateGoldenResponse) String() string {
+func (x *UpdateEventResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UpdateGoldenResponse) ProtoMessage() {}
+func (*UpdateEventResponse) ProtoMessage() {}
 
-func (x *UpdateGoldenResponse) ProtoReflect() protoreflect.Message {
+func (x *UpdateEventResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -446,39 +454,39 @@ func (x *UpdateGoldenResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UpdateGoldenResponse.ProtoReflect.Descriptor instead.
-func (*UpdateGoldenResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use UpdateEventResponse.ProtoReflect.Descriptor instead.
+func (*UpdateEventResponse) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *UpdateGoldenResponse) GetUpdated() string {
+func (x *UpdateEventResponse) GetUpdated() string {
 	if x != nil {
 		return x.Updated
 	}
 	return ""
 }
 
-type DeleteGoldenRequest struct {
+type DeleteEventRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteGoldenRequest) Reset() {
-	*x = DeleteGoldenRequest{}
+func (x *DeleteEventRequest) Reset() {
+	*x = DeleteEventRequest{}
 	mi := &file_govent_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteGoldenRequest) String() string {
+func (x *DeleteEventRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteGoldenRequest) ProtoMessage() {}
+func (*DeleteEventRequest) ProtoMessage() {}
 
-func (x *DeleteGoldenRequest) ProtoReflect() protoreflect.Message {
+func (x *DeleteEventRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -490,39 +498,39 @@ func (x *DeleteGoldenRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteGoldenRequest.ProtoReflect.Descriptor instead.
-func (*DeleteGoldenRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteEventRequest.ProtoReflect.Descriptor instead.
+func (*DeleteEventRequest) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *DeleteGoldenRequest) GetId() string {
+func (x *DeleteEventRequest) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-type DeleteGoldenResponse struct {
+type DeleteEventResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Deleted       string                 `protobuf:"bytes,1,opt,name=deleted,proto3" json:"deleted,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeleteGoldenResponse) Reset() {
-	*x = DeleteGoldenResponse{}
+func (x *DeleteEventResponse) Reset() {
+	*x = DeleteEventResponse{}
 	mi := &file_govent_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeleteGoldenResponse) String() string {
+func (x *DeleteEventResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeleteGoldenResponse) ProtoMessage() {}
+func (*DeleteEventResponse) ProtoMessage() {}
 
-func (x *DeleteGoldenResponse) ProtoReflect() protoreflect.Message {
+func (x *DeleteEventResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -534,38 +542,38 @@ func (x *DeleteGoldenResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeleteGoldenResponse.ProtoReflect.Descriptor instead.
-func (*DeleteGoldenResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use DeleteEventResponse.ProtoReflect.Descriptor instead.
+func (*DeleteEventResponse) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *DeleteGoldenResponse) GetDeleted() string {
+func (x *DeleteEventResponse) GetDeleted() string {
 	if x != nil {
 		return x.Deleted
 	}
 	return ""
 }
 
-type ListGoldensRequest struct {
+type ListEventsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListGoldensRequest) Reset() {
-	*x = ListGoldensRequest{}
+func (x *ListEventsRequest) Reset() {
+	*x = ListEventsRequest{}
 	mi := &file_govent_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListGoldensRequest) String() string {
+func (x *ListEventsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListGoldensRequest) ProtoMessage() {}
+func (*ListEventsRequest) ProtoMessage() {}
 
-func (x *ListGoldensRequest) ProtoReflect() protoreflect.Message {
+func (x *ListEventsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -577,32 +585,32 @@ func (x *ListGoldensRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListGoldensRequest.ProtoReflect.Descriptor instead.
-func (*ListGoldensRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListEventsRequest.ProtoReflect.Descriptor instead.
+func (*ListEventsRequest) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{9}
 }
 
-type ListGoldensResponse struct {
+type ListEventsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Goldens       []*Golden              `protobuf:"bytes,1,rep,name=goldens,proto3" json:"goldens,omitempty"`
+	Events        []*Event               `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListGoldensResponse) Reset() {
-	*x = ListGoldensResponse{}
+func (x *ListEventsResponse) Reset() {
+	*x = ListEventsResponse{}
 	mi := &file_govent_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListGoldensResponse) String() string {
+func (x *ListEventsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListGoldensResponse) ProtoMessage() {}
+func (*ListEventsResponse) ProtoMessage() {}
 
-func (x *ListGoldensResponse) ProtoReflect() protoreflect.Message {
+func (x *ListEventsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -614,19 +622,19 @@ func (x *ListGoldensResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListGoldensResponse.ProtoReflect.Descriptor instead.
-func (*ListGoldensResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ListEventsResponse.ProtoReflect.Descriptor instead.
+func (*ListEventsResponse) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *ListGoldensResponse) GetGoldens() []*Golden {
+func (x *ListEventsResponse) GetEvents() []*Event {
 	if x != nil {
-		return x.Goldens
+		return x.Events
 	}
 	return nil
 }
 
-type SearchGoldensRequest struct {
+type SearchEventsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SearchTerm    string                 `protobuf:"bytes,1,opt,name=search_term,json=searchTerm,proto3" json:"search_term,omitempty"`
 	PageNumber    int32                  `protobuf:"varint,2,opt,name=page_number,json=pageNumber,proto3" json:"page_number,omitempty"`
@@ -635,20 +643,20 @@ type SearchGoldensRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SearchGoldensRequest) Reset() {
-	*x = SearchGoldensRequest{}
+func (x *SearchEventsRequest) Reset() {
+	*x = SearchEventsRequest{}
 	mi := &file_govent_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SearchGoldensRequest) String() string {
+func (x *SearchEventsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SearchGoldensRequest) ProtoMessage() {}
+func (*SearchEventsRequest) ProtoMessage() {}
 
-func (x *SearchGoldensRequest) ProtoReflect() protoreflect.Message {
+func (x *SearchEventsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -660,54 +668,54 @@ func (x *SearchGoldensRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SearchGoldensRequest.ProtoReflect.Descriptor instead.
-func (*SearchGoldensRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use SearchEventsRequest.ProtoReflect.Descriptor instead.
+func (*SearchEventsRequest) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *SearchGoldensRequest) GetSearchTerm() string {
+func (x *SearchEventsRequest) GetSearchTerm() string {
 	if x != nil {
 		return x.SearchTerm
 	}
 	return ""
 }
 
-func (x *SearchGoldensRequest) GetPageNumber() int32 {
+func (x *SearchEventsRequest) GetPageNumber() int32 {
 	if x != nil {
 		return x.PageNumber
 	}
 	return 0
 }
 
-func (x *SearchGoldensRequest) GetPageSize() int32 {
+func (x *SearchEventsRequest) GetPageSize() int32 {
 	if x != nil {
 		return x.PageSize
 	}
 	return 0
 }
 
-type SearchGoldensResponse struct {
+type SearchEventsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Goldens       []*Golden              `protobuf:"bytes,1,rep,name=goldens,proto3" json:"goldens,omitempty"`
+	Events        []*Event               `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
 	TotalResults  int32                  `protobuf:"varint,2,opt,name=total_results,json=totalResults,proto3" json:"total_results,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *SearchGoldensResponse) Reset() {
-	*x = SearchGoldensResponse{}
+func (x *SearchEventsResponse) Reset() {
+	*x = SearchEventsResponse{}
 	mi := &file_govent_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *SearchGoldensResponse) String() string {
+func (x *SearchEventsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*SearchGoldensResponse) ProtoMessage() {}
+func (*SearchEventsResponse) ProtoMessage() {}
 
-func (x *SearchGoldensResponse) ProtoReflect() protoreflect.Message {
+func (x *SearchEventsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -719,19 +727,19 @@ func (x *SearchGoldensResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use SearchGoldensResponse.ProtoReflect.Descriptor instead.
-func (*SearchGoldensResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use SearchEventsResponse.ProtoReflect.Descriptor instead.
+func (*SearchEventsResponse) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *SearchGoldensResponse) GetGoldens() []*Golden {
+func (x *SearchEventsResponse) GetEvents() []*Event {
 	if x != nil {
-		return x.Goldens
+		return x.Events
 	}
 	return nil
 }
 
-func (x *SearchGoldensResponse) GetTotalResults() int32 {
+func (x *SearchEventsResponse) GetTotalResults() int32 {
 	if x != nil {
 		return x.TotalResults
 	}
@@ -742,64 +750,64 @@ var File_govent_proto protoreflect.FileDescriptor
 
 const file_govent_proto_rawDesc = "" +
 	"\n" +
-	"\fgovent.proto\x12\x06golden\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd4\x01\n" +
-	"\x06Golden\x12\x0e\n" +
+	"\fgovent.proto\x12\x05event\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd3\x01\n" +
+	"\x05Event\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x129\n" +
 	"\n" +
 	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x18\n" +
-	"\acontent\x18\x05 \x01(\tR\acontent\x12\x16\n" +
-	"\x06poster\x18\x06 \x01(\tR\x06poster\"d\n" +
-	"\x13CreateGoldenRequest\x12\x12\n" +
+	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x12\x16\n" +
+	"\x06source\x18\x05 \x01(\tR\x06source\x12\x18\n" +
+	"\apayload\x18\x06 \x01(\tR\apayload\"t\n" +
+	"\x12CreateEventRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
-	"\acontent\x18\x02 \x01(\tR\acontent\x12\x1f\n" +
-	"\vposter_data\x18\x03 \x01(\tR\n" +
-	"posterData\"l\n" +
-	"\x14CreateGoldenResponse\x12\x0e\n" +
+	"\acontent\x18\x02 \x01(\tR\acontent\x12\x16\n" +
+	"\x06source\x18\x03 \x01(\tR\x06source\x12\x18\n" +
+	"\apayload\x18\x04 \x01(\tR\apayload\"k\n" +
+	"\x13CreateEventResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\x12\x16\n" +
-	"\x06poster\x18\x04 \x01(\tR\x06poster\"\"\n" +
-	"\x10GetGoldenRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"i\n" +
-	"\x11GetGoldenResponse\x12\x0e\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
+	"\x06source\x18\x03 \x01(\tR\x06source\x12\x18\n" +
+	"\apayload\x18\x04 \x01(\tR\apayload\"!\n" +
+	"\x0fGetEventRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"h\n" +
+	"\x10GetEventResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\x12\x16\n" +
-	"\x06poster\x18\x04 \x01(\tR\x06poster\"t\n" +
-	"\x13UpdateGoldenRequest\x12\x0e\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
+	"\x06source\x18\x03 \x01(\tR\x06source\x12\x18\n" +
+	"\apayload\x18\x04 \x01(\tR\apayload\"j\n" +
+	"\x12UpdateEventRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\x12\x1f\n" +
-	"\vposter_data\x18\x04 \x01(\tR\n" +
-	"posterData\"0\n" +
-	"\x14UpdateGoldenResponse\x12\x18\n" +
-	"\aupdated\x18\x01 \x01(\tR\aupdated\"%\n" +
-	"\x13DeleteGoldenRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"0\n" +
-	"\x14DeleteGoldenResponse\x12\x18\n" +
-	"\adeleted\x18\x01 \x01(\tR\adeleted\"\x14\n" +
-	"\x12ListGoldensRequest\"?\n" +
-	"\x13ListGoldensResponse\x12(\n" +
-	"\agoldens\x18\x01 \x03(\v2\x0e.golden.GoldenR\agoldens\"u\n" +
-	"\x14SearchGoldensRequest\x12\x1f\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
+	"\x06source\x18\x03 \x01(\tR\x06source\x12\x18\n" +
+	"\apayload\x18\x04 \x01(\tR\apayload\"/\n" +
+	"\x13UpdateEventResponse\x12\x18\n" +
+	"\aupdated\x18\x01 \x01(\tR\aupdated\"$\n" +
+	"\x12DeleteEventRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"/\n" +
+	"\x13DeleteEventResponse\x12\x18\n" +
+	"\adeleted\x18\x01 \x01(\tR\adeleted\"\x13\n" +
+	"\x11ListEventsRequest\":\n" +
+	"\x12ListEventsResponse\x12$\n" +
+	"\x06events\x18\x01 \x03(\v2\f.event.EventR\x06events\"t\n" +
+	"\x13SearchEventsRequest\x12\x1f\n" +
 	"\vsearch_term\x18\x01 \x01(\tR\n" +
 	"searchTerm\x12\x1f\n" +
 	"\vpage_number\x18\x02 \x01(\x05R\n" +
 	"pageNumber\x12\x1b\n" +
-	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\"f\n" +
-	"\x15SearchGoldensResponse\x12(\n" +
-	"\agoldens\x18\x01 \x03(\v2\x0e.golden.GoldenR\agoldens\x12#\n" +
-	"\rtotal_results\x18\x02 \x01(\x05R\ftotalResults2\xc8\x03\n" +
-	"\rGoldenservice\x12I\n" +
-	"\fCreateGolden\x12\x1b.golden.CreateGoldenRequest\x1a\x1c.golden.CreateGoldenResponse\x12@\n" +
-	"\tGetGolden\x12\x18.golden.GetGoldenRequest\x1a\x19.golden.GetGoldenResponse\x12I\n" +
-	"\fUpdateGolden\x12\x1b.golden.UpdateGoldenRequest\x1a\x1c.golden.UpdateGoldenResponse\x12I\n" +
-	"\fDeleteGolden\x12\x1b.golden.DeleteGoldenRequest\x1a\x1c.golden.DeleteGoldenResponse\x12F\n" +
-	"\vListGoldens\x12\x1a.golden.ListGoldensRequest\x1a\x1b.golden.ListGoldensResponse\x12L\n" +
-	"\rSearchGoldens\x12\x1c.golden.SearchGoldensRequest\x1a\x1d.golden.SearchGoldensResponseB\"Z markitos-it-svc-golden-grpc/gapib\x06proto3"
+	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\"a\n" +
+	"\x14SearchEventsResponse\x12$\n" +
+	"\x06events\x18\x01 \x03(\v2\f.event.EventR\x06events\x12#\n" +
+	"\rtotal_results\x18\x02 \x01(\x05R\ftotalResults2\xa9\x03\n" +
+	"\fEventservice\x12D\n" +
+	"\vCreateEvent\x12\x19.event.CreateEventRequest\x1a\x1a.event.CreateEventResponse\x12;\n" +
+	"\bGetEvent\x12\x16.event.GetEventRequest\x1a\x17.event.GetEventResponse\x12D\n" +
+	"\vUpdateEvent\x12\x19.event.UpdateEventRequest\x1a\x1a.event.UpdateEventResponse\x12D\n" +
+	"\vDeleteEvent\x12\x19.event.DeleteEventRequest\x1a\x1a.event.DeleteEventResponse\x12A\n" +
+	"\n" +
+	"ListEvents\x12\x18.event.ListEventsRequest\x1a\x19.event.ListEventsResponse\x12G\n" +
+	"\fSearchEvents\x12\x1a.event.SearchEventsRequest\x1a\x1b.event.SearchEventsResponseB!Z\x1fmarkitos-it-svc-event-grpc/gapib\x06proto3"
 
 var (
 	file_govent_proto_rawDescOnce sync.Once
@@ -815,38 +823,38 @@ func file_govent_proto_rawDescGZIP() []byte {
 
 var file_govent_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_govent_proto_goTypes = []any{
-	(*Golden)(nil),                // 0: golden.Golden
-	(*CreateGoldenRequest)(nil),   // 1: golden.CreateGoldenRequest
-	(*CreateGoldenResponse)(nil),  // 2: golden.CreateGoldenResponse
-	(*GetGoldenRequest)(nil),      // 3: golden.GetGoldenRequest
-	(*GetGoldenResponse)(nil),     // 4: golden.GetGoldenResponse
-	(*UpdateGoldenRequest)(nil),   // 5: golden.UpdateGoldenRequest
-	(*UpdateGoldenResponse)(nil),  // 6: golden.UpdateGoldenResponse
-	(*DeleteGoldenRequest)(nil),   // 7: golden.DeleteGoldenRequest
-	(*DeleteGoldenResponse)(nil),  // 8: golden.DeleteGoldenResponse
-	(*ListGoldensRequest)(nil),    // 9: golden.ListGoldensRequest
-	(*ListGoldensResponse)(nil),   // 10: golden.ListGoldensResponse
-	(*SearchGoldensRequest)(nil),  // 11: golden.SearchGoldensRequest
-	(*SearchGoldensResponse)(nil), // 12: golden.SearchGoldensResponse
+	(*Event)(nil),                 // 0: event.Event
+	(*CreateEventRequest)(nil),    // 1: event.CreateEventRequest
+	(*CreateEventResponse)(nil),   // 2: event.CreateEventResponse
+	(*GetEventRequest)(nil),       // 3: event.GetEventRequest
+	(*GetEventResponse)(nil),      // 4: event.GetEventResponse
+	(*UpdateEventRequest)(nil),    // 5: event.UpdateEventRequest
+	(*UpdateEventResponse)(nil),   // 6: event.UpdateEventResponse
+	(*DeleteEventRequest)(nil),    // 7: event.DeleteEventRequest
+	(*DeleteEventResponse)(nil),   // 8: event.DeleteEventResponse
+	(*ListEventsRequest)(nil),     // 9: event.ListEventsRequest
+	(*ListEventsResponse)(nil),    // 10: event.ListEventsResponse
+	(*SearchEventsRequest)(nil),   // 11: event.SearchEventsRequest
+	(*SearchEventsResponse)(nil),  // 12: event.SearchEventsResponse
 	(*timestamppb.Timestamp)(nil), // 13: google.protobuf.Timestamp
 }
 var file_govent_proto_depIdxs = []int32{
-	13, // 0: golden.Golden.created_at:type_name -> google.protobuf.Timestamp
-	13, // 1: golden.Golden.updated_at:type_name -> google.protobuf.Timestamp
-	0,  // 2: golden.ListGoldensResponse.goldens:type_name -> golden.Golden
-	0,  // 3: golden.SearchGoldensResponse.goldens:type_name -> golden.Golden
-	1,  // 4: golden.Goldenservice.CreateGolden:input_type -> golden.CreateGoldenRequest
-	3,  // 5: golden.Goldenservice.GetGolden:input_type -> golden.GetGoldenRequest
-	5,  // 6: golden.Goldenservice.UpdateGolden:input_type -> golden.UpdateGoldenRequest
-	7,  // 7: golden.Goldenservice.DeleteGolden:input_type -> golden.DeleteGoldenRequest
-	9,  // 8: golden.Goldenservice.ListGoldens:input_type -> golden.ListGoldensRequest
-	11, // 9: golden.Goldenservice.SearchGoldens:input_type -> golden.SearchGoldensRequest
-	2,  // 10: golden.Goldenservice.CreateGolden:output_type -> golden.CreateGoldenResponse
-	4,  // 11: golden.Goldenservice.GetGolden:output_type -> golden.GetGoldenResponse
-	6,  // 12: golden.Goldenservice.UpdateGolden:output_type -> golden.UpdateGoldenResponse
-	8,  // 13: golden.Goldenservice.DeleteGolden:output_type -> golden.DeleteGoldenResponse
-	10, // 14: golden.Goldenservice.ListGoldens:output_type -> golden.ListGoldensResponse
-	12, // 15: golden.Goldenservice.SearchGoldens:output_type -> golden.SearchGoldensResponse
+	13, // 0: event.Event.created_at:type_name -> google.protobuf.Timestamp
+	13, // 1: event.Event.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 2: event.ListEventsResponse.events:type_name -> event.Event
+	0,  // 3: event.SearchEventsResponse.events:type_name -> event.Event
+	1,  // 4: event.Eventservice.CreateEvent:input_type -> event.CreateEventRequest
+	3,  // 5: event.Eventservice.GetEvent:input_type -> event.GetEventRequest
+	5,  // 6: event.Eventservice.UpdateEvent:input_type -> event.UpdateEventRequest
+	7,  // 7: event.Eventservice.DeleteEvent:input_type -> event.DeleteEventRequest
+	9,  // 8: event.Eventservice.ListEvents:input_type -> event.ListEventsRequest
+	11, // 9: event.Eventservice.SearchEvents:input_type -> event.SearchEventsRequest
+	2,  // 10: event.Eventservice.CreateEvent:output_type -> event.CreateEventResponse
+	4,  // 11: event.Eventservice.GetEvent:output_type -> event.GetEventResponse
+	6,  // 12: event.Eventservice.UpdateEvent:output_type -> event.UpdateEventResponse
+	8,  // 13: event.Eventservice.DeleteEvent:output_type -> event.DeleteEventResponse
+	10, // 14: event.Eventservice.ListEvents:output_type -> event.ListEventsResponse
+	12, // 15: event.Eventservice.SearchEvents:output_type -> event.SearchEventsResponse
 	10, // [10:16] is the sub-list for method output_type
 	4,  // [4:10] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name

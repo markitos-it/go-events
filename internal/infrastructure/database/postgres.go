@@ -1,7 +1,8 @@
 package database
 
 import (
-	"fmt"
+	"context"
+	"errors"
 
 	"govent/internal/domain/shared"
 	"govent/internal/domain/types"
@@ -9,61 +10,63 @@ import (
 	"gorm.io/gorm"
 )
 
-type GoldenPostgresRepository struct {
+type EventPostgresRepository struct {
 	db *gorm.DB
 }
 
-func NewGoldenPostgresRepository(db *gorm.DB) GoldenPostgresRepository {
-	return GoldenPostgresRepository{db: db}
+func NewEventPostgresRepository(db *gorm.DB) types.EventRepository {
+	return &EventPostgresRepository{db: db}
 }
 
-func (r *GoldenPostgresRepository) Create(golden *types.Golden) error {
-	return r.db.Create(golden).Error
+func (r *EventPostgresRepository) Create(ctx context.Context, event *types.Event) error {
+	return r.db.WithContext(ctx).Create(event).Error
 }
 
-func (r *GoldenPostgresRepository) Delete(id *types.GoldenId) error {
-	_, err := r.One(id)
+func (r *EventPostgresRepository) One(ctx context.Context, id *types.EventId) (*types.Event, error) {
+	var event types.Event
+
+	err := r.db.WithContext(ctx).
+		First(&event, "id = ?", id.Value()).
+		Error
+
 	if err != nil {
-		return shared.ErrGoldenNotFound
-	}
-
-	return r.db.Delete(&types.Golden{}, "id = ?", id.Value()).Error
-}
-
-func (r *GoldenPostgresRepository) Update(golden *types.Golden) error {
-	return r.db.Save(golden).Error
-}
-
-func (r *GoldenPostgresRepository) One(id *types.GoldenId) (*types.Golden, error) {
-	var golden types.Golden
-	if err := r.db.First(&golden, "id = ?", id.Value()).Error; err != nil {
-		return nil, shared.ErrGoldenNotFound
-	}
-	return &golden, nil
-}
-
-func (r *GoldenPostgresRepository) All() ([]*types.Golden, error) {
-	var goldens []*types.Golden
-	if err := r.db.Find(&goldens).Error; err != nil {
-		return nil, shared.ErrGoldenBadRequest
-	}
-
-	return goldens, nil
-}
-
-func (r *GoldenPostgresRepository) SearchAndPaginate(
-	searchTerm string,
-	pageNumber int,
-	pageSize int) ([]*types.Golden, error) {
-	offset := (pageNumber - 1) * pageSize
-	var goldens []*types.Golden
-	if err := r.db.Where("name ILIKE ?", fmt.Sprintf("%%%s%%", searchTerm)).
-		Order("name").
-		Limit(pageSize).
-		Offset(offset).
-		Find(&goldens).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, shared.ErrEventNotFound
+		}
 		return nil, err
 	}
 
-	return goldens, nil
+	return &event, nil
+}
+
+func (r *EventPostgresRepository) AllByName(ctx context.Context, name *types.EventName) ([]*types.Event, error) {
+	var events []*types.Event
+
+	err := r.db.WithContext(ctx).
+		Where("name = ?", name.Value()).
+		Order("created_at DESC").
+		Find(&events).
+		Error
+
+	if err != nil {
+		return nil, shared.ErrEventBadRequest
+	}
+
+	return events, nil
+}
+
+func (r *EventPostgresRepository) AllByNameAndSource(ctx context.Context, name *types.EventName, source *types.EventSource) ([]*types.Event, error) {
+	var events []*types.Event
+
+	err := r.db.WithContext(ctx).
+		Where("name = ? AND source = ?", name.Value(), source.Value()).
+		Order("created_at DESC").
+		Find(&events).
+		Error
+
+	if err != nil {
+		return nil, shared.ErrEventBadRequest
+	}
+
+	return events, nil
 }

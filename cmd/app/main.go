@@ -20,8 +20,8 @@ import (
 	"gorm.io/gorm"
 )
 
-var repository types.GoldenRepository
-var config configuration.GoldenConfiguration
+var repository types.EventRepository
+var config configuration.EventConfiguration
 
 // #[.'.]:> Main function that orchestrates the startup and controlled shutdown of the application
 // #[.'.]:> STEP 1: Show startup banner
@@ -37,7 +37,7 @@ var config configuration.GoldenConfiguration
 func main() {
 	log.Println("['.']:>")
 	log.Println("['.']:>--------------------------------------------")
-	log.Println("['.']:>--- <starting markitos-it-svc-golden>  ---")
+	log.Println("['.']:>--- <starting markitos-it-svc-event>  ---")
 
 	loadConfiguration()
 	log.Println("['.']:>------- configuration loaded")
@@ -48,7 +48,7 @@ func main() {
 	startServers()
 
 	log.Println("['.']:>--------------------------------------------")
-	log.Println("['.']:>--- <markitos-it-svc-golden stopped>  ---")
+	log.Println("['.']:>--- <markitos-it-svc-event stopped>  ---")
 	log.Println("['.']:>")
 }
 
@@ -83,12 +83,12 @@ func loadDatabase() {
 		log.Fatal("['.']:> error unable to connect to database:", err)
 	}
 
-	err = db.AutoMigrate(&types.Golden{})
+	err = db.AutoMigrate(&types.Event{})
 	if err != nil {
 		log.Fatal("['.']:> error unable to migrate database:", err)
 	}
 
-	repo := database.NewGoldenPostgresRepository(db)
+	repo := database.NewEventPostgresRepository(db)
 	repository = &repo
 }
 
@@ -158,7 +158,7 @@ func runGRPCServer(ctx context.Context) error {
 
 	grpcServer := grpc.NewServer()
 	server := gapi.NewServer(config.GRPCServerAddress, repository, config)
-	gapi.RegisterGoldenserviceServer(grpcServer, server)
+	gapi.RegisterEventserviceServer(grpcServer, server)
 	reflection.Register(grpcServer)
 
 	go func() {

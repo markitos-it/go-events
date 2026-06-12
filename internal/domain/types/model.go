@@ -5,49 +5,47 @@ import (
 	"time"
 )
 
-type Golden struct {
+type Event struct {
 	Id        string    `json:"id" binding:"required,uuid"`
 	Name      string    `json:"name" binding:"required"`
-	Content   string    `json:"content" gorm:"type:text"`
+	Source    string    `json:"content" binding:"required"`
+	Payload   string    `json:"payload" binding:"required"`
 	CreatedAt time.Time `json:"created_at" binding:"required,datetime" default:"now"`
 	UpdatedAt time.Time `json:"updated_at" binding:"required,datetime" default:"now"`
 }
 
-func NewGolden(id, name, content string) (*Golden, error) {
-	secureId, err := NewGoldenId(id)
+func NewEvent(id, name, content, payload string) (*Event, error) {
+	secureId, err := NewEventId(id)
 
 	if err != nil {
-		log.Printf("❌ DEBUG ERROR (NewGoldenId): %v\n", err)
+		log.Printf("❌ DEBUG ERROR (NewEventId): %v\n", err)
 		return nil, err
 	}
 
-	secureName, err := NewGoldenName(name)
+	secureName, err := NewEventName(name)
 	if err != nil {
-		log.Printf("❌ DEBUG ERROR (NewGoldenName): %v\n", err)
+		log.Printf("❌ DEBUG ERROR (NewEventName): %v\n", err)
 		return nil, err
 	}
 
-	secureContent, err := NewGoldenContent(content)
+	secureSource, err := NewEventSource(content)
 	if err != nil {
-		log.Printf("❌ DEBUG ERROR (NewGoldenContent): %v\n", err)
+		log.Printf("❌ DEBUG ERROR (NewEventSource): %v\n", err)
 		return nil, err
 	}
 
-	return &Golden{
+	securePayload, err := NewEventPayload(payload)
+	if err != nil {
+		log.Printf("❌ DEBUG ERROR (NewEventPayload): %v\n", err)
+		return nil, err
+	}
+
+	return &Event{
 		Id:        secureId.Value(),
 		Name:      secureName.Value(),
-		Content:   secureContent.Value(),
+		Source:    secureSource.Value(),
+		Payload:   securePayload.Value(),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}, nil
-}
-
-func (h *Golden) GetId() *GoldenId {
-	result, _ := NewGoldenId(h.Id)
-	return result
-}
-
-func (h *Golden) GetContent() *GoldenContent {
-	result, _ := NewGoldenContent(h.Content)
-	return result
 }

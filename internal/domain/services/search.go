@@ -2,33 +2,33 @@ package services
 
 import "govent/internal/domain/types"
 
-type GoldensearchResponse struct {
-	Data []*types.Golden `json:"data"`
+type EventsearchResponse struct {
+	Data []*types.Event `json:"data"`
 }
 
-type GoldensearchRequest struct {
+type EventsearchRequest struct {
 	SearchTerm string `json:"searchTerm"`
 	PageNumber int    `json:"pageNumber" bindings:"min=1"`
 	PageSize   int    `json:"pageSize" bindings:"min=10,max=100"`
 }
 
-type GoldensearchService struct {
-	Repository types.GoldenRepository
+type EventsearchService struct {
+	Repository types.EventRepository
 }
 
-func NewGoldensearchService(repository types.GoldenRepository) GoldensearchService {
-	return GoldensearchService{
+func NewEventsearchService(repository types.EventRepository) EventsearchService {
+	return EventsearchService{
 		Repository: repository,
 	}
 }
 
-func (s GoldensearchService) Do(request GoldensearchRequest) (*GoldensearchResponse, error) {
+func (s EventsearchService) Do(request EventsearchRequest) (*EventsearchResponse, error) {
 	response, err := s.Repository.SearchAndPaginate(request.SearchTerm, request.PageNumber, request.PageSize)
 	if err != nil {
 		return nil, err
 	}
 
-	return &GoldensearchResponse{
+	return &EventsearchResponse{
 		Data: response,
 	}, nil
 }

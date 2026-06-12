@@ -11,28 +11,28 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func TestCanUpdateAGolden(t *testing.T) {
-	golden := createPersistedRandomGolden()
-	updatedName := golden.Name + " UPDATED"
+func TestCanUpdateAEvent(t *testing.T) {
+	event := createPersistedRandomEvent()
+	updatedName := event.Name + " UPDATED"
 
-	resp, err := grpcClient.UpdateGolden(ctx, &gapi.UpdateGoldenRequest{
-		Id:   golden.Id,
+	resp, err := grpcClient.UpdateEvent(ctx, &gapi.UpdateEventRequest{
+		Id:   event.Id,
 		Name: updatedName,
 		/* ___CUSTOM_TEST_FIELDS___*/
 	})
 
 	require.NoError(t, err)
-	require.Equal(t, golden.Id, resp.Updated)
+	require.Equal(t, event.Id, resp.Updated)
 
-	getResp, _ := grpcClient.GetGolden(ctx, &gapi.GetGoldenRequest{Id: golden.Id})
+	getResp, _ := grpcClient.GetEvent(ctx, &gapi.GetEventRequest{Id: event.Id})
 	require.Equal(t, updatedName, getResp.Name)
 
-	deletePersistedRandomGolden(golden.Id)
+	deletePersistedRandomEvent(event.Id)
 }
 
-func TestCantUpdateANonExistingGolden(t *testing.T) {
+func TestCantUpdateANonExistingEvent(t *testing.T) {
 	randomId := shared.UUIDv4()
-	_, err := grpcClient.UpdateGolden(ctx, &gapi.UpdateGoldenRequest{
+	_, err := grpcClient.UpdateEvent(ctx, &gapi.UpdateEventRequest{
 		Id:   randomId,
 		Name: shared.RandomPersonalName(),
 		/* ___CUSTOM_TEST_FIELDS___*/
@@ -44,8 +44,8 @@ func TestCantUpdateANonExistingGolden(t *testing.T) {
 	require.Equal(t, codes.NotFound, st.Code())
 }
 
-func TestCantUpdateAnInvalidGoldenId(t *testing.T) {
-	_, err := grpcClient.UpdateGolden(ctx, &gapi.UpdateGoldenRequest{
+func TestCantUpdateAnInvalidEventId(t *testing.T) {
+	_, err := grpcClient.UpdateEvent(ctx, &gapi.UpdateEventRequest{
 		Id:   "an-invalid-id-format",
 		Name: shared.RandomPersonalName(),
 		/* ___CUSTOM_TEST_FIELDS___*/

@@ -9,10 +9,10 @@ import (
 )
 
 func TestCanGetAllResources(t *testing.T) {
-	var service = services.NewGoldenAllService(repository)
-	golden, err := service.Do()
+	var service = services.NewEventAllService(repository)
+	event, err := service.Do()
 
 	assert.Nil(t, err)
-	assert.IsType(t, services.GoldenAllResponse{}, *golden)
+	assert.IsType(t, services.EventAllResponse{}, *event)
 	assert.True(t, repository.AllHaveBeenCalled())
 }

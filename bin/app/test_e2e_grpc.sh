@@ -6,15 +6,15 @@ ENVIRONMENT_FILE="bin/shared/environment.sh"
 source $ENVIRONMENT_FILE
 
 SERVER="localhost:30000"
-SERVICE="golden.Goldenservice"
+SERVICE="event.Eventservice"
 
 echo "🚀 Iniciando Test E2E gRPC para $SERVICE en $SERVER..."
 
-UPLOADS_DIR=${GOLDEN_UPLOADS_BASEDIR:-./uploads}
+UPLOADS_DIR=${EVENT_UPLOADS_BASEDIR:-./uploads}
 mkdir -p $UPLOADS_DIR
 
 # Garantizar que el directorio por defecto exista en caso de que el server no tenga las variables de entorno
-mkdir -p /tmp/goldens
+mkdir -p /tmp/events
 
 # Check dependencies
 if ! command -v grpcurl &> /dev/null; then
@@ -28,61 +28,61 @@ if ! command -v jq &> /dev/null; then
 fi
 
 echo "--------------------------------------------------"
-echo "1️⃣  Creando un nuevo Golden..."
+echo "1️⃣  Creando un nuevo Event..."
 CREATE_PAYLOAD='{
-  "name": "GoldenTest",
-  "content": "GoldenContent",
+  "name": "EventTest",
+  "content": "EventSource",
   "poster_data": ""__CUSTOM_E2E_FIELDS_CREATE__
 }'
 PLACEHOLDER_CREATE="__CUSTOM_E2E_""FIELDS_CREATE__"
 echo "🔍 Placeholders encontrados: $PLACEHOLDER_CREATE"
 CREATE_PAYLOAD="${CREATE_PAYLOAD//$PLACEHOLDER_CREATE/}"
 echo "🔍 Payload enviado: $CREATE_PAYLOAD"
-CREATE_RESP=$(grpcurl -plaintext -d "$CREATE_PAYLOAD" $SERVER $SERVICE/CreateGolden)
+CREATE_RESP=$(grpcurl -plaintext -d "$CREATE_PAYLOAD" $SERVER $SERVICE/CreateEvent)
 
 echo "$CREATE_RESP"
-GOLDEN_ID=$(echo "$CREATE_RESP" | jq -r '.id')
+EVENT_ID=$(echo "$CREATE_RESP" | jq -r '.id')
 
-if [ -z "$GOLDEN_ID" ] || [ "$GOLDEN_ID" == "null" ]; then
+if [ -z "$EVENT_ID" ] || [ "$EVENT_ID" == "null" ]; then
     echo "❌ Error: No se pudo extraer el ID de la respuesta."
     exit 1
 fi
-echo "✅ Creado exitosamente con ID: $GOLDEN_ID"
+echo "✅ Creado exitosamente con ID: $EVENT_ID"
 echo "--------------------------------------------------"
 
-echo "2️⃣  Obteniendo Golden por ID..."
-grpcurl -plaintext -d "{\"id\": \"$GOLDEN_ID\"}" $SERVER $SERVICE/GetGolden
+echo "2️⃣  Obteniendo Event por ID..."
+grpcurl -plaintext -d "{\"id\": \"$EVENT_ID\"}" $SERVER $SERVICE/GetEvent
 echo "✅ Get exitoso."
 echo "--------------------------------------------------"
 
-echo "3️⃣  Actualizando Golden..."
+echo "3️⃣  Actualizando Event..."
 UPDATE_PAYLOAD="{
-  \"id\": \"$GOLDEN_ID\",
-  \"name\": \"GoldenTestUpdated\",
-  \"content\": \"GoldenContentUpdated\",
+  \"id\": \"$EVENT_ID\",
+  \"name\": \"EventTestUpdated\",
+  \"content\": \"EventSourceUpdated\",
   \"poster_data\": \"\"__CUSTOM_E2E_FIELDS_UPDATE__
 }"
 PLACEHOLDER_UPDATE="__CUSTOM_E2E_""FIELDS_UPDATE__"
 UPDATE_PAYLOAD="${UPDATE_PAYLOAD//$PLACEHOLDER_UPDATE/}"
 
 echo "🔍 Payload enviado: $UPDATE_PAYLOAD"
-grpcurl -plaintext -d "$UPDATE_PAYLOAD" $SERVER $SERVICE/UpdateGolden
+grpcurl -plaintext -d "$UPDATE_PAYLOAD" $SERVER $SERVICE/UpdateEvent
 echo "✅ Update exitoso."
 echo "--------------------------------------------------"
 
-echo "4️⃣  Listando Goldens..."
-grpcurl -plaintext $SERVER $SERVICE/ListGoldens
+echo "4️⃣  Listando Events..."
+grpcurl -plaintext $SERVER $SERVICE/ListEvents
 echo "✅ List exitoso."
 echo "--------------------------------------------------"
 
-echo "5️⃣  Borrando Golden..."
-grpcurl -plaintext -d "{\"id\": \"$GOLDEN_ID\"}" $SERVER $SERVICE/DeleteGolden
+echo "5️⃣  Borrando Event..."
+grpcurl -plaintext -d "{\"id\": \"$EVENT_ID\"}" $SERVER $SERVICE/DeleteEvent
 echo "✅ Delete exitoso."
 echo "--------------------------------------------------"
 
 echo "6️⃣  Verificando que fue borrado..."
 set +e
-GET_DELETED_RESP=$(grpcurl -plaintext -d "{\"id\": \"$GOLDEN_ID\"}" $SERVER $SERVICE/GetGolden 2>&1)
+GET_DELETED_RESP=$(grpcurl -plaintext -d "{\"id\": \"$EVENT_ID\"}" $SERVER $SERVICE/GetEvent 2>&1)
 set -e
 
 if echo "$GET_DELETED_RESP" | grep -i -q "not found\|notfound"; then

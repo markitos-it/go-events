@@ -9,7 +9,7 @@ import (
 	status "google.golang.org/grpc/status"
 )
 
-func (s *Server) SearchGoldens(ctx context.Context, in *SearchGoldensRequest) (*SearchGoldensResponse, error) {
+func (s *Server) SearchEvents(ctx context.Context, in *SearchEventsRequest) (*SearchEventsResponse, error) {
 	if in.PageNumber < 1 {
 		return nil, status.Error(codes.InvalidArgument, "invalid page number")
 	}
@@ -18,8 +18,8 @@ func (s *Server) SearchGoldens(ctx context.Context, in *SearchGoldensRequest) (*
 		return nil, status.Error(codes.InvalidArgument, "invalid page size")
 	}
 
-	var service = services.NewGoldensearchService(s.repository)
-	var request = services.GoldensearchRequest{
+	var service = services.NewEventsearchService(s.repository)
+	var request = services.EventsearchRequest{
 		SearchTerm: in.SearchTerm,
 		PageNumber: int(in.PageNumber),
 		PageSize:   int(in.PageSize),
@@ -30,10 +30,10 @@ func (s *Server) SearchGoldens(ctx context.Context, in *SearchGoldensRequest) (*
 		return nil, status.Error(s.GetGRPCCode(err), err.Error())
 	}
 
-	domainGoldens := response.Data
-	grpcCollection := s.ToProtos(domainGoldens)
+	domainEvents := response.Data
+	grpcCollection := s.ToProtos(domainEvents)
 
-	return &SearchGoldensResponse{
-		Goldens: grpcCollection,
+	return &SearchEventsResponse{
+		Events: grpcCollection,
 	}, nil
 }

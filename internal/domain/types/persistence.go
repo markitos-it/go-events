@@ -1,10 +1,10 @@
 package types
 
-type GoldenRepository interface {
-	Create(golden *Golden) error
-	Delete(id *GoldenId) error
-	One(id *GoldenId) (*Golden, error)
-	Update(golden *Golden) error
-	All() ([]*Golden, error)
-	SearchAndPaginate(searchTerm string, pageNumber int, pageSize int) ([]*Golden, error)
+import "context"
+
+type EventRepository interface {
+	Create(ctx context.Context, event *Event) error
+	One(ctx context.Context, id *EventId) (*Event, error)
+	AllByName(ctx context.Context, name *EventName) ([]*Event, error)
+	AllByNameAndSource(ctx context.Context, name *EventName, source *EventSource) ([]*Event, error)
 }

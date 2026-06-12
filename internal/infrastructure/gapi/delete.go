@@ -11,20 +11,20 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) DeleteGolden(ctx context.Context, in *DeleteGoldenRequest) (*DeleteGoldenResponse, error) {
-	if _, err := types.NewGoldenId(in.Id); err != nil {
+func (s *Server) DeleteEvent(ctx context.Context, in *DeleteEventRequest) (*DeleteEventResponse, error) {
+	if _, err := types.NewEventId(in.Id); err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	request := services.GoldenDeleteRequest{Id: in.Id}
+	request := services.EventDeleteRequest{Id: in.Id}
 
-	var service = services.NewGoldenDeleteService(s.repository)
+	var service = services.NewEventDeleteService(s.repository)
 	if err := service.Do(request); err != nil {
-		log.Printf("❌ ERROR (DeleteGolden): %v\n", err)
+		log.Printf("❌ ERROR (DeleteEvent): %v\n", err)
 		return nil, status.Error(s.GetGRPCCode(err), err.Error())
 	}
 
-	return &DeleteGoldenResponse{
+	return &DeleteEventResponse{
 		Deleted: request.Id,
 	}, nil
 }

@@ -10,35 +10,35 @@ import (
 )
 
 func TestCanDeleteAUser(t *testing.T) {
-	var request = services.GoldenDeleteRequest{
+	var request = services.EventDeleteRequest{
 		Id: shared.UUIDv4(),
 	}
 
-	var service = services.NewGoldenDeleteService(repository)
+	var service = services.NewEventDeleteService(repository)
 	err := service.Do(request)
 	assert.Nil(t, err)
 	assert.True(t, repository.DeleteHaveBeenCalledWith(&request.Id))
 }
 
 func TestCantDeleteWithoutId(t *testing.T) {
-	var request = services.GoldenDeleteRequest{}
+	var request = services.EventDeleteRequest{}
 
-	var service = services.NewGoldenDeleteService(repository)
+	var service = services.NewEventDeleteService(repository)
 	err := service.Do(request)
 
-	assert.ErrorIs(t, err, shared.ErrGoldenBadRequest)
+	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.NotNil(t, err)
 	assert.False(t, repository.DeleteHaveBeenCalledWith(&request.Id))
 }
 
 func TestCantDeleteWithInvalidId(t *testing.T) {
-	var request = services.GoldenDeleteRequest{
+	var request = services.EventDeleteRequest{
 		Id: "invalid-id",
 	}
 
-	var service = services.NewGoldenDeleteService(repository)
+	var service = services.NewEventDeleteService(repository)
 	err := service.Do(request)
 
-	assert.ErrorIs(t, err, shared.ErrGoldenBadRequest)
+	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.False(t, repository.DeleteHaveBeenCalledWith(&request.Id))
 }

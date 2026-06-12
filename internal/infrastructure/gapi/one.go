@@ -10,23 +10,24 @@ import (
 	status "google.golang.org/grpc/status"
 )
 
-func (s *Server) GetGolden(ctx context.Context, in *GetGoldenRequest) (*GetGoldenResponse, error) {
-	if _, err := types.NewGoldenId(in.Id); err != nil {
+func (s *Server) GetEvent(ctx context.Context, in *GetEventRequest) (*GetEventResponse, error) {
+	if _, err := types.NewEventId(in.Id); err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	request := services.GoldenOneRequest{Id: in.Id}
+	request := services.EventOneRequest{Id: in.Id}
 
-	var service = services.NewGoldenOneService(s.repository)
+	var service = services.NewEventOneService(s.repository)
 	response, err := service.Do(request)
 	if err != nil {
 		return nil, status.Error(s.GetGRPCCode(err), err.Error())
 
 	}
 
-	return &GetGoldenResponse{
+	return &GetEventResponse{
 		Id:      response.Data.Id,
 		Name:    response.Data.Name,
-		Content: response.Data.Content,
+		Source:  response.Data.Source,
+		Payload: response.Data.Payload,
 	}, nil
 }

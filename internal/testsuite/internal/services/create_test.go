@@ -11,14 +11,14 @@ import (
 )
 
 func TestCanCreateAUser(t *testing.T) {
-	var golden = types.Golden{
+	var event = types.Event{
 		Name: shared.RandomPersonalName(),
 	}
-	var request = services.GoldenCreateRequest{
-		Name: golden.Name,
+	var request = services.EventCreateRequest{
+		Name: event.Name,
 	}
 
-	var service = services.NewGoldenCreateService(repository)
+	var service = services.NewEventCreateService(repository)
 	response, err := service.Do(request)
 
 	assert.Nil(t, err)
@@ -28,25 +28,25 @@ func TestCanCreateAUser(t *testing.T) {
 }
 
 func TestCantCreateWithoutName(t *testing.T) {
-	var request = services.GoldenCreateRequest{}
+	var request = services.EventCreateRequest{}
 
-	var service = services.NewGoldenCreateService(repository)
+	var service = services.NewEventCreateService(repository)
 	_, err := service.Do(request)
 
 	assert.NotNil(t, err)
-	assert.ErrorIs(t, err, shared.ErrGoldenBadRequest)
+	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.False(t, repository.CreateHaveBeenCalledWith(&request.Name))
 }
 
 func TestCantCreateWithoutValidName(t *testing.T) {
-	var request = services.GoldenCreateRequest{
+	var request = services.EventCreateRequest{
 		Name: "",
 	}
 
-	var service = services.NewGoldenCreateService(repository)
+	var service = services.NewEventCreateService(repository)
 	_, err := service.Do(request)
 
 	assert.NotNil(t, err)
-	assert.ErrorIs(t, err, shared.ErrGoldenBadRequest)
+	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
 	assert.False(t, repository.CreateHaveBeenCalledWith(&request.Name))
 }
