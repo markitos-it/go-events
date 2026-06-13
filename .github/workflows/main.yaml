@@ -48,6 +48,11 @@ jobs:
           make db-create
           echo "✅ **Create Database** completado." >> $GITHUB_STEP_SUMMARY
 
+      - name: Tidy Go Modules
+        run: |
+          make tidy
+          echo "✅ **Tidy Go Modules** completado." >> $GITHUB_STEP_SUMMARY
+
       - name: Start API Server & Wait for Port 30000
         id: api-start
         run: |
