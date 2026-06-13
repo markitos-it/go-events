@@ -17,5 +17,5 @@ show_config "full"
 
 #:[.'.]:>-------------------------------------
 show_banner
-go clean -testcache && go test -p 1 ./...
+go clean -testcache && go test  ./... 
 #:[.'.]:>-------------------------------------
