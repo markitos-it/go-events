@@ -43,20 +43,20 @@ function setup_environment() {
 }
 
 function show_config() {
-    echo "Starting configuration:"
-    echo "DATABASE_DRIVER=$DATABASE_DRIVER"
-    echo "DATABASE_DSN=$DATABASE_DSN"
+    echo "⚙️  Configuration Profile:"
+    echo "   🔹 DRIVER   : $DATABASE_DRIVER"
+    echo "   🔹 DSN      : $DATABASE_DSN"
     
     if [[ "${1:-}" == "full" ]]; then
-        echo "GRPC_SERVER_ADDRESS=$GRPC_SERVER_ADDRESS"
-        echo "POSTGRES_CONTAINER_NAME=$POSTGRES_CONTAINER_NAME"
-        echo "SPANNER_PROJECT=$SPANNER_PROJECT"
-        echo "SPANNER_INSTANCE=$SPANNER_INSTANCE"
-        echo "SPANNER_DATABASE=$SPANNER_DATABASE"
-        echo "SPANNER_DSN=$SPANNER_DSN"
+        echo "   🔹 GRPC     : $GRPC_SERVER_ADDRESS"
+        echo "   🔹 PG_CONT  : $POSTGRES_CONTAINER_NAME"
+        echo "   🔹 SP_PROJ  : $SPANNER_PROJECT"
+        echo "   🔹 SP_INST  : $SPANNER_INSTANCE"
+        echo "   🔹 SP_DB    : $SPANNER_DATABASE"
+        echo "   🔹 SP_DSN   : $SPANNER_DSN"
     fi
     
-    echo "-------------------------------------"
+    echo "─────────────────────────────────────"
 }
 
 function show_banner() {
