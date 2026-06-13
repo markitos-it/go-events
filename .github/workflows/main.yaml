@@ -55,7 +55,7 @@ jobs:
           echo "⏳ Esperando de forma dinámica a que el API responda en el puerto 30000..."
           FORKS=0
           until nc -z 127.0.0.1 30000 || [ $FORKS -eq 15 ]; do
-            sleep 0.5
+            sleep 1
             FORKS=$((FORKS + 1))
           done
           if nc -z 127.0.0.1 30000; then
