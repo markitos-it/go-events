@@ -1,5 +1,7 @@
 .DEFAULT_GOAL := help
-.PHONY: help \
+.PHONY: 
+	help \
+	commits-help \
 	start \
 	test \
 	test-e2e \
@@ -34,6 +36,7 @@ help:
 	@echo "['.']:> 🚀 MARKITOS-IT GO VENTS COMMANDS"
 	@echo "['.']:> =================================================="
 	@printf "  \033[36m%-24s\033[0m %s\n" "help" "Muestra este menú de ayuda interactivo"
+	@printf "  \033[36m%-24s\033[0m %s\n" "commits-help" "Muestra ayuda para commits"
 	@printf "  \033[36m%-24s\033[0m %s\n" "build" "Genera el binario final de la aplicación en la carpeta dist"
 	@printf "  \033[36m%-24s\033[0m %s\n" "start" "Inicia la aplicación localmente"
 	@printf "  \033[36m%-24s\033[0m %s\n" "test" "Ejecuta la suite de pruebas de la aplicación"
@@ -64,6 +67,21 @@ help:
 	@echo "['.']:> =================================================="
 	@echo ""
 
+commits-help:
+	@echo ""
+	@echo "📚 \033[1mGuía rápida de Conventional Commits!:\033[0m"
+	@printf "  \033[36m%-10s\033[0m %s\n" "feat:" "Nueva característica (Sube versión MINOR)"
+	@printf "  \033[36m%-10s\033[0m %s\n" "fix:" "Corrección de un error (Sube versión PATCH)"
+	@printf "  \033[36m%-10s\033[0m %s\n" "docs:" "Cambios en la documentación"
+	@printf "  \033[36m%-10s\033[0m %s\n" "chore:" "Tareas de mantenimiento o herramientas (ej. Docker, Makefile)"
+	@printf "  \033[36m%-10s\033[0m %s\n" "refactor:" "Cambios en el código que no fijan errores ni añaden funciones"
+	@echo "  --- (Usa '!' para Breaking Changes, ej: feat!:) ---"
+	@printf "  \033[36m%-10s\033[0m %s\n" "feat!:" "Nueva característica con cambios importantes"
+	@printf "  \033[36m%-10s\033[0m %s\n" "fix!:" "Corrección de error con cambios importantes"
+	@printf "  \033[36m%-10s\033[0m %s\n" "docs!:" "Documentación con cambios importantes"
+	@printf "  \033[36m%-10s\033[0m %s\n" "chore!:" "Mantenimiento con cambios importantes"
+	@printf "  \033[36m%-10s\033[0m %s\n" "refactor!:" "Refactorización con cambios importantes"
+	@echo ""
 
 start:
 	bash bin/app/start.sh
