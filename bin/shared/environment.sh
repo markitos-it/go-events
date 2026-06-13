@@ -3,7 +3,7 @@
 # Centralized environment configuration
 
 DEFAULT_DATABASE_HOST="localhost"
-DEFAULT_DATABASE_DRIVER="postgres"
+DEFAULT_DATABASE_DRIVER="spanner"
 DEFAULT_DATABASE_USER="goevents"
 DEFAULT_DATABASE_PASSWORD="goevents"
 DEFAULT_DATABASE_NAME="goevents"
@@ -15,6 +15,7 @@ DEFAULT_SPANNER_PROJECT="local-project"
 DEFAULT_SPANNER_INSTANCE="local-instance"
 DEFAULT_SPANNER_DATABASE="goevents"
 DEFAULT_SPANNER_DSN="projects/${DEFAULT_SPANNER_PROJECT}/instances/${DEFAULT_SPANNER_INSTANCE}/databases/${DEFAULT_SPANNER_DATABASE}"
+DEFAULT_GOOGLE_APPLICATION_CREDENTIALS=extras/terraform/spanner/gcp-credentials.json 
 
 function setup_environment() {
     : ${DEFAULT_DATABASE_DSN:="${DEFAULT_POSTGRES_DSN}"}
@@ -30,11 +31,13 @@ function setup_environment() {
     : ${SPANNER_DATABASE:="${DEFAULT_SPANNER_DATABASE}"}
     : ${SPANNER_DSN:="${DEFAULT_SPANNER_DSN}"}
     : ${DATABASE_DRIVER:="${DEFAULT_DATABASE_DRIVER}"}
+    : ${GOOGLE_APPLICATION_CREDENTIALS:="${DEFAULT_GOOGLE_APPLICATION_CREDENTIALS}"}
 
     export DATABASE_DRIVER
     export DATABASE_DSN
     export GRPC_SERVER_ADDRESS
     export POSTGRES_CONTAINER_NAME
+    export GOOGLE_APPLICATION_CREDENTIALS
     export SPANNER_PROJECT
     export SPANNER_INSTANCE
     export SPANNER_DATABASE
@@ -46,15 +49,12 @@ function show_config() {
     echo "⚙️  Configuration Profile:"
     echo "   🔹 DRIVER   : $DATABASE_DRIVER"
     echo "   🔹 DSN      : $DATABASE_DSN"
-    
-    if [[ "${1:-}" == "full" ]]; then
-        echo "   🔹 GRPC     : $GRPC_SERVER_ADDRESS"
-        echo "   🔹 PG_CONT  : $POSTGRES_CONTAINER_NAME"
-        echo "   🔹 SP_PROJ  : $SPANNER_PROJECT"
-        echo "   🔹 SP_INST  : $SPANNER_INSTANCE"
-        echo "   🔹 SP_DB    : $SPANNER_DATABASE"
-        echo "   🔹 SP_DSN   : $SPANNER_DSN"
-    fi
+    echo "   🔹 GRPC     : $GRPC_SERVER_ADDRESS"
+    echo "   🔹 PG_CONT  : $POSTGRES_CONTAINER_NAME"
+    echo "   🔹 SP_PROJ  : $SPANNER_PROJECT"
+    echo "   🔹 SP_INST  : $SPANNER_INSTANCE"
+    echo "   🔹 SP_DB    : $SPANNER_DATABASE"
+    echo "   🔹 SP_DSN   : $SPANNER_DSN"
     
     echo "─────────────────────────────────────"
 }

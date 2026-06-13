@@ -61,7 +61,7 @@ db-drop:
 	bash bin/database/postgres/drop.sh
 
 db-seed:
-	bash bin/database/postgres/seed_data.sh
+	bash bin/database/postgres/seed.sh
 
 spanner-start:
 	bash bin/database/spanner/start.sh
@@ -74,6 +74,9 @@ spanner-create:
 
 spanner-drop:
 	bash bin/database/spanner/drop.sh
+
+spanner-seed:
+	bash bin/database/spanner/seed.sh
 
 lint:
 	bash bin/code/lint.sh
