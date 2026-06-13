@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-.PHONY: help start test proto db-start db-stop db-create db-drop format lint support-install-linter support-uninstall-linter build appsec-install appsec-uninstall appsec-test tidy
+.PHONY: help start test test-e2e proto db-start db-stop db-create db-drop db-seed format lint support-install-linter support-uninstall-linter build appsec-install appsec-uninstall appsec-test tidy
 
 help:
 	@echo ""
@@ -10,6 +10,7 @@ help:
 	@printf "  \033[36m%-24s\033[0m %s\n" "build" "Genera el binario final de la aplicación en la carpeta dist"
 	@printf "  \033[36m%-24s\033[0m %s\n" "start" "Inicia la aplicación localmente"
 	@printf "  \033[36m%-24s\033[0m %s\n" "test" "Ejecuta la suite de pruebas de la aplicación"
+	@printf "  \033[36m%-24s\033[0m %s\n" "test-e2e" "Ejecuta las pruebas End-to-End mediante gRPC"
 	@printf "  \033[36m%-24s\033[0m %s\n" "proto" "Genera los archivos de código a partir de los de gRPC .proto"
 	@printf "  \033[36m%-24s\033[0m %s\n" "lint" "Analiza el código Go con golangci-lint"
 	@printf "  \033[36m%-24s\033[0m %s\n" "lint-fix" "Formatea el código Go automáticamente (gofmt, goimports)"
@@ -18,6 +19,7 @@ help:
 	@printf "  \033[36m%-24s\033[0m %s\n" "db-drop" "Elimina (drop) la base de datos por completo"
 	@printf "  \033[36m%-24s\033[0m %s\n" "db-start" "Inicia el entorno de la base de datos"
 	@printf "  \033[36m%-24s\033[0m %s\n" "db-stop" "Detiene el entorno de la base de datos"
+	@printf "  \033[36m%-24s\033[0m %s\n" "db-seed" "Puebla la base de datos con datos de prueba a través de gRPC"
 	@printf "  \033[36m%-24s\033[0m %s\n" "support-install-linter" "Instala la herramienta golangci-lint"
 	@printf "  \033[36m%-24s\033[0m %s\n" "support-uninstall-linter" "Desinstala la herramienta golangci-lint"
 	@printf "  \033[36m%-24s\033[0m %s\n" "appsec-install" "Instala herramientas de seguridad (Snyk, Gitleaks)"
@@ -33,6 +35,9 @@ start:
 test:
 	bash bin/app/test.sh
 
+test-e2e:
+	bash bin/app/test_e2e_grpc.sh
+
 test-verbose:
 	bash bin/app/test-verbose.sh
 
@@ -40,16 +45,19 @@ proto:
 	bash bin/app/proto.sh
 
 db-start:
-	bash bin/database/start.sh
+	bash bin/database/postgres/start.sh
 
 db-stop:
-	bash bin/database/stop.sh
+	bash bin/database/postgres/stop.sh
 
 db-create:
-	bash bin/database/create.sh
+	bash bin/database/postgres/create.sh
 
 db-drop:
-	bash bin/database/drop.sh
+	bash bin/database/postgres/drop.sh
+
+db-seed:
+	bash bin/database/postgres/seed_data.sh
 
 lint:
 	bash bin/code/lint.sh
