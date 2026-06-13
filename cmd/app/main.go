@@ -48,13 +48,15 @@ func main() {
 	logger.OpenGroup("main")
 
 	logger.Info("['.']:>--------------------------------------------")
-	logger.Info("['.']:>--- <starting markitos-it-svc-event>  ---")
-	logger.Info("['.']:>------- logger loaded")
+	logger.Info("['.']:>-- - <starting markitos-it-go-events>    ---")
+	logger.Info("['.']:>--------------------------------------------")
+	logger.Info("['.']:> 🪵  logger loaded")
+	logger.Info("['.']:>--------------------------------------------")
 	loadConfiguration(logger)
 	loadDatabase(logger)
 	startServers(logger)
 	logger.Info("['.']:>--------------------------------------------")
-	logger.Info("['.']:>--- <markitos-it-svc-event stopped>  ---")
+	logger.Info("['.']:>---   <markitos-it-go-events stopped>    ---")
 	logger.Info("['.']:>")
 }
 
@@ -68,12 +70,12 @@ func main() {
 func loadConfiguration(logger types.Logger) {
 	loadedConfig, err := configuration.LoadConfiguration(".", logger)
 	if err != nil {
-		logger.Error("['.']:>------- unable to load configuration: " + err.Error())
+		logger.Error("['.']:> unable to load configuration: " + err.Error())
 		os.Exit(1)
 	}
 
 	config = loadedConfig
-	logger.Info("['.']:>------- configuration loaded")
+	logger.Info("['.']:> configuration loaded")
 
 }
 
@@ -113,10 +115,10 @@ func loadDatabase(logger types.Logger) {
 		if err != nil {
 			logger.Fatal("['.']:> error unable to migrate spanner database:" + err.Error())
 		}
-		logger.Info("['.']:>------- spanner tables migrated using structs (singular)")
+		logger.Info("['.']:> spanner tables migrated using structs (singular)")
 
 		repository = database.NewEventSpannerRepository(dbSpanner)
-		logger.Info("['.']:>------- spanner database initialized")
+		logger.Info("['.']:> spanner database initialized")
 
 	case "mariadb":
 		dbMaria, err := gorm.Open(mysql.Open(config.DatabaseDsn), &gorm.Config{
@@ -130,10 +132,10 @@ func loadDatabase(logger types.Logger) {
 		if err != nil {
 			logger.Fatal("['.']:> error unable to migrate mariadb database:" + err.Error())
 		}
-		logger.Info("['.']:>------- mariadb tables migrated using structs")
+		logger.Info("['.']:> mariadb tables migrated using structs")
 
 		repository = database.NewEventMariaDBRepository(dbMaria)
-		logger.Info("['.']:>------- mariadb database initialized")
+		logger.Info("['.']:> mariadb database initialized")
 
 	case "postgres":
 		dbPostgres, err := gorm.Open(postgres.Open(config.DatabaseDsn), &gorm.Config{
@@ -147,10 +149,10 @@ func loadDatabase(logger types.Logger) {
 		if err != nil {
 			logger.Fatal("['.']:> error unable to migrate postgres database:" + err.Error())
 		}
-		logger.Info("['.']:>------- postgres tables migrated using structs")
+		logger.Info("['.']:> postgres tables migrated using structs")
 
 		repository = database.NewEventPostgresRepository(dbPostgres)
-		logger.Info("['.']:>------- postgres database initialized")
+		logger.Info("['.']:> postgres database initialized")
 
 	default:
 		logger.Fatal("['.']:> error unsupported database driver: " + config.DatabaseDriver)
@@ -188,7 +190,7 @@ func startServers(logger types.Logger) {
 		}
 	}()
 	<-stop
-	logger.Info("['.']:>------- shutting down servers gracefully...")
+	logger.Info("['.']:> shutting down servers gracefully...")
 	cancel()
 	wg.Wait()
 }
@@ -275,6 +277,10 @@ func runGRPCServer(ctx context.Context, logger types.Logger) error {
 	}()
 
 	logger.Info("['.']:> gRPC server running at address: " + config.GRPCServerAddress)
+	logger.Info("['.']:>--------------------------------------------")
+	logger.Info("['.']:>---   <running markitos-it-go-events>    ---")
+	logger.Info("['.']:>--------------------------------------------")
+
 	logger.CloseGroup("main")
 
 	return grpcServer.Serve(listener)
