@@ -56,10 +56,10 @@ jobs:
       - name: Start API Server & Wait for Port 30000
         id: api-start
         run: |
-          make start &
+          make start > api_server.log 2>&1 &
           echo "⏳ Esperando de forma dinámica a que el API responda en el puerto 30000..."
           FORKS=0
-          until nc -z 127.0.0.1 30000 || [ $FORKS -eq 15 ]; do
+          until nc -z 127.0.0.1 30000 || [ $FORKS -eq 60 ]; do
             sleep 1
             FORKS=$((FORKS + 1))
           done
@@ -68,6 +68,7 @@ jobs:
             echo "✅ **Start API Server & Wait for Port 30000** completado." >> $GITHUB_STEP_SUMMARY
           else
             echo "❌ ERROR: El API no logró iniciar en el puerto 30000 a tiempo."
+            cat api_server.log
             exit 1
           fi
 
