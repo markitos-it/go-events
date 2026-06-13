@@ -83,18 +83,17 @@ func TestAckMessagesInvalidId(t *testing.T) {
 }
 
 func TestAckMessagesNotFound(t *testing.T) {
-	// Try to ack a valid UUID that doesn't exist in the queue
 	nonExistentId := shared.UUIDv4()
 	_, err := grpcClient.AckMessages(ctx, &gapi.AckMessagesRequest{
 		QueueIds: []string{nonExistentId},
 	})
 
 	require.Error(t, err)
-	
+
 	log.Println("-----------------------------------------------------")
 	log.Println("err", err)
 	log.Println("-----------------------------------------------------")
-	
+
 	// Wait, currently gapi ack.go might return internal error for not found, let's just require error for now
 	// Depending on implementation it might be Internal or NotFound
 	// Let's assert based on what we see when we run it.
