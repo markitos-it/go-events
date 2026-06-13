@@ -19,7 +19,7 @@ func TestEventCanGetOne(t *testing.T) {
 	})
 
 	require.NoError(t, err)
-	require.Equal(t, event.Name, resp.Name)
+	require.Equal(t, event.Slug, resp.Slug)
 	require.Equal(t, event.Id, resp.Id)
 
 	deletePersistedRandomEvent(resp.Id)

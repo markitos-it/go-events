@@ -39,7 +39,7 @@ func (r *EventPostgresRepository) Create(ctx context.Context, event *types.Event
 
 		var subscribers []string
 		err := tx.Table("subscriptions").
-			Where("event_name = ? AND source = ?", event.Name, event.Source).
+			Where("event_name = ? AND source = ?", event.Slug, event.Source).
 			Pluck("subscriber_name", &subscribers).Error
 
 		if err != nil {
@@ -80,11 +80,11 @@ func (r *EventPostgresRepository) One(ctx context.Context, id *types.SharedId) (
 	return &event, nil
 }
 
-func (r *EventPostgresRepository) AllByNameAndSource(ctx context.Context, name *types.Name, source *types.Source) ([]*types.Event, error) {
+func (r *EventPostgresRepository) AllBySlugAndSource(ctx context.Context, slug *types.Slug, source *types.Source) ([]*types.Event, error) {
 	var events []*types.Event
 
 	err := r.db.WithContext(ctx).
-		Where("name = ? AND source = ?", name.Value(), source.Value()).
+		Where("slug = ? AND source = ?", slug.Value(), source.Value()).
 		Order("created_at DESC").
 		Find(&events).
 		Error
@@ -123,16 +123,16 @@ func (r *EventPostgresRepository) CreateSubscription(ctx context.Context, sub *t
 
 func (r *EventPostgresRepository) PullMessages(
 	ctx context.Context,
-	eventName *types.Name,
+	slug *types.Slug,
 	source *types.Source,
-) ([]*types.QueueMessage, error) {
+) ([]*types.Queue, error) {
 
-	var results []*types.QueueMessage
+	var results []*types.Queue
 
 	err := r.db.WithContext(ctx).
 		Table("queue q").
 		Joins("JOIN events e ON q.event_id = e.id").
-		Where("e.name = ? AND e.source = ? AND q.status = ?", eventName.Value(), source.Value(), "pending").
+		Where("e.slug = ? AND e.source = ? AND q.status = ?", slug.Value(), source.Value(), "pending").
 		Clauses(clause.Locking{Strength: "UPDATE", Options: "SKIP LOCKED"}).
 		Find(&results).Error
 

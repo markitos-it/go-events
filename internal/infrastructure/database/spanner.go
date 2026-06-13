@@ -29,7 +29,7 @@ func (r *EventSpannerRepository) Create(ctx context.Context, event *types.Event)
 			      VALUES (@id, @name, @source, @payload, @created_at, @updated_at)`,
 			Params: map[string]interface{}{
 				"id":         event.Id,
-				"name":       event.Name,
+				"name":       event.Slug,
 				"source":     event.Source,
 				"payload":    event.Payload,
 				"created_at": event.CreatedAt,
@@ -43,7 +43,7 @@ func (r *EventSpannerRepository) Create(ctx context.Context, event *types.Event)
 		subStmt := spanner.Statement{
 			SQL: "SELECT subscriber_name FROM subscriptions WHERE event_name = @name AND source = @source",
 			Params: map[string]interface{}{
-				"name":   event.Name,
+				"name":   event.Slug,
 				"source": event.Source,
 			},
 		}
@@ -108,7 +108,7 @@ func (r *EventSpannerRepository) One(ctx context.Context, id *types.SharedId) (*
 	}
 
 	var event types.Event
-	err = row.Columns(&event.Id, &event.Name, &event.Source, &event.Payload, &event.CreatedAt, &event.UpdatedAt)
+	err = row.Columns(&event.Id, &event.Slug, &event.Source, &event.Payload, &event.CreatedAt, &event.UpdatedAt)
 	if err != nil {
 		return nil, err
 	}
@@ -116,10 +116,10 @@ func (r *EventSpannerRepository) One(ctx context.Context, id *types.SharedId) (*
 	return &event, nil
 }
 
-func (r *EventSpannerRepository) AllByNameAndSource(ctx context.Context, name *types.Name, source *types.Source) ([]*types.Event, error) {
+func (r *EventSpannerRepository) AllBySlugAndSource(ctx context.Context, slug *types.Slug, source *types.Source) ([]*types.Event, error) {
 	stmt := spanner.Statement{
-		SQL:    "SELECT id, name, source, payload, created_at, updated_at FROM events WHERE name = @name AND source = @source ORDER BY created_at DESC",
-		Params: map[string]interface{}{"name": name.Value(), "source": source.Value()},
+		SQL:    "SELECT id, slug, source, payload, created_at, updated_at FROM events WHERE slug = @slug AND source = @source ORDER BY created_at DESC",
+		Params: map[string]interface{}{"slug": slug.Value(), "source": source.Value()},
 	}
 
 	iter := r.client.Single().Query(ctx, stmt)
@@ -136,7 +136,7 @@ func (r *EventSpannerRepository) AllByNameAndSource(ctx context.Context, name *t
 		}
 
 		var event types.Event
-		err = row.Columns(&event.Id, &event.Name, &event.Source, &event.Payload, &event.CreatedAt, &event.UpdatedAt)
+		err = row.Columns(&event.Id, &event.Slug, &event.Source, &event.Payload, &event.CreatedAt, &event.UpdatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -179,14 +179,14 @@ func (r *EventSpannerRepository) CreateSubscription(ctx context.Context, sub *ty
 	return err
 }
 
-func (r *EventSpannerRepository) PullMessages(ctx context.Context, eventName *types.Name, source *types.Source) ([]*types.QueueMessage, error) {
+func (r *EventSpannerRepository) PullMessages(ctx context.Context, slug *types.Slug, source *types.Source) ([]*types.Queue, error) {
 	stmt := spanner.Statement{
 		SQL: `SELECT q.id, q.subscriber, q.event_id, q.status, q.created_at, q.updated_at 
 		      FROM queue q
 		      JOIN events e ON q.event_id = e.id
-		      WHERE e.name = @name AND e.source = @source AND q.status = @status`,
+		      WHERE e.slug = @slug AND e.source = @source AND q.status = @status`,
 		Params: map[string]interface{}{
-			"name":   eventName.Value(),
+			"slug":   slug.Value(),
 			"source": source.Value(),
 			"status": "pending",
 		},
@@ -195,7 +195,7 @@ func (r *EventSpannerRepository) PullMessages(ctx context.Context, eventName *ty
 	iter := r.client.Single().Query(ctx, stmt)
 	defer iter.Stop()
 
-	var results []*types.QueueMessage
+	var results []*types.Queue
 	for {
 		row, err := iter.Next()
 		if err == iterator.Done {
@@ -205,7 +205,7 @@ func (r *EventSpannerRepository) PullMessages(ctx context.Context, eventName *ty
 			return nil, err
 		}
 
-		var msg types.QueueMessage
+		var msg types.Queue
 		err = row.Columns(&msg.Id, &msg.SubscriberName, &msg.EventId, &msg.Status, &msg.CreatedAt, &msg.UpdatedAt)
 		if err != nil {
 			return nil, err

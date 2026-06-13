@@ -26,7 +26,7 @@ func isValidName(value string) bool {
 		return false
 	}
 
-	pattern := `^[a-zA-Z0-9]([a-zA-Z0-9 ]*[a-zA-Z0-9])?$`
+	pattern := `^[a-zA-Z0-9]([a-zA-Z0-9 ._-]*[a-zA-Z0-9])?$`
 	matched, err := regexp.MatchString(pattern, value)
 	if err != nil {
 		return false

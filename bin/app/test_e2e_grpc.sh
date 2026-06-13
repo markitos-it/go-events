@@ -10,10 +10,8 @@ SERVICE="event.Eventservice"
 
 echo "🚀 Starting E2E gRPC Test for $SERVICE at $SERVER..."
 
-# Ensure the default directory exists in case the server does not have the environment variables
 mkdir -p /tmp/events
 
-# Check dependencies
 if ! command -v grpcurl &> /dev/null; then
     echo "❌ grpcurl is not installed. Run 'make support-install-grpc-tools' first."
     exit 1
@@ -26,7 +24,6 @@ fi
 
 echo "--------------------------------------------------"
 echo "0️⃣  Creating a new Subscription..."
-# Creamos la suscripción antes para que el Fan-Out se entere al crear el evento
 SUB_PAYLOAD='{
   "subscriber_name": "marco",
   "event_name": "EventTest",
@@ -38,7 +35,7 @@ echo "--------------------------------------------------"
 
 echo "1️⃣  Creating a new Event..."
 CREATE_PAYLOAD='{
-  "name": "EventTest",
+  "slug": "EventTest",
   "source": "EventSource",
   "payload": ""
 }'
@@ -64,7 +61,6 @@ echo "✅ Get successful."
 echo "--------------------------------------------------"
 
 echo "3️⃣  Pulling Messages from Queue..."
-# El worker pide sus mensajes pendientes basándose en el nombre y origen del evento
 PULL_PAYLOAD='{
   "event_name": "EventTest",
   "source": "EventSource"
@@ -72,7 +68,6 @@ PULL_PAYLOAD='{
 PULL_RESP=$(grpcurl -plaintext -d "$PULL_PAYLOAD" $SERVER $SERVICE/PullMessages)
 echo "$PULL_RESP"
 
-# Extraemos el queueId del primer mensaje (grpcurl mapea snake_case a lowerCamelCase)
 QUEUE_ID=$(echo "$PULL_RESP" | jq -r '.messages[0].queueId')
 
 if [ -z "$QUEUE_ID" ] || [ "$QUEUE_ID" == "null" ]; then
@@ -83,7 +78,6 @@ echo "✅ Successfully pulled message with Queue ID: $QUEUE_ID"
 echo "--------------------------------------------------"
 
 echo "3️⃣b Acknowledging Message..."
-# Confirmamos el procesamiento usando el ID único de la cola obtenido en el paso anterior
 ACK_PAYLOAD="{\"queue_id\": \"$QUEUE_ID\"}"
 ACK_RESP=$(grpcurl -plaintext -d "$ACK_PAYLOAD" $SERVER $SERVICE/AckMessage)
 echo "$ACK_RESP"
@@ -97,7 +91,7 @@ echo "✅ Message acknowledged successfully."
 echo "--------------------------------------------------"
 
 echo "4️⃣  Listing Events..."
-grpcurl -plaintext -d "{\"name\": \"EventTest\", \"source\": \"EventSource\"}" $SERVER $SERVICE/AllByNameAndSource
+grpcurl -plaintext -d "{\"slug\": \"EventTest\", \"source\": \"EventSource\"}" $SERVER $SERVICE/AllBySlugAndSource
 echo "✅ List successful."
 echo "--------------------------------------------------"
 

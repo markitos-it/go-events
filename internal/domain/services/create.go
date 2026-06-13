@@ -8,14 +8,14 @@ import (
 )
 
 type EventCreateRequest struct {
-	Name    string
+	Slug    string
 	Source  string
 	Payload string
 }
 
 type EventCreateResponse struct {
 	Id      string `json:"id"`
-	Name    string `json:"name"`
+	Slug    string `json:"slug"`
 	Source  string `json:"source"`
 	Payload string `json:"payload"`
 }
@@ -32,7 +32,7 @@ func NewEventCreateService(repository types.EventRepository) EventCreateService 
 
 func (s EventCreateService) Do(ctx context.Context, request EventCreateRequest) (*EventCreateResponse, error) {
 
-	event, err := types.NewEvent(shared.UUIDv4(), request.Name, request.Source, request.Payload)
+	event, err := types.NewEvent(shared.UUIDv4(), request.Slug, request.Source, request.Payload)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +43,7 @@ func (s EventCreateService) Do(ctx context.Context, request EventCreateRequest) 
 
 	return &EventCreateResponse{
 		Id:      event.Id,
-		Name:    event.Name,
+		Slug:    event.Slug,
 		Source:  event.Source,
 		Payload: event.Payload,
 	}, nil

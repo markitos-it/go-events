@@ -17,5 +17,5 @@ show_config "full"
 
 #:[.'.]:>-------------------------------------
 show_banner
-docker compose -f localhost/docker-compose.yaml up -d
+docker compose -f localhost/docker-compose.yaml up -d goevents-postgres
 #:[.'.]:>-------------------------------------

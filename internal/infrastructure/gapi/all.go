@@ -8,9 +8,9 @@ import (
 	status "google.golang.org/grpc/status"
 )
 
-func (s *Server) AllByNameAndSource(ctx context.Context, in *AllEventsByNameAndSourceRequest) (*AllEventsByNameAndSourceResponse, error) {
+func (s *Server) AllBySlugAndSource(ctx context.Context, in *AllEventsBySlugAndSourceRequest) (*AllEventsBySlugAndSourceResponse, error) {
 	var request = services.EventAllRequest{
-		Name:   in.Name,
+		Slug:   in.Slug,
 		Source: in.Source,
 	}
 	var service = services.NewEventAllService(s.repository)
@@ -19,7 +19,7 @@ func (s *Server) AllByNameAndSource(ctx context.Context, in *AllEventsByNameAndS
 		return nil, status.Error(s.GetGRPCCode(err), err.Error())
 	}
 
-	return &AllEventsByNameAndSourceResponse{
+	return &AllEventsBySlugAndSourceResponse{
 		Events: s.ToProtos(response.Data),
 	}, nil
 }

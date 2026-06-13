@@ -63,7 +63,7 @@ func (s *Server) ToProtos(domainEvents []*types.Event) []*Event {
 func (s *Server) ToProto(domainEvent *types.Event) *Event {
 	return &Event{
 		Id:        domainEvent.Id,
-		Name:      domainEvent.Name,
+		Slug:      domainEvent.Slug,
 		Source:    domainEvent.Source,
 		Payload:   domainEvent.Payload,
 		CreatedAt: timestamppb.New(domainEvent.CreatedAt),

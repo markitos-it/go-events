@@ -22,7 +22,7 @@ const (
 	Eventservice_CreateEvent_FullMethodName        = "/event.Eventservice/CreateEvent"
 	Eventservice_GetEvent_FullMethodName           = "/event.Eventservice/GetEvent"
 	Eventservice_DeleteEvent_FullMethodName        = "/event.Eventservice/DeleteEvent"
-	Eventservice_AllByNameAndSource_FullMethodName = "/event.Eventservice/AllByNameAndSource"
+	Eventservice_AllBySlugAndSource_FullMethodName = "/event.Eventservice/AllBySlugAndSource"
 	Eventservice_CreateSubscription_FullMethodName = "/event.Eventservice/CreateSubscription"
 	Eventservice_PullMessages_FullMethodName       = "/event.Eventservice/PullMessages"
 	Eventservice_AckMessage_FullMethodName         = "/event.Eventservice/AckMessage"
@@ -35,7 +35,7 @@ type EventserviceClient interface {
 	CreateEvent(ctx context.Context, in *CreateEventRequest, opts ...grpc.CallOption) (*CreateEventResponse, error)
 	GetEvent(ctx context.Context, in *GetEventRequest, opts ...grpc.CallOption) (*GetEventResponse, error)
 	DeleteEvent(ctx context.Context, in *DeleteEventRequest, opts ...grpc.CallOption) (*DeleteEventResponse, error)
-	AllByNameAndSource(ctx context.Context, in *AllEventsByNameAndSourceRequest, opts ...grpc.CallOption) (*AllEventsByNameAndSourceResponse, error)
+	AllBySlugAndSource(ctx context.Context, in *AllEventsBySlugAndSourceRequest, opts ...grpc.CallOption) (*AllEventsBySlugAndSourceResponse, error)
 	CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*CreateSubscriptionResponse, error)
 	PullMessages(ctx context.Context, in *PullMessagesRequest, opts ...grpc.CallOption) (*PullMessagesResponse, error)
 	AckMessage(ctx context.Context, in *AckMessageRequest, opts ...grpc.CallOption) (*AckMessageResponse, error)
@@ -79,10 +79,10 @@ func (c *eventserviceClient) DeleteEvent(ctx context.Context, in *DeleteEventReq
 	return out, nil
 }
 
-func (c *eventserviceClient) AllByNameAndSource(ctx context.Context, in *AllEventsByNameAndSourceRequest, opts ...grpc.CallOption) (*AllEventsByNameAndSourceResponse, error) {
+func (c *eventserviceClient) AllBySlugAndSource(ctx context.Context, in *AllEventsBySlugAndSourceRequest, opts ...grpc.CallOption) (*AllEventsBySlugAndSourceResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(AllEventsByNameAndSourceResponse)
-	err := c.cc.Invoke(ctx, Eventservice_AllByNameAndSource_FullMethodName, in, out, cOpts...)
+	out := new(AllEventsBySlugAndSourceResponse)
+	err := c.cc.Invoke(ctx, Eventservice_AllBySlugAndSource_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -126,7 +126,7 @@ type EventserviceServer interface {
 	CreateEvent(context.Context, *CreateEventRequest) (*CreateEventResponse, error)
 	GetEvent(context.Context, *GetEventRequest) (*GetEventResponse, error)
 	DeleteEvent(context.Context, *DeleteEventRequest) (*DeleteEventResponse, error)
-	AllByNameAndSource(context.Context, *AllEventsByNameAndSourceRequest) (*AllEventsByNameAndSourceResponse, error)
+	AllBySlugAndSource(context.Context, *AllEventsBySlugAndSourceRequest) (*AllEventsBySlugAndSourceResponse, error)
 	CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error)
 	PullMessages(context.Context, *PullMessagesRequest) (*PullMessagesResponse, error)
 	AckMessage(context.Context, *AckMessageRequest) (*AckMessageResponse, error)
@@ -149,8 +149,8 @@ func (UnimplementedEventserviceServer) GetEvent(context.Context, *GetEventReques
 func (UnimplementedEventserviceServer) DeleteEvent(context.Context, *DeleteEventRequest) (*DeleteEventResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteEvent not implemented")
 }
-func (UnimplementedEventserviceServer) AllByNameAndSource(context.Context, *AllEventsByNameAndSourceRequest) (*AllEventsByNameAndSourceResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method AllByNameAndSource not implemented")
+func (UnimplementedEventserviceServer) AllBySlugAndSource(context.Context, *AllEventsBySlugAndSourceRequest) (*AllEventsBySlugAndSourceResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AllBySlugAndSource not implemented")
 }
 func (UnimplementedEventserviceServer) CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateSubscription not implemented")
@@ -236,20 +236,20 @@ func _Eventservice_DeleteEvent_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Eventservice_AllByNameAndSource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AllEventsByNameAndSourceRequest)
+func _Eventservice_AllBySlugAndSource_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AllEventsBySlugAndSourceRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EventserviceServer).AllByNameAndSource(ctx, in)
+		return srv.(EventserviceServer).AllBySlugAndSource(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Eventservice_AllByNameAndSource_FullMethodName,
+		FullMethod: Eventservice_AllBySlugAndSource_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EventserviceServer).AllByNameAndSource(ctx, req.(*AllEventsByNameAndSourceRequest))
+		return srv.(EventserviceServer).AllBySlugAndSource(ctx, req.(*AllEventsBySlugAndSourceRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -328,8 +328,8 @@ var Eventservice_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Eventservice_DeleteEvent_Handler,
 		},
 		{
-			MethodName: "AllByNameAndSource",
-			Handler:    _Eventservice_AllByNameAndSource_Handler,
+			MethodName: "AllBySlugAndSource",
+			Handler:    _Eventservice_AllBySlugAndSource_Handler,
 		},
 		{
 			MethodName: "CreateSubscription",

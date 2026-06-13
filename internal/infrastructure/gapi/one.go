@@ -25,7 +25,7 @@ func (s *Server) GetEvent(ctx context.Context, in *GetEventRequest) (*GetEventRe
 
 	return &GetEventResponse{
 		Id:      response.Data.Id,
-		Name:    response.Data.Name,
+		Slug:    response.Data.Slug,
 		Source:  response.Data.Source,
 		Payload: response.Data.Payload,
 	}, nil

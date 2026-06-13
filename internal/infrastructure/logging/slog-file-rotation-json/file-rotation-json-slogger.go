@@ -23,8 +23,8 @@ func NewFileRotationJSONSLogger() types.Logger {
 
 	fileRotator := &lumberjack.Logger{
 		Filename:   filepath.Join(logDir, "production.log"),
-		MaxSize:    1,
-		MaxBackups: 5,
+		MaxSize:    5,
+		MaxBackups: 7,
 		MaxAge:     30,
 		Compress:   true,
 	}

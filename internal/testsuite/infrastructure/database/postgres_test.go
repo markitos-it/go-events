@@ -23,7 +23,7 @@ func TestEventCreate(t *testing.T) {
 	err = testdb.GetDB().First(&result, "id = ?", event.Id).Error
 	require.NoError(t, err)
 	require.Equal(t, event.Id, result.Id)
-	require.Equal(t, event.Name, result.Name)
+	require.Equal(t, event.Slug, result.Slug)
 	require.WithinDuration(t, event.CreatedAt, result.CreatedAt, time.Second)
 	require.WithinDuration(t, event.UpdatedAt, result.UpdatedAt, time.Second)
 
@@ -52,7 +52,7 @@ func TestEventOne(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, result)
 	require.Equal(t, event.Id, result.Id)
-	require.Equal(t, event.Name, result.Name)
+	require.Equal(t, event.Slug, result.Slug)
 
 	err = repository.Delete(context.TODO(), id)
 	require.NoError(t, err)

@@ -12,7 +12,7 @@ import (
 const DEFAULT_LIMIT_PULL = 10
 
 func (s *Server) PullMessages(ctx context.Context, req *PullMessagesRequest) (*PullMessagesResponse, error) {
-	event, err := types.NewName(req.GetEventName())
+	slug, err := types.NewSlug(req.GetEventName())
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
@@ -22,7 +22,7 @@ func (s *Server) PullMessages(ctx context.Context, req *PullMessagesRequest) (*P
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	dbMessages, err := s.repository.PullMessages(ctx, event, source)
+	dbMessages, err := s.repository.PullMessages(ctx, slug, source)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "error en la base de datos al hacer pull: %v", err)
 	}

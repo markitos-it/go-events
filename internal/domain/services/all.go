@@ -10,7 +10,7 @@ type EventAllResponse struct {
 }
 
 type EventAllRequest struct {
-	Name   string `json:"name"`
+	Slug   string `json:"slug"`
 	Source string `json:"source"`
 }
 
@@ -25,7 +25,7 @@ func NewEventAllService(repository types.EventRepository) EventAllService {
 }
 
 func (s EventAllService) Do(ctx context.Context, request EventAllRequest) (*EventAllResponse, error) {
-	eventName, err := types.NewName(request.Name)
+	eventSlug, err := types.NewSlug(request.Slug)
 	if err != nil {
 		return nil, err
 	}
@@ -34,7 +34,7 @@ func (s EventAllService) Do(ctx context.Context, request EventAllRequest) (*Even
 		return nil, err
 	}
 
-	events, err := s.Repository.AllByNameAndSource(ctx, eventName, eventSource)
+	events, err := s.Repository.AllBySlugAndSource(ctx, eventSlug, eventSource)
 	if err != nil {
 		return nil, err
 	}

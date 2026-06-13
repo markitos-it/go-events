@@ -12,8 +12,8 @@ func TestEventCanListAllResources(t *testing.T) {
 	event1 := createPersistedRandomEvent()
 	event2 := createPersistedRandomEvent()
 
-	resp, err := grpcClient.AllByNameAndSource(ctx, &gapi.AllEventsByNameAndSourceRequest{
-		Name:   event1.Name,
+	resp, err := grpcClient.AllBySlugAndSource(ctx, &gapi.AllEventsBySlugAndSourceRequest{
+		Slug:   event1.Slug,
 		Source: event1.Source,
 	})
 
@@ -31,8 +31,8 @@ func TestEventCanListAllResources(t *testing.T) {
 	require.True(t, found1, "First event not found in response")
 	require.False(t, found2, "Second event not found in response")
 
-	resp, err = grpcClient.AllByNameAndSource(ctx, &gapi.AllEventsByNameAndSourceRequest{
-		Name:   event2.Name,
+	resp, err = grpcClient.AllBySlugAndSource(ctx, &gapi.AllEventsBySlugAndSourceRequest{
+		Slug:   event2.Slug,
 		Source: event2.Source,
 	})
 	require.NoError(t, err)

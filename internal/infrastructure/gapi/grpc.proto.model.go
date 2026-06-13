@@ -9,7 +9,7 @@ import (
 func NewGRPCEvent(in *types.Event) *Event {
 	return &Event{
 		Id:        in.Id,
-		Name:      in.Name,
+		Slug:      in.Slug,
 		CreatedAt: timestamppb.New(in.CreatedAt),
 		UpdatedAt: timestamppb.New(in.UpdatedAt),
 	}

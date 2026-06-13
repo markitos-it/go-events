@@ -15,7 +15,7 @@ const (
 	StatusFailed    MessageStatus = "failed"
 )
 
-type QueueMessage struct {
+type Queue struct {
 	Id             string        `json:"id" binding:"required,uuid"`
 	SubscriberName string        `json:"subscriber_name" binding:"required"`
 	EventId        string        `json:"event_id" binding:"required,uuid"`
@@ -24,7 +24,11 @@ type QueueMessage struct {
 	UpdatedAt      time.Time     `json:"updated_at" binding:"required,datetime" default:"now"`
 }
 
-func NewQueueMessage(id, subscriberName, eventId string) (*QueueMessage, error) {
+func (Queue) TableName() string {
+	return "queue"
+}
+
+func NewQueueMessage(id, subscriberName, eventId string) (*Queue, error) {
 	if strings.TrimSpace(id) == "" {
 		log.Println("❌ DEBUG ERROR (NewQueueMessage): queue message id cannot be empty")
 		return nil, errors.New("queue message id cannot be empty")
@@ -40,7 +44,7 @@ func NewQueueMessage(id, subscriberName, eventId string) (*QueueMessage, error) 
 		return nil, errors.New("event id cannot be empty")
 	}
 
-	return &QueueMessage{
+	return &Queue{
 		Id:             strings.TrimSpace(id),
 		SubscriberName: strings.TrimSpace(subscriberName),
 		EventId:        strings.TrimSpace(eventId),
@@ -50,12 +54,12 @@ func NewQueueMessage(id, subscriberName, eventId string) (*QueueMessage, error) 
 	}, nil
 }
 
-func (q *QueueMessage) MarkAsProcessed() {
+func (q *Queue) MarkAsProcessed() {
 	q.Status = StatusProcessed
 	q.UpdatedAt = time.Now()
 }
 
-func (q *QueueMessage) MarkAsFailed() {
+func (q *Queue) MarkAsFailed() {
 	q.Status = StatusFailed
 	q.UpdatedAt = time.Now()
 }

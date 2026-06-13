@@ -16,11 +16,11 @@ func TestCanGetAllResources(t *testing.T) {
 	anyName := shared.RandomString()
 	anySource := shared.RandomString()
 	event, err := service.Do(context.TODO(), services.EventAllRequest{
-		Name:   anyName,
+		Slug:   anyName,
 		Source: anySource,
 	})
 
 	assert.Nil(t, err)
 	assert.IsType(t, services.EventAllResponse{}, *event)
-	assert.True(t, repository.LastAllByNameAndSourceHaveBeenCalled(event.Data[0].GetName(), event.Data[0].GetSource()))
+	assert.True(t, repository.LastAllBySlugAndSourceHaveBeenCalled(event.Data[0].GetSlug(), event.Data[0].GetSource()))
 }

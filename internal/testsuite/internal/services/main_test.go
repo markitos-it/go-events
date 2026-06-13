@@ -13,7 +13,7 @@ type MockSpyEventRepository struct {
 	LastCreatedEventName         *string
 	LastDeleteEventId            *string
 	LastOneEventId               *string
-	LastAllByNameAndSource       []types.Event
+	LastAllBySlugAndSource       []types.Event
 	LastCreatedSubscriptionEvent *string
 	LastAckMessageId             *string
 	LastPullMessagesName         *string
@@ -25,7 +25,7 @@ func NewMockSpyEventRepository() *MockSpyEventRepository {
 		LastCreatedEventName:         nil,
 		LastDeleteEventId:            nil,
 		LastOneEventId:               nil,
-		LastAllByNameAndSource:       nil,
+		LastAllBySlugAndSource:       nil,
 		LastCreatedSubscriptionEvent: nil,
 		LastAckMessageId:             nil,
 		LastPullMessagesName:         nil,
@@ -33,12 +33,12 @@ func NewMockSpyEventRepository() *MockSpyEventRepository {
 	}
 }
 
-func (m *MockSpyEventRepository) PullMessages(ctx context.Context, name *types.Name, source *types.Source) ([]*types.QueueMessage, error) {
-	n := name.Value()
+func (m *MockSpyEventRepository) PullMessages(ctx context.Context, slug *types.Slug, source *types.Source) ([]*types.Queue, error) {
+	n := slug.Value()
 	s := source.Value()
 	m.LastPullMessagesName = &n
 	m.LastPullMessagesSource = &s
-	return []*types.QueueMessage{}, nil
+	return []*types.Queue{}, nil
 }
 
 func (m *MockSpyEventRepository) AckMessage(ctx context.Context, id *types.SharedId) error {
@@ -48,7 +48,7 @@ func (m *MockSpyEventRepository) AckMessage(ctx context.Context, id *types.Share
 }
 
 func (m *MockSpyEventRepository) Create(ctx context.Context, event *types.Event) error {
-	m.LastCreatedEventName = &event.Name
+	m.LastCreatedEventName = &event.Slug
 
 	return nil
 }
@@ -104,18 +104,18 @@ func (m *MockSpyEventRepository) OneHaveBeenCalledWith(eventId *string) bool {
 	return result
 }
 
-func (m *MockSpyEventRepository) AllByNameAndSource(ctx context.Context, name *types.Name, source *types.Source) ([]*types.Event, error) {
-	anEvent := internal_test.NewRandomEventWithNameAndSource(name.Value(), source.Value())
-	m.LastAllByNameAndSource = append(m.LastAllByNameAndSource, *anEvent)
+func (m *MockSpyEventRepository) AllBySlugAndSource(ctx context.Context, slug *types.Slug, source *types.Source) ([]*types.Event, error) {
+	anEvent := internal_test.NewRandomEventWithSlugAndSource(slug.Value(), source.Value())
+	m.LastAllBySlugAndSource = append(m.LastAllBySlugAndSource, *anEvent)
 
 	return []*types.Event{anEvent}, nil
 }
 
-func (m *MockSpyEventRepository) LastAllByNameAndSourceHaveBeenCalled(name *types.Name, source *types.Source) bool {
-	var result = m.LastAllByNameAndSource[0].Name == name.Value() &&
-		m.LastAllByNameAndSource[0].Source == source.Value()
+func (m *MockSpyEventRepository) LastAllBySlugAndSourceHaveBeenCalled(slug *types.Slug, source *types.Source) bool {
+	var result = m.LastAllBySlugAndSource[0].Slug == slug.Value() &&
+		m.LastAllBySlugAndSource[0].Source == source.Value()
 
-	m.LastAllByNameAndSource = nil
+	m.LastAllBySlugAndSource = nil
 
 	return result
 }

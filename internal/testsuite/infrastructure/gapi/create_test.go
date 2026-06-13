@@ -15,20 +15,19 @@ func TestEventCanCreate(t *testing.T) {
 	event := internal_test.NewRandomOnlyNameEvent()
 
 	resp, err := grpcClient.CreateEvent(ctx, &gapi.CreateEventRequest{
-		Name: event.Name,
-		/* ___CUSTOM_TEST_FIELDS___*/
+		Slug: event.Slug,
 	})
 
 	require.NoError(t, err)
 	require.NotEmpty(t, resp.Id)
-	require.Equal(t, event.Name, resp.Name)
+	require.Equal(t, event.Slug, resp.Slug)
 
 	deletePersistedRandomEvent(resp.Id)
 }
 
 func TestEventCantCreateWithoutName(t *testing.T) {
 	_, err := grpcClient.CreateEvent(ctx, &gapi.CreateEventRequest{
-		Name: "",
+		Slug: "",
 		/* ___CUSTOM_REQUIRED_VALUES___*/
 	})
 
@@ -40,8 +39,7 @@ func TestEventCantCreateWithoutName(t *testing.T) {
 
 func TestEventCantCreateWithoutValidName(t *testing.T) {
 	_, err := grpcClient.CreateEvent(ctx, &gapi.CreateEventRequest{
-		Name: "!!!!!invalid!!!name!!!",
-		/* ___CUSTOM_REQUIRED_VALUES___*/
+		Slug: "!!!!!invalid!!!slug!!!",
 	})
 
 	require.Error(t, err)

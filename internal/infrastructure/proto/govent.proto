@@ -8,7 +8,7 @@ option go_package = "markitos-it-svc-event-grpc/gapi";
 
 message Event {
   string id = 1;
-  string name = 2;
+  string slug = 2;
   google.protobuf.Timestamp created_at = 3;
   google.protobuf.Timestamp updated_at = 4;
   string source = 5;
@@ -27,21 +27,21 @@ service Eventservice {
   rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse);
   rpc GetEvent(GetEventRequest) returns (GetEventResponse);
   rpc DeleteEvent(DeleteEventRequest) returns (DeleteEventResponse);
-  rpc AllByNameAndSource(AllEventsByNameAndSourceRequest) returns (AllEventsByNameAndSourceResponse);
+  rpc AllBySlugAndSource(AllEventsBySlugAndSourceRequest) returns (AllEventsBySlugAndSourceResponse);
   rpc CreateSubscription(CreateSubscriptionRequest) returns (CreateSubscriptionResponse);
   rpc PullMessages(PullMessagesRequest) returns (PullMessagesResponse);
   rpc AckMessage(AckMessageRequest) returns (AckMessageResponse);
 }
 
 message CreateEventRequest {
-  string name = 1;
+  string slug = 1;
   string source = 3;
   string payload = 4;
 }
 
 message CreateEventResponse {
   string id = 1;
-  string name = 2;
+  string slug = 2;
   string source = 3;
   string payload = 4;
 }
@@ -52,7 +52,7 @@ message GetEventRequest {
 
 message GetEventResponse {
   string id = 1;
-  string name = 2;
+  string slug = 2;
   string source = 3;
   string payload = 4;
 }
@@ -66,12 +66,20 @@ message DeleteEventResponse {
   string deleted = 1;
 }
 
-message AllEventsByNameAndSourceRequest {
-  string name = 1;
+message AllEventsBySlugRequest {
+  string slug = 1;
+}
+
+message AllEventsBySlugResponse {
+  repeated Event events = 1;
+}
+
+message AllEventsBySlugAndSourceRequest {
+  string slug = 1;
   string source = 2;
 }
 
-message AllEventsByNameAndSourceResponse {
+message AllEventsBySlugAndSourceResponse {
   repeated Event events = 1;
 }
 

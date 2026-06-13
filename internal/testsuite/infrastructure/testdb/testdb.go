@@ -73,7 +73,7 @@ func GetDB() *gorm.DB {
 		log.Println("['.']:> ==============================================")
 
 		dbInstance = db
-		_ = dbInstance.AutoMigrate(&types.Event{})
+		_ = dbInstance.AutoMigrate(&types.Event{}, &types.Queue{}, &types.Subscription{})
 	})
 
 	return dbInstance

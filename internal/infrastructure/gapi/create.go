@@ -10,7 +10,7 @@ import (
 
 func (s *Server) CreateEvent(ctx context.Context, req *CreateEventRequest) (*CreateEventResponse, error) {
 	var request = services.EventCreateRequest{
-		Name:    req.Name,
+		Slug:    req.Slug,
 		Source:  req.Source,
 		Payload: req.Payload,
 	}
@@ -23,7 +23,7 @@ func (s *Server) CreateEvent(ctx context.Context, req *CreateEventRequest) (*Cre
 
 	return &CreateEventResponse{
 		Id:      entity.Id,
-		Name:    entity.Name,
+		Slug:    entity.Slug,
 		Source:  entity.Source,
 		Payload: entity.Payload,
 	}, nil

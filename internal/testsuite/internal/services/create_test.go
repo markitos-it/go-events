@@ -13,18 +13,18 @@ import (
 
 func TestCanCreateAUser(t *testing.T) {
 	var event = types.Event{
-		Name: shared.RandomSlug(),
+		Slug: shared.RandomSlug(),
 	}
 	var request = services.EventCreateRequest{
-		Name: event.Name,
+		Slug: event.Slug,
 	}
 
 	var service = services.NewEventCreateService(repository)
 	response, err := service.Do(context.TODO(), request)
 
 	assert.Nil(t, err)
-	assert.True(t, repository.CreateHaveBeenCalledWith(&request.Name))
-	assert.Equal(t, response.Name, request.Name)
+	assert.True(t, repository.CreateHaveBeenCalledWith(&request.Slug))
+	assert.Equal(t, response.Slug, request.Slug)
 	assert.NotEmpty(t, response.Id)
 }
 
@@ -36,12 +36,12 @@ func TestCantCreateWithoutName(t *testing.T) {
 
 	assert.NotNil(t, err)
 	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
-	assert.False(t, repository.CreateHaveBeenCalledWith(&request.Name))
+	assert.False(t, repository.CreateHaveBeenCalledWith(&request.Slug))
 }
 
 func TestCantCreateWithoutValidName(t *testing.T) {
 	var request = services.EventCreateRequest{
-		Name: "",
+		Slug: "",
 	}
 
 	var service = services.NewEventCreateService(repository)
@@ -49,5 +49,5 @@ func TestCantCreateWithoutValidName(t *testing.T) {
 
 	assert.NotNil(t, err)
 	assert.ErrorIs(t, err, shared.ErrEventBadRequest)
-	assert.False(t, repository.CreateHaveBeenCalledWith(&request.Name))
+	assert.False(t, repository.CreateHaveBeenCalledWith(&request.Slug))
 }

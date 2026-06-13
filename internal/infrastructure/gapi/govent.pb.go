@@ -25,7 +25,7 @@ const (
 type Event struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Slug          string                 `protobuf:"bytes,2,opt,name=slug,proto3" json:"slug,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	Source        string                 `protobuf:"bytes,5,opt,name=source,proto3" json:"source,omitempty"`
@@ -71,9 +71,9 @@ func (x *Event) GetId() string {
 	return ""
 }
 
-func (x *Event) GetName() string {
+func (x *Event) GetSlug() string {
 	if x != nil {
-		return x.Name
+		return x.Slug
 	}
 	return ""
 }
@@ -184,7 +184,7 @@ func (x *QueueMessage) GetPayload() string {
 
 type CreateEventRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Slug          string                 `protobuf:"bytes,1,opt,name=slug,proto3" json:"slug,omitempty"`
 	Source        string                 `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
 	Payload       string                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -221,9 +221,9 @@ func (*CreateEventRequest) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateEventRequest) GetName() string {
+func (x *CreateEventRequest) GetSlug() string {
 	if x != nil {
-		return x.Name
+		return x.Slug
 	}
 	return ""
 }
@@ -245,7 +245,7 @@ func (x *CreateEventRequest) GetPayload() string {
 type CreateEventResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Slug          string                 `protobuf:"bytes,2,opt,name=slug,proto3" json:"slug,omitempty"`
 	Source        string                 `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
 	Payload       string                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -289,9 +289,9 @@ func (x *CreateEventResponse) GetId() string {
 	return ""
 }
 
-func (x *CreateEventResponse) GetName() string {
+func (x *CreateEventResponse) GetSlug() string {
 	if x != nil {
-		return x.Name
+		return x.Slug
 	}
 	return ""
 }
@@ -357,7 +357,7 @@ func (x *GetEventRequest) GetId() string {
 type GetEventResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Slug          string                 `protobuf:"bytes,2,opt,name=slug,proto3" json:"slug,omitempty"`
 	Source        string                 `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
 	Payload       string                 `protobuf:"bytes,4,opt,name=payload,proto3" json:"payload,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -401,9 +401,9 @@ func (x *GetEventResponse) GetId() string {
 	return ""
 }
 
-func (x *GetEventResponse) GetName() string {
+func (x *GetEventResponse) GetSlug() string {
 	if x != nil {
-		return x.Name
+		return x.Slug
 	}
 	return ""
 }
@@ -510,28 +510,27 @@ func (x *DeleteEventResponse) GetDeleted() string {
 	return ""
 }
 
-type AllEventsByNameAndSourceRequest struct {
+type AllEventsBySlugRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Source        string                 `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
+	Slug          string                 `protobuf:"bytes,1,opt,name=slug,proto3" json:"slug,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AllEventsByNameAndSourceRequest) Reset() {
-	*x = AllEventsByNameAndSourceRequest{}
+func (x *AllEventsBySlugRequest) Reset() {
+	*x = AllEventsBySlugRequest{}
 	mi := &file_govent_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AllEventsByNameAndSourceRequest) String() string {
+func (x *AllEventsBySlugRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AllEventsByNameAndSourceRequest) ProtoMessage() {}
+func (*AllEventsBySlugRequest) ProtoMessage() {}
 
-func (x *AllEventsByNameAndSourceRequest) ProtoReflect() protoreflect.Message {
+func (x *AllEventsBySlugRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -543,46 +542,39 @@ func (x *AllEventsByNameAndSourceRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AllEventsByNameAndSourceRequest.ProtoReflect.Descriptor instead.
-func (*AllEventsByNameAndSourceRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use AllEventsBySlugRequest.ProtoReflect.Descriptor instead.
+func (*AllEventsBySlugRequest) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *AllEventsByNameAndSourceRequest) GetName() string {
+func (x *AllEventsBySlugRequest) GetSlug() string {
 	if x != nil {
-		return x.Name
+		return x.Slug
 	}
 	return ""
 }
 
-func (x *AllEventsByNameAndSourceRequest) GetSource() string {
-	if x != nil {
-		return x.Source
-	}
-	return ""
-}
-
-type AllEventsByNameAndSourceResponse struct {
+type AllEventsBySlugResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Events        []*Event               `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AllEventsByNameAndSourceResponse) Reset() {
-	*x = AllEventsByNameAndSourceResponse{}
+func (x *AllEventsBySlugResponse) Reset() {
+	*x = AllEventsBySlugResponse{}
 	mi := &file_govent_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AllEventsByNameAndSourceResponse) String() string {
+func (x *AllEventsBySlugResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AllEventsByNameAndSourceResponse) ProtoMessage() {}
+func (*AllEventsBySlugResponse) ProtoMessage() {}
 
-func (x *AllEventsByNameAndSourceResponse) ProtoReflect() protoreflect.Message {
+func (x *AllEventsBySlugResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_govent_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -594,12 +586,108 @@ func (x *AllEventsByNameAndSourceResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AllEventsByNameAndSourceResponse.ProtoReflect.Descriptor instead.
-func (*AllEventsByNameAndSourceResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use AllEventsBySlugResponse.ProtoReflect.Descriptor instead.
+func (*AllEventsBySlugResponse) Descriptor() ([]byte, []int) {
 	return file_govent_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *AllEventsByNameAndSourceResponse) GetEvents() []*Event {
+func (x *AllEventsBySlugResponse) GetEvents() []*Event {
+	if x != nil {
+		return x.Events
+	}
+	return nil
+}
+
+type AllEventsBySlugAndSourceRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Slug          string                 `protobuf:"bytes,1,opt,name=slug,proto3" json:"slug,omitempty"`
+	Source        string                 `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AllEventsBySlugAndSourceRequest) Reset() {
+	*x = AllEventsBySlugAndSourceRequest{}
+	mi := &file_govent_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AllEventsBySlugAndSourceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AllEventsBySlugAndSourceRequest) ProtoMessage() {}
+
+func (x *AllEventsBySlugAndSourceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_govent_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AllEventsBySlugAndSourceRequest.ProtoReflect.Descriptor instead.
+func (*AllEventsBySlugAndSourceRequest) Descriptor() ([]byte, []int) {
+	return file_govent_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *AllEventsBySlugAndSourceRequest) GetSlug() string {
+	if x != nil {
+		return x.Slug
+	}
+	return ""
+}
+
+func (x *AllEventsBySlugAndSourceRequest) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+type AllEventsBySlugAndSourceResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Events        []*Event               `protobuf:"bytes,1,rep,name=events,proto3" json:"events,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AllEventsBySlugAndSourceResponse) Reset() {
+	*x = AllEventsBySlugAndSourceResponse{}
+	mi := &file_govent_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AllEventsBySlugAndSourceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AllEventsBySlugAndSourceResponse) ProtoMessage() {}
+
+func (x *AllEventsBySlugAndSourceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_govent_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AllEventsBySlugAndSourceResponse.ProtoReflect.Descriptor instead.
+func (*AllEventsBySlugAndSourceResponse) Descriptor() ([]byte, []int) {
+	return file_govent_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *AllEventsBySlugAndSourceResponse) GetEvents() []*Event {
 	if x != nil {
 		return x.Events
 	}
@@ -617,7 +705,7 @@ type CreateSubscriptionRequest struct {
 
 func (x *CreateSubscriptionRequest) Reset() {
 	*x = CreateSubscriptionRequest{}
-	mi := &file_govent_proto_msgTypes[10]
+	mi := &file_govent_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -629,7 +717,7 @@ func (x *CreateSubscriptionRequest) String() string {
 func (*CreateSubscriptionRequest) ProtoMessage() {}
 
 func (x *CreateSubscriptionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[10]
+	mi := &file_govent_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -642,7 +730,7 @@ func (x *CreateSubscriptionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSubscriptionRequest.ProtoReflect.Descriptor instead.
 func (*CreateSubscriptionRequest) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{10}
+	return file_govent_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateSubscriptionRequest) GetSubscriberName() string {
@@ -676,7 +764,7 @@ type CreateSubscriptionResponse struct {
 
 func (x *CreateSubscriptionResponse) Reset() {
 	*x = CreateSubscriptionResponse{}
-	mi := &file_govent_proto_msgTypes[11]
+	mi := &file_govent_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -688,7 +776,7 @@ func (x *CreateSubscriptionResponse) String() string {
 func (*CreateSubscriptionResponse) ProtoMessage() {}
 
 func (x *CreateSubscriptionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[11]
+	mi := &file_govent_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -701,7 +789,7 @@ func (x *CreateSubscriptionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateSubscriptionResponse.ProtoReflect.Descriptor instead.
 func (*CreateSubscriptionResponse) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{11}
+	return file_govent_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *CreateSubscriptionResponse) GetSuccess() bool {
@@ -728,7 +816,7 @@ type PullMessagesRequest struct {
 
 func (x *PullMessagesRequest) Reset() {
 	*x = PullMessagesRequest{}
-	mi := &file_govent_proto_msgTypes[12]
+	mi := &file_govent_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -740,7 +828,7 @@ func (x *PullMessagesRequest) String() string {
 func (*PullMessagesRequest) ProtoMessage() {}
 
 func (x *PullMessagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[12]
+	mi := &file_govent_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -753,7 +841,7 @@ func (x *PullMessagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PullMessagesRequest.ProtoReflect.Descriptor instead.
 func (*PullMessagesRequest) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{12}
+	return file_govent_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *PullMessagesRequest) GetEventName() string {
@@ -779,7 +867,7 @@ type PullMessagesResponse struct {
 
 func (x *PullMessagesResponse) Reset() {
 	*x = PullMessagesResponse{}
-	mi := &file_govent_proto_msgTypes[13]
+	mi := &file_govent_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -791,7 +879,7 @@ func (x *PullMessagesResponse) String() string {
 func (*PullMessagesResponse) ProtoMessage() {}
 
 func (x *PullMessagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[13]
+	mi := &file_govent_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -804,7 +892,7 @@ func (x *PullMessagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PullMessagesResponse.ProtoReflect.Descriptor instead.
 func (*PullMessagesResponse) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{13}
+	return file_govent_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *PullMessagesResponse) GetMessages() []*QueueMessage {
@@ -823,7 +911,7 @@ type AckMessageRequest struct {
 
 func (x *AckMessageRequest) Reset() {
 	*x = AckMessageRequest{}
-	mi := &file_govent_proto_msgTypes[14]
+	mi := &file_govent_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -835,7 +923,7 @@ func (x *AckMessageRequest) String() string {
 func (*AckMessageRequest) ProtoMessage() {}
 
 func (x *AckMessageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[14]
+	mi := &file_govent_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -848,7 +936,7 @@ func (x *AckMessageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AckMessageRequest.ProtoReflect.Descriptor instead.
 func (*AckMessageRequest) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{14}
+	return file_govent_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *AckMessageRequest) GetQueueId() string {
@@ -867,7 +955,7 @@ type AckMessageResponse struct {
 
 func (x *AckMessageResponse) Reset() {
 	*x = AckMessageResponse{}
-	mi := &file_govent_proto_msgTypes[15]
+	mi := &file_govent_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -879,7 +967,7 @@ func (x *AckMessageResponse) String() string {
 func (*AckMessageResponse) ProtoMessage() {}
 
 func (x *AckMessageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_govent_proto_msgTypes[15]
+	mi := &file_govent_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -892,7 +980,7 @@ func (x *AckMessageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AckMessageResponse.ProtoReflect.Descriptor instead.
 func (*AckMessageResponse) Descriptor() ([]byte, []int) {
-	return file_govent_proto_rawDescGZIP(), []int{15}
+	return file_govent_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *AckMessageResponse) GetSuccess() bool {
@@ -909,7 +997,7 @@ const file_govent_proto_rawDesc = "" +
 	"\fgovent.proto\x12\x05event\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd3\x01\n" +
 	"\x05Event\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x129\n" +
+	"\x04slug\x18\x02 \x01(\tR\x04slug\x129\n" +
 	"\n" +
 	"created_at\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
@@ -923,29 +1011,33 @@ const file_govent_proto_rawDesc = "" +
 	"\x06source\x18\x04 \x01(\tR\x06source\x12\x18\n" +
 	"\apayload\x18\x05 \x01(\tR\apayload\"Z\n" +
 	"\x12CreateEventRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
+	"\x04slug\x18\x01 \x01(\tR\x04slug\x12\x16\n" +
 	"\x06source\x18\x03 \x01(\tR\x06source\x12\x18\n" +
 	"\apayload\x18\x04 \x01(\tR\apayload\"k\n" +
 	"\x13CreateEventResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
+	"\x04slug\x18\x02 \x01(\tR\x04slug\x12\x16\n" +
 	"\x06source\x18\x03 \x01(\tR\x06source\x12\x18\n" +
 	"\apayload\x18\x04 \x01(\tR\apayload\"!\n" +
 	"\x0fGetEventRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"h\n" +
 	"\x10GetEventResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
+	"\x04slug\x18\x02 \x01(\tR\x04slug\x12\x16\n" +
 	"\x06source\x18\x03 \x01(\tR\x06source\x12\x18\n" +
 	"\apayload\x18\x04 \x01(\tR\apayload\"$\n" +
 	"\x12DeleteEventRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"/\n" +
 	"\x13DeleteEventResponse\x12\x18\n" +
-	"\adeleted\x18\x01 \x01(\tR\adeleted\"M\n" +
-	"\x1fAllEventsByNameAndSourceRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
+	"\adeleted\x18\x01 \x01(\tR\adeleted\",\n" +
+	"\x16AllEventsBySlugRequest\x12\x12\n" +
+	"\x04slug\x18\x01 \x01(\tR\x04slug\"?\n" +
+	"\x17AllEventsBySlugResponse\x12$\n" +
+	"\x06events\x18\x01 \x03(\v2\f.event.EventR\x06events\"M\n" +
+	"\x1fAllEventsBySlugAndSourceRequest\x12\x12\n" +
+	"\x04slug\x18\x01 \x01(\tR\x04slug\x12\x16\n" +
 	"\x06source\x18\x02 \x01(\tR\x06source\"H\n" +
-	" AllEventsByNameAndSourceResponse\x12$\n" +
+	" AllEventsBySlugAndSourceResponse\x12$\n" +
 	"\x06events\x18\x01 \x03(\v2\f.event.EventR\x06events\"{\n" +
 	"\x19CreateSubscriptionRequest\x12'\n" +
 	"\x0fsubscriber_name\x18\x01 \x01(\tR\x0esubscriberName\x12\x1d\n" +
@@ -969,7 +1061,7 @@ const file_govent_proto_rawDesc = "" +
 	"\vCreateEvent\x12\x19.event.CreateEventRequest\x1a\x1a.event.CreateEventResponse\x12;\n" +
 	"\bGetEvent\x12\x16.event.GetEventRequest\x1a\x17.event.GetEventResponse\x12D\n" +
 	"\vDeleteEvent\x12\x19.event.DeleteEventRequest\x1a\x1a.event.DeleteEventResponse\x12e\n" +
-	"\x12AllByNameAndSource\x12&.event.AllEventsByNameAndSourceRequest\x1a'.event.AllEventsByNameAndSourceResponse\x12Y\n" +
+	"\x12AllBySlugAndSource\x12&.event.AllEventsBySlugAndSourceRequest\x1a'.event.AllEventsBySlugAndSourceResponse\x12Y\n" +
 	"\x12CreateSubscription\x12 .event.CreateSubscriptionRequest\x1a!.event.CreateSubscriptionResponse\x12G\n" +
 	"\fPullMessages\x12\x1a.event.PullMessagesRequest\x1a\x1b.event.PullMessagesResponse\x12A\n" +
 	"\n" +
@@ -987,7 +1079,7 @@ func file_govent_proto_rawDescGZIP() []byte {
 	return file_govent_proto_rawDescData
 }
 
-var file_govent_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
+var file_govent_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_govent_proto_goTypes = []any{
 	(*Event)(nil),                            // 0: event.Event
 	(*QueueMessage)(nil),                     // 1: event.QueueMessage
@@ -997,40 +1089,43 @@ var file_govent_proto_goTypes = []any{
 	(*GetEventResponse)(nil),                 // 5: event.GetEventResponse
 	(*DeleteEventRequest)(nil),               // 6: event.DeleteEventRequest
 	(*DeleteEventResponse)(nil),              // 7: event.DeleteEventResponse
-	(*AllEventsByNameAndSourceRequest)(nil),  // 8: event.AllEventsByNameAndSourceRequest
-	(*AllEventsByNameAndSourceResponse)(nil), // 9: event.AllEventsByNameAndSourceResponse
-	(*CreateSubscriptionRequest)(nil),        // 10: event.CreateSubscriptionRequest
-	(*CreateSubscriptionResponse)(nil),       // 11: event.CreateSubscriptionResponse
-	(*PullMessagesRequest)(nil),              // 12: event.PullMessagesRequest
-	(*PullMessagesResponse)(nil),             // 13: event.PullMessagesResponse
-	(*AckMessageRequest)(nil),                // 14: event.AckMessageRequest
-	(*AckMessageResponse)(nil),               // 15: event.AckMessageResponse
-	(*timestamppb.Timestamp)(nil),            // 16: google.protobuf.Timestamp
+	(*AllEventsBySlugRequest)(nil),           // 8: event.AllEventsBySlugRequest
+	(*AllEventsBySlugResponse)(nil),          // 9: event.AllEventsBySlugResponse
+	(*AllEventsBySlugAndSourceRequest)(nil),  // 10: event.AllEventsBySlugAndSourceRequest
+	(*AllEventsBySlugAndSourceResponse)(nil), // 11: event.AllEventsBySlugAndSourceResponse
+	(*CreateSubscriptionRequest)(nil),        // 12: event.CreateSubscriptionRequest
+	(*CreateSubscriptionResponse)(nil),       // 13: event.CreateSubscriptionResponse
+	(*PullMessagesRequest)(nil),              // 14: event.PullMessagesRequest
+	(*PullMessagesResponse)(nil),             // 15: event.PullMessagesResponse
+	(*AckMessageRequest)(nil),                // 16: event.AckMessageRequest
+	(*AckMessageResponse)(nil),               // 17: event.AckMessageResponse
+	(*timestamppb.Timestamp)(nil),            // 18: google.protobuf.Timestamp
 }
 var file_govent_proto_depIdxs = []int32{
-	16, // 0: event.Event.created_at:type_name -> google.protobuf.Timestamp
-	16, // 1: event.Event.updated_at:type_name -> google.protobuf.Timestamp
-	0,  // 2: event.AllEventsByNameAndSourceResponse.events:type_name -> event.Event
-	1,  // 3: event.PullMessagesResponse.messages:type_name -> event.QueueMessage
-	2,  // 4: event.Eventservice.CreateEvent:input_type -> event.CreateEventRequest
-	4,  // 5: event.Eventservice.GetEvent:input_type -> event.GetEventRequest
-	6,  // 6: event.Eventservice.DeleteEvent:input_type -> event.DeleteEventRequest
-	8,  // 7: event.Eventservice.AllByNameAndSource:input_type -> event.AllEventsByNameAndSourceRequest
-	10, // 8: event.Eventservice.CreateSubscription:input_type -> event.CreateSubscriptionRequest
-	12, // 9: event.Eventservice.PullMessages:input_type -> event.PullMessagesRequest
-	14, // 10: event.Eventservice.AckMessage:input_type -> event.AckMessageRequest
-	3,  // 11: event.Eventservice.CreateEvent:output_type -> event.CreateEventResponse
-	5,  // 12: event.Eventservice.GetEvent:output_type -> event.GetEventResponse
-	7,  // 13: event.Eventservice.DeleteEvent:output_type -> event.DeleteEventResponse
-	9,  // 14: event.Eventservice.AllByNameAndSource:output_type -> event.AllEventsByNameAndSourceResponse
-	11, // 15: event.Eventservice.CreateSubscription:output_type -> event.CreateSubscriptionResponse
-	13, // 16: event.Eventservice.PullMessages:output_type -> event.PullMessagesResponse
-	15, // 17: event.Eventservice.AckMessage:output_type -> event.AckMessageResponse
-	11, // [11:18] is the sub-list for method output_type
-	4,  // [4:11] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	18, // 0: event.Event.created_at:type_name -> google.protobuf.Timestamp
+	18, // 1: event.Event.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 2: event.AllEventsBySlugResponse.events:type_name -> event.Event
+	0,  // 3: event.AllEventsBySlugAndSourceResponse.events:type_name -> event.Event
+	1,  // 4: event.PullMessagesResponse.messages:type_name -> event.QueueMessage
+	2,  // 5: event.Eventservice.CreateEvent:input_type -> event.CreateEventRequest
+	4,  // 6: event.Eventservice.GetEvent:input_type -> event.GetEventRequest
+	6,  // 7: event.Eventservice.DeleteEvent:input_type -> event.DeleteEventRequest
+	10, // 8: event.Eventservice.AllBySlugAndSource:input_type -> event.AllEventsBySlugAndSourceRequest
+	12, // 9: event.Eventservice.CreateSubscription:input_type -> event.CreateSubscriptionRequest
+	14, // 10: event.Eventservice.PullMessages:input_type -> event.PullMessagesRequest
+	16, // 11: event.Eventservice.AckMessage:input_type -> event.AckMessageRequest
+	3,  // 12: event.Eventservice.CreateEvent:output_type -> event.CreateEventResponse
+	5,  // 13: event.Eventservice.GetEvent:output_type -> event.GetEventResponse
+	7,  // 14: event.Eventservice.DeleteEvent:output_type -> event.DeleteEventResponse
+	11, // 15: event.Eventservice.AllBySlugAndSource:output_type -> event.AllEventsBySlugAndSourceResponse
+	13, // 16: event.Eventservice.CreateSubscription:output_type -> event.CreateSubscriptionResponse
+	15, // 17: event.Eventservice.PullMessages:output_type -> event.PullMessagesResponse
+	17, // 18: event.Eventservice.AckMessage:output_type -> event.AckMessageResponse
+	12, // [12:19] is the sub-list for method output_type
+	5,  // [5:12] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_govent_proto_init() }
@@ -1044,7 +1139,7 @@ func file_govent_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_govent_proto_rawDesc), len(file_govent_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   16,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
