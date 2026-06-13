@@ -11,7 +11,7 @@ import (
 )
 
 type EventCachedRepository struct {
-	realRepo types.EventRepository // Spanner, MariaDB o Postgres
+	realRepo types.EventRepository
 	rdb      *redis.Client
 	ttl      time.Duration
 }
@@ -25,12 +25,14 @@ func NewEventCachedRepository(realRepo types.EventRepository, rdb *redis.Client,
 }
 
 func (r *EventCachedRepository) Create(ctx context.Context, event *types.Event) error {
+
 	if err := r.realRepo.Create(ctx, event); err != nil {
 		return err
 	}
 
+	bgCtx := context.WithoutCancel(ctx)
+
 	go func() {
-		bgCtx := context.Background()
 		cacheKeyCollection := fmt.Sprintf("events:collection:%s:%s", event.Slug, event.Source)
 		_ = r.rdb.Del(bgCtx, cacheKeyCollection)
 
@@ -59,9 +61,11 @@ func (r *EventCachedRepository) One(ctx context.Context, id *types.SharedId) (*t
 		return nil, err
 	}
 
+	bgCtx := context.WithoutCancel(ctx)
+
 	go func() {
 		if jsonData, err := json.Marshal(event); err == nil {
-			_ = r.rdb.Set(context.Background(), cacheKey, jsonData, r.ttl).Err()
+			_ = r.rdb.Set(bgCtx, cacheKey, jsonData, r.ttl).Err()
 		}
 	}()
 
@@ -84,9 +88,11 @@ func (r *EventCachedRepository) AllBySlugAndSource(ctx context.Context, slug *ty
 		return nil, err
 	}
 
+	bgCtx := context.WithoutCancel(ctx)
+
 	go func() {
 		if jsonData, err := json.Marshal(events); err == nil {
-			_ = r.rdb.Set(context.Background(), cacheKey, jsonData, r.ttl).Err()
+			_ = r.rdb.Set(bgCtx, cacheKey, jsonData, r.ttl).Err()
 		}
 	}()
 
@@ -94,6 +100,7 @@ func (r *EventCachedRepository) AllBySlugAndSource(ctx context.Context, slug *ty
 }
 
 func (r *EventCachedRepository) Delete(ctx context.Context, id *types.SharedId) error {
+
 	event, err := r.realRepo.One(ctx, id)
 	if err != nil {
 		return err
@@ -103,8 +110,9 @@ func (r *EventCachedRepository) Delete(ctx context.Context, id *types.SharedId) 
 		return err
 	}
 
+	bgCtx := context.WithoutCancel(ctx)
+
 	go func() {
-		bgCtx := context.Background()
 		cacheKeyIndividual := fmt.Sprintf("event:%s", id.Value())
 		cacheKeyCollection := fmt.Sprintf("events:collection:%s:%s", event.Slug, event.Source)
 
