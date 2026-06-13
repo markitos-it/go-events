@@ -13,6 +13,7 @@ import (
 	slogcolored "go-vents/internal/infrastructure/logging/slog-colored"
 
 	spannergorm "github.com/googleapis/go-gorm-spanner"
+	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -35,9 +36,13 @@ func GetDB() *gorm.DB {
 	dbOnce.Do(func() {
 		var dsn string
 		var configSource string
+		driver := os.Getenv("DATABASE_DRIVER")
+		if driver == "" {
+			driver = "postgres"
+		}
 
 		log.Println("['.']:> ==============================================")
-		log.Println("['.']:> 🧪 INICIALIZANDO ENTORNO DE PRUEBAS (POSTGRES) 🧪")
+		log.Printf("['.']:> 🧪 INICIALIZANDO ENTORNO DE PRUEBAS (%s) 🧪\n", strings.ToUpper(driver))
 		log.Println("['.']:> ==============================================")
 
 		if envDSN := os.Getenv("DATABASE_DSN"); envDSN != "" {
@@ -49,7 +54,11 @@ func GetDB() *gorm.DB {
 			config, err := configuration.LoadConfiguration("../../..", logger)
 			if err != nil {
 				log.Printf("['.']:> ⚠️ No se pudo cargar la configuración: %v", err)
-				dsn = "host=localhost user=admin password=admin dbname=markitos-it-svc-event sslmode=disable"
+				if driver == "mariadb" {
+					dsn = "root:admin@tcp(localhost:3306)/markitos-it-svc-event?charset=utf8mb4&parseTime=True&loc=Local"
+				} else {
+					dsn = "host=localhost user=admin password=admin dbname=markitos-it-svc-event sslmode=disable"
+				}
 				configSource = "HARDCODED DEFAULTS"
 				log.Println("['.']:> 🌟 ORIGEN DE CONFIGURACIÓN: VALORES PREDETERMINADOS INTERNOS")
 			} else {
@@ -67,7 +76,15 @@ func GetDB() *gorm.DB {
 		fmt.Println("['.']:> 🔌 Conectando a base de datos:", sanitizedDSN)
 		log.Println("['.']:> ----------------------------------------------")
 
-		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		var db *gorm.DB
+		var err error
+
+		if driver == "mariadb" {
+			db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+		} else {
+			db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+		}
+
 		if err != nil {
 			log.Println("['.']:> ❌ ERROR DE CONEXIÓN A BASE DE DATOS ❌")
 			log.Println("['.']:> ==============================================")
@@ -86,7 +103,10 @@ func GetDB() *gorm.DB {
 
 func GetRepository() types.EventRepository {
 	repoOnce.Do(func() {
-		if os.Getenv("DATABASE_DRIVER") == "spanner" {
+		driver := os.Getenv("DATABASE_DRIVER")
+
+		switch driver {
+		case "spanner":
 			log.Println("['.']:> ==============================================")
 			log.Println("['.']:> 🧪 INICIALIZANDO ENTORNO DE PRUEBAS (SPANNER) 🧪")
 			log.Println("['.']:> ==============================================")
@@ -100,7 +120,12 @@ func GetRepository() types.EventRepository {
 			}
 			repoInstance = database.NewEventSpannerRepository(db)
 			log.Printf("['.']:> 📦 Repositorio de prueba inicializado (Spanner)")
-		} else {
+		case "mariadb":
+			db := GetDB()
+			repo := database.NewEventMariaDBRepository(db)
+			repoInstance = repo
+			log.Printf("['.']:> 📦 Repositorio de prueba inicializado (MariaDB)")
+		default:
 			db := GetDB()
 			repo := database.NewEventPostgresRepository(db)
 			repoInstance = repo
@@ -126,6 +151,17 @@ func maskPassword(dsn string) string {
 			}
 		}
 		return strings.Join(parts, " ")
+	}
+
+	// Simple mask for mariadb dsn format user:pass@tcp(...)
+	if strings.Contains(dsn, "@tcp") && strings.Contains(dsn, ":") {
+		parts := strings.Split(dsn, "@")
+		if len(parts) > 1 {
+			credParts := strings.Split(parts[0], ":")
+			if len(credParts) == 2 {
+				return fmt.Sprintf("%s:******@%s", credParts[0], parts[1])
+			}
+		}
 	}
 
 	return dsn

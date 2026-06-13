@@ -3,6 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"go-vents/internal/domain/types"
+	"go-vents/internal/infrastructure/configuration"
+	"go-vents/internal/infrastructure/database"
+	"go-vents/internal/infrastructure/gapi"
+	slogcolored "go-vents/internal/infrastructure/logging/slog-colored"
 	"log"
 	"net"
 	"os"
@@ -11,12 +16,6 @@ import (
 	"syscall"
 	"time"
 
-	"go-vents/internal/domain/types"
-	"go-vents/internal/infrastructure/configuration"
-	"go-vents/internal/infrastructure/database"
-	"go-vents/internal/infrastructure/gapi"
-	slogcolored "go-vents/internal/infrastructure/logging/slog-colored"
-
 	spannergorm "github.com/googleapis/go-gorm-spanner"
 	_ "github.com/googleapis/go-sql-spanner"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -24,6 +23,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	gormLogger "gorm.io/gorm/logger"
@@ -87,8 +87,20 @@ func loadConfiguration(logger types.Logger) {
 // #[.'.]:> STEP 3: Create a repository instance with the database connection
 // #[.'.]:> The repository encapsulates all data access logic
 func loadDatabase(logger types.Logger) {
-	if config.DatabaseDriver == "spanner" {
+	customLogger := gormLogger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
+		gormLogger.Config{
+			SlowThreshold:             time.Second,
+			LogLevel:                  gormLogger.Warn,
+			IgnoreRecordNotFoundError: true,
+			ParameterizedQueries:      false,
+			Colorful:                  true,
+		},
+	)
 
+	switch config.DatabaseDriver {
+
+	case "spanner":
 		dbSpanner, err := gorm.Open(spannergorm.New(spannergorm.Config{
 			DriverName: "spanner",
 			DSN:        config.DatabaseDsn,
@@ -105,36 +117,44 @@ func loadDatabase(logger types.Logger) {
 
 		repository = database.NewEventSpannerRepository(dbSpanner)
 		logger.Info("['.']:>------- spanner database initialized")
-		return
+
+	case "mariadb":
+		dbMaria, err := gorm.Open(mysql.Open(config.DatabaseDsn), &gorm.Config{
+			Logger: customLogger,
+		})
+		if err != nil {
+			logger.Fatal("['.']:> error unable to connect to mariadb via gorm:" + err.Error())
+		}
+
+		err = dbMaria.AutoMigrate(&types.Event{}, &types.Queue{}, &types.Subscription{})
+		if err != nil {
+			logger.Fatal("['.']:> error unable to migrate mariadb database:" + err.Error())
+		}
+		logger.Info("['.']:>------- mariadb tables migrated using structs")
+
+		repository = database.NewEventMariaDBRepository(dbMaria)
+		logger.Info("['.']:>------- mariadb database initialized")
+
+	case "postgres":
+		dbPostgres, err := gorm.Open(postgres.Open(config.DatabaseDsn), &gorm.Config{
+			Logger: customLogger,
+		})
+		if err != nil {
+			logger.Fatal("['.']:> error unable to connect to postgres via gorm:" + err.Error())
+		}
+
+		err = dbPostgres.AutoMigrate(&types.Event{}, &types.Queue{}, &types.Subscription{})
+		if err != nil {
+			logger.Fatal("['.']:> error unable to migrate postgres database:" + err.Error())
+		}
+		logger.Info("['.']:>------- postgres tables migrated using structs")
+
+		repository = database.NewEventPostgresRepository(dbPostgres)
+		logger.Info("['.']:>------- postgres database initialized")
+
+	default:
+		logger.Fatal("['.']:> error unsupported database driver: " + config.DatabaseDriver)
 	}
-
-	customLogger := gormLogger.New(
-		log.New(os.Stdout, "\r\n", log.LstdFlags),
-		gormLogger.Config{
-			SlowThreshold:             time.Second,
-			LogLevel:                  gormLogger.Warn,
-			IgnoreRecordNotFoundError: true,
-			ParameterizedQueries:      false,
-			Colorful:                  true,
-		},
-	)
-
-	db, err := gorm.Open(postgres.Open(config.DatabaseDsn), &gorm.Config{
-		Logger: customLogger,
-	})
-	if err != nil {
-		logger.Fatal("['.']:> error unable to connect to database:" + err.Error())
-	}
-
-	err = db.AutoMigrate(&types.Event{}, &types.Queue{}, &types.Subscription{})
-	if err != nil {
-		logger.Fatal("['.']:> error unable to migrate database:" + err.Error())
-	}
-
-	repo := database.NewEventPostgresRepository(db)
-	repository = repo
-
-	logger.Info("['.']:>------- database initialized")
 }
 
 // #[.'.]:> This function starts the servers and manages their lifecycle

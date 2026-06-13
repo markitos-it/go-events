@@ -1,5 +1,32 @@
 .DEFAULT_GOAL := help
-.PHONY: help start test test-e2e proto db-start db-stop db-create db-drop db-seed spanner-start spanner-stop spanner-create spanner-drop format lint support-install-linter support-uninstall-linter build appsec-install appsec-uninstall appsec-test tidy
+.PHONY: help \
+	start \
+	test \
+	test-e2e \
+	proto \
+	db-start \
+	db-stop \
+	db-create \
+	db-drop \
+	db-seed \
+	spanner-start \
+	spanner-stop \
+	spanner-create \
+	spanner-drop \
+	mariadb-start \
+	mariadb-stop \
+	mariadb-create \
+	mariadb-drop \
+	mariadb-seed \
+	format \
+	lint \
+	support-install-linter \
+	support-uninstall-linter \
+	build \
+	appsec-install \
+	appsec-uninstall \
+	appsec-test \
+	tidy
 
 help:
 	@echo ""
@@ -24,6 +51,11 @@ help:
 	@printf "  \033[36m%-24s\033[0m %s\n" "spanner-stop" "Detiene el entorno del emulador de Spanner"
 	@printf "  \033[36m%-24s\033[0m %s\n" "spanner-create" "Crea la base de datos en Spanner"
 	@printf "  \033[36m%-24s\033[0m %s\n" "spanner-drop" "Elimina (drop) la base de datos en Spanner por completo"
+	@printf "  \033[36m%-24s\033[0m %s\n" "mariadb-start" "Inicia el entorno de la base de datos MariaDB"
+	@printf "  \033[36m%-24s\033[0m %s\n" "mariadb-stop" "Detiene el entorno de la base de datos MariaDB"
+	@printf "  \033[36m%-24s\033[0m %s\n" "mariadb-create" "Crea la base de datos en MariaDB"
+	@printf "  \033[36m%-24s\033[0m %s\n" "mariadb-drop" "Elimina (drop) la base de datos en MariaDB por completo"
+	@printf "  \033[36m%-24s\033[0m %s\n" "mariadb-seed" "Puebla la base de datos MariaDB con datos de prueba"
 	@printf "  \033[36m%-24s\033[0m %s\n" "support-install-linter" "Instala la herramienta golangci-lint"
 	@printf "  \033[36m%-24s\033[0m %s\n" "support-uninstall-linter" "Desinstala la herramienta golangci-lint"
 	@printf "  \033[36m%-24s\033[0m %s\n" "appsec-install" "Instala herramientas de seguridad (Snyk, Gitleaks)"
@@ -62,6 +94,21 @@ db-drop:
 
 db-seed:
 	bash bin/database/postgres/seed.sh
+
+mariadb-start:
+	bash bin/database/mariadb/start.sh
+
+mariadb-stop:
+	bash bin/database/mariadb/stop.sh
+
+mariadb-create:
+	bash bin/database/mariadb/create.sh
+
+mariadb-drop:
+	bash bin/database/mariadb/drop.sh
+
+mariadb-seed:
+	bash bin/database/mariadb/seed.sh
 
 spanner-start:
 	bash bin/database/spanner/start.sh
