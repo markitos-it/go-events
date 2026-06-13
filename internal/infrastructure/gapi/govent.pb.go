@@ -990,6 +990,94 @@ func (x *AckMessageResponse) GetSuccess() bool {
 	return false
 }
 
+type AckMessagesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QueueIds      []string               `protobuf:"bytes,1,rep,name=queue_ids,json=queueIds,proto3" json:"queue_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AckMessagesRequest) Reset() {
+	*x = AckMessagesRequest{}
+	mi := &file_govent_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AckMessagesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AckMessagesRequest) ProtoMessage() {}
+
+func (x *AckMessagesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_govent_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AckMessagesRequest.ProtoReflect.Descriptor instead.
+func (*AckMessagesRequest) Descriptor() ([]byte, []int) {
+	return file_govent_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *AckMessagesRequest) GetQueueIds() []string {
+	if x != nil {
+		return x.QueueIds
+	}
+	return nil
+}
+
+type AckMessagesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AckMessagesResponse) Reset() {
+	*x = AckMessagesResponse{}
+	mi := &file_govent_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AckMessagesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AckMessagesResponse) ProtoMessage() {}
+
+func (x *AckMessagesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_govent_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AckMessagesResponse.ProtoReflect.Descriptor instead.
+func (*AckMessagesResponse) Descriptor() ([]byte, []int) {
+	return file_govent_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *AckMessagesResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
 var File_govent_proto protoreflect.FileDescriptor
 
 const file_govent_proto_rawDesc = "" +
@@ -1056,7 +1144,11 @@ const file_govent_proto_rawDesc = "" +
 	"\x11AckMessageRequest\x12\x19\n" +
 	"\bqueue_id\x18\x01 \x01(\tR\aqueueId\".\n" +
 	"\x12AckMessageResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess2\xa5\x04\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"1\n" +
+	"\x12AckMessagesRequest\x12\x1b\n" +
+	"\tqueue_ids\x18\x01 \x03(\tR\bqueueIds\"/\n" +
+	"\x13AckMessagesResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess2\xeb\x04\n" +
 	"\fEventservice\x12D\n" +
 	"\vCreateEvent\x12\x19.event.CreateEventRequest\x1a\x1a.event.CreateEventResponse\x12;\n" +
 	"\bGetEvent\x12\x16.event.GetEventRequest\x1a\x17.event.GetEventResponse\x12D\n" +
@@ -1065,7 +1157,8 @@ const file_govent_proto_rawDesc = "" +
 	"\x12CreateSubscription\x12 .event.CreateSubscriptionRequest\x1a!.event.CreateSubscriptionResponse\x12G\n" +
 	"\fPullMessages\x12\x1a.event.PullMessagesRequest\x1a\x1b.event.PullMessagesResponse\x12A\n" +
 	"\n" +
-	"AckMessage\x12\x18.event.AckMessageRequest\x1a\x19.event.AckMessageResponseB!Z\x1fmarkitos-it-svc-event-grpc/gapib\x06proto3"
+	"AckMessage\x12\x18.event.AckMessageRequest\x1a\x19.event.AckMessageResponse\x12D\n" +
+	"\vAckMessages\x12\x19.event.AckMessagesRequest\x1a\x1a.event.AckMessagesResponseB!Z\x1fmarkitos-it-svc-event-grpc/gapib\x06proto3"
 
 var (
 	file_govent_proto_rawDescOnce sync.Once
@@ -1079,7 +1172,7 @@ func file_govent_proto_rawDescGZIP() []byte {
 	return file_govent_proto_rawDescData
 }
 
-var file_govent_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_govent_proto_msgTypes = make([]protoimpl.MessageInfo, 20)
 var file_govent_proto_goTypes = []any{
 	(*Event)(nil),                            // 0: event.Event
 	(*QueueMessage)(nil),                     // 1: event.QueueMessage
@@ -1099,11 +1192,13 @@ var file_govent_proto_goTypes = []any{
 	(*PullMessagesResponse)(nil),             // 15: event.PullMessagesResponse
 	(*AckMessageRequest)(nil),                // 16: event.AckMessageRequest
 	(*AckMessageResponse)(nil),               // 17: event.AckMessageResponse
-	(*timestamppb.Timestamp)(nil),            // 18: google.protobuf.Timestamp
+	(*AckMessagesRequest)(nil),               // 18: event.AckMessagesRequest
+	(*AckMessagesResponse)(nil),              // 19: event.AckMessagesResponse
+	(*timestamppb.Timestamp)(nil),            // 20: google.protobuf.Timestamp
 }
 var file_govent_proto_depIdxs = []int32{
-	18, // 0: event.Event.created_at:type_name -> google.protobuf.Timestamp
-	18, // 1: event.Event.updated_at:type_name -> google.protobuf.Timestamp
+	20, // 0: event.Event.created_at:type_name -> google.protobuf.Timestamp
+	20, // 1: event.Event.updated_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: event.AllEventsBySlugResponse.events:type_name -> event.Event
 	0,  // 3: event.AllEventsBySlugAndSourceResponse.events:type_name -> event.Event
 	1,  // 4: event.PullMessagesResponse.messages:type_name -> event.QueueMessage
@@ -1114,15 +1209,17 @@ var file_govent_proto_depIdxs = []int32{
 	12, // 9: event.Eventservice.CreateSubscription:input_type -> event.CreateSubscriptionRequest
 	14, // 10: event.Eventservice.PullMessages:input_type -> event.PullMessagesRequest
 	16, // 11: event.Eventservice.AckMessage:input_type -> event.AckMessageRequest
-	3,  // 12: event.Eventservice.CreateEvent:output_type -> event.CreateEventResponse
-	5,  // 13: event.Eventservice.GetEvent:output_type -> event.GetEventResponse
-	7,  // 14: event.Eventservice.DeleteEvent:output_type -> event.DeleteEventResponse
-	11, // 15: event.Eventservice.AllBySlugAndSource:output_type -> event.AllEventsBySlugAndSourceResponse
-	13, // 16: event.Eventservice.CreateSubscription:output_type -> event.CreateSubscriptionResponse
-	15, // 17: event.Eventservice.PullMessages:output_type -> event.PullMessagesResponse
-	17, // 18: event.Eventservice.AckMessage:output_type -> event.AckMessageResponse
-	12, // [12:19] is the sub-list for method output_type
-	5,  // [5:12] is the sub-list for method input_type
+	18, // 12: event.Eventservice.AckMessages:input_type -> event.AckMessagesRequest
+	3,  // 13: event.Eventservice.CreateEvent:output_type -> event.CreateEventResponse
+	5,  // 14: event.Eventservice.GetEvent:output_type -> event.GetEventResponse
+	7,  // 15: event.Eventservice.DeleteEvent:output_type -> event.DeleteEventResponse
+	11, // 16: event.Eventservice.AllBySlugAndSource:output_type -> event.AllEventsBySlugAndSourceResponse
+	13, // 17: event.Eventservice.CreateSubscription:output_type -> event.CreateSubscriptionResponse
+	15, // 18: event.Eventservice.PullMessages:output_type -> event.PullMessagesResponse
+	17, // 19: event.Eventservice.AckMessage:output_type -> event.AckMessageResponse
+	19, // 20: event.Eventservice.AckMessages:output_type -> event.AckMessagesResponse
+	13, // [13:21] is the sub-list for method output_type
+	5,  // [5:13] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -1139,7 +1236,7 @@ func file_govent_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_govent_proto_rawDesc), len(file_govent_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   20,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

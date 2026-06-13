@@ -12,4 +12,5 @@ type EventRepository interface {
 	CreateSubscription(ctx context.Context, sub *Subscription) error
 	PullMessages(ctx context.Context, slug *Slug, source *Source) ([]*Queue, error)
 	AckMessage(ctx context.Context, id *SharedId) error
+	AckMessages(ctx context.Context, ids []*SharedId) error
 }

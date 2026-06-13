@@ -16,6 +16,7 @@ type MockSpyEventRepository struct {
 	LastAllBySlugAndSource       []types.Event
 	LastCreatedSubscriptionEvent *string
 	LastAckMessageId             *string
+	LastAckMessagesIds           []string
 	LastPullMessagesName         *string
 	LastPullMessagesSource       *string
 }
@@ -28,6 +29,7 @@ func NewMockSpyEventRepository() *MockSpyEventRepository {
 		LastAllBySlugAndSource:       nil,
 		LastCreatedSubscriptionEvent: nil,
 		LastAckMessageId:             nil,
+		LastAckMessagesIds:           nil,
 		LastPullMessagesName:         nil,
 		LastPullMessagesSource:       nil,
 	}
@@ -44,6 +46,15 @@ func (m *MockSpyEventRepository) PullMessages(ctx context.Context, slug *types.S
 func (m *MockSpyEventRepository) AckMessage(ctx context.Context, id *types.SharedId) error {
 	v := id.Value()
 	m.LastAckMessageId = &v
+	return nil
+}
+
+func (m *MockSpyEventRepository) AckMessages(ctx context.Context, ids []*types.SharedId) error {
+	var strIds []string
+	for _, id := range ids {
+		strIds = append(strIds, id.Value())
+	}
+	m.LastAckMessagesIds = strIds
 	return nil
 }
 

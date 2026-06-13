@@ -5,6 +5,7 @@
 	start \
 	test \
 	test-e2e \
+	test-e2e-stress \
 	proto \
 	db-start \
 	db-stop \
@@ -41,6 +42,7 @@ help:
 	@printf "  \033[36m%-24s\033[0m %s\n" "start" "Start the application locally"
 	@printf "  \033[36m%-24s\033[0m %s\n" "test" "Run the application test suite"
 	@printf "  \033[36m%-24s\033[0m %s\n" "test-e2e" "Run End-to-End tests via gRPC"
+	@printf "  \033[36m%-24s\033[0m %s\n" "test-e2e-stress" "Run End-to-End stress tests via gRPC"
 	@printf "  \033[36m%-24s\033[0m %s\n" "proto" "Generate code files from gRPC .proto files"
 	@printf "  \033[36m%-24s\033[0m %s\n" "lint" "Analyze Go code with golangci-lint"
 	@printf "  \033[36m%-24s\033[0m %s\n" "lint-fix" "Format Go code automatically (gofmt, goimports)"
@@ -91,6 +93,9 @@ test:
 
 test-e2e:
 	bash bin/app/test_e2e_grpc.sh
+
+test-e2e-stress:
+	bash bin/app/test-e2e-stress.sh
 
 test-verbose:
 	bash bin/app/test-verbose.sh

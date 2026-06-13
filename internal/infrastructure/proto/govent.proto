@@ -31,6 +31,7 @@ service Eventservice {
   rpc CreateSubscription(CreateSubscriptionRequest) returns (CreateSubscriptionResponse);
   rpc PullMessages(PullMessagesRequest) returns (PullMessagesResponse);
   rpc AckMessage(AckMessageRequest) returns (AckMessageResponse);
+  rpc AckMessages(AckMessagesRequest) returns (AckMessagesResponse);
 }
 
 message CreateEventRequest {
@@ -108,5 +109,13 @@ message AckMessageRequest {
 }
 
 message AckMessageResponse {
+  bool success = 1;
+}
+
+message AckMessagesRequest {
+  repeated string queue_ids = 1;
+}
+
+message AckMessagesResponse {
   bool success = 1;
 }

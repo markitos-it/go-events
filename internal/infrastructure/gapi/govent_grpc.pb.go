@@ -26,6 +26,7 @@ const (
 	Eventservice_CreateSubscription_FullMethodName = "/event.Eventservice/CreateSubscription"
 	Eventservice_PullMessages_FullMethodName       = "/event.Eventservice/PullMessages"
 	Eventservice_AckMessage_FullMethodName         = "/event.Eventservice/AckMessage"
+	Eventservice_AckMessages_FullMethodName        = "/event.Eventservice/AckMessages"
 )
 
 // EventserviceClient is the client API for Eventservice service.
@@ -39,6 +40,7 @@ type EventserviceClient interface {
 	CreateSubscription(ctx context.Context, in *CreateSubscriptionRequest, opts ...grpc.CallOption) (*CreateSubscriptionResponse, error)
 	PullMessages(ctx context.Context, in *PullMessagesRequest, opts ...grpc.CallOption) (*PullMessagesResponse, error)
 	AckMessage(ctx context.Context, in *AckMessageRequest, opts ...grpc.CallOption) (*AckMessageResponse, error)
+	AckMessages(ctx context.Context, in *AckMessagesRequest, opts ...grpc.CallOption) (*AckMessagesResponse, error)
 }
 
 type eventserviceClient struct {
@@ -119,6 +121,16 @@ func (c *eventserviceClient) AckMessage(ctx context.Context, in *AckMessageReque
 	return out, nil
 }
 
+func (c *eventserviceClient) AckMessages(ctx context.Context, in *AckMessagesRequest, opts ...grpc.CallOption) (*AckMessagesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AckMessagesResponse)
+	err := c.cc.Invoke(ctx, Eventservice_AckMessages_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EventserviceServer is the server API for Eventservice service.
 // All implementations must embed UnimplementedEventserviceServer
 // for forward compatibility.
@@ -130,6 +142,7 @@ type EventserviceServer interface {
 	CreateSubscription(context.Context, *CreateSubscriptionRequest) (*CreateSubscriptionResponse, error)
 	PullMessages(context.Context, *PullMessagesRequest) (*PullMessagesResponse, error)
 	AckMessage(context.Context, *AckMessageRequest) (*AckMessageResponse, error)
+	AckMessages(context.Context, *AckMessagesRequest) (*AckMessagesResponse, error)
 	mustEmbedUnimplementedEventserviceServer()
 }
 
@@ -160,6 +173,9 @@ func (UnimplementedEventserviceServer) PullMessages(context.Context, *PullMessag
 }
 func (UnimplementedEventserviceServer) AckMessage(context.Context, *AckMessageRequest) (*AckMessageResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method AckMessage not implemented")
+}
+func (UnimplementedEventserviceServer) AckMessages(context.Context, *AckMessagesRequest) (*AckMessagesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AckMessages not implemented")
 }
 func (UnimplementedEventserviceServer) mustEmbedUnimplementedEventserviceServer() {}
 func (UnimplementedEventserviceServer) testEmbeddedByValue()                      {}
@@ -308,6 +324,24 @@ func _Eventservice_AckMessage_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Eventservice_AckMessages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AckMessagesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EventserviceServer).AckMessages(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Eventservice_AckMessages_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EventserviceServer).AckMessages(ctx, req.(*AckMessagesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Eventservice_ServiceDesc is the grpc.ServiceDesc for Eventservice service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -342,6 +376,10 @@ var Eventservice_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AckMessage",
 			Handler:    _Eventservice_AckMessage_Handler,
+		},
+		{
+			MethodName: "AckMessages",
+			Handler:    _Eventservice_AckMessages_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

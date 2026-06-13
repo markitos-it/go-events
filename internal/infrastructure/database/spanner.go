@@ -9,7 +9,6 @@ import (
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
 )
 
 type EventSpannerRepository struct {
@@ -81,9 +80,19 @@ func (r *EventSpannerRepository) Delete(ctx context.Context, id *types.SharedId)
 }
 
 func (r *EventSpannerRepository) CreateSubscription(ctx context.Context, sub *types.Subscription) error {
+	var count int64
+	err := r.db.WithContext(ctx).Table("subscriptions").
+		Where("subscriber_name = ? AND event_name = ? AND source = ?", sub.SubscriberName, sub.EventName, sub.Source).
+		Count(&count).Error
+	if err != nil {
+		return err
+	}
+	if count > 0 {
+		return nil
+	}
+
 	return r.db.WithContext(ctx).
 		Table("subscriptions").
-		Clauses(clause.OnConflict{UpdateAll: true}).
 		Create(sub).Error
 }
 
@@ -112,4 +121,33 @@ func (r *EventSpannerRepository) AckMessage(ctx context.Context, id *types.Share
 		return shared.ErrQueueMessageNotFound
 	}
 	return nil
+}
+
+func (r *EventSpannerRepository) AckMessages(ctx context.Context, ids []*types.SharedId) error {
+	if len(ids) == 0 {
+		return nil
+	}
+
+	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		var values []string
+		for _, id := range ids {
+			values = append(values, id.Value())
+		}
+
+		result := tx.Table("queue").
+			Where("id IN ? AND status = ?", values, "pending").
+			Updates(map[string]interface{}{
+				"status":     "processed",
+				"updated_at": time.Now(),
+			})
+
+		if result.Error != nil {
+			return result.Error
+		}
+		if int(result.RowsAffected) != len(ids) {
+			return shared.ErrQueueMessageNotFound
+		}
+
+		return nil
+	})
 }
