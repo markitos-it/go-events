@@ -3,6 +3,28 @@
 Todos los cambios notables de este proyecto serán documentados en este archivo de acuerdo a los estándares de [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [v1.0.0](https://github.com/markitos-it/go-events/compare/v0.0.2...v1.0.0) — *(2026-06-15)*
+
+### ♻️ Code Refactoring
+
+- event validation transfer to shared *(2026-06-15)* ([3b8ddf6](https://github.com/markitos-it/go-events/commit/3b8ddf6b2e93de43f2185bba339ed7df3e643304))
+- source its a slug format type *(2026-06-15)* ([90b5bb5](https://github.com/markitos-it/go-events/commit/90b5bb54eaf8b23278e0e36a272d73b8a20f9cd8))
+- version sh new tag changelog *(2026-06-15)* ([70b3337](https://github.com/markitos-it/go-events/commit/70b3337b947c32399a50bcf48459950540e38060))
+
+### ✅ Tests
+
+- validate slug from helper *(2026-06-15)* ([8cbab00](https://github.com/markitos-it/go-events/commit/8cbab007ab5f2d6dbd31f6cedb212839488ad475))
+
+### ✨ Features
+
+- added action *(2026-06-15)* ([27b6c4c](https://github.com/markitos-it/go-events/commit/27b6c4c184abf5be36f168ee14059ae19fd0aa8a))
+- seeding with new source as slug *(2026-06-15)* ([2e0e87d](https://github.com/markitos-it/go-events/commit/2e0e87d014de31a18983ff6f774332d57bf7a54f))
+
+### 📝 Documentation
+
+- update changelog and debt *(2026-06-15)* ([4967cdd](https://github.com/markitos-it/go-events/commit/4967cdd7b774cb97762fde00464f04caef9d93b5))
+
+
 ## [v0.0.2](https://github.com/markitos-it/go-events/compare/v0.0.1...v0.0.2) — *(2026-06-15)*
 
 ### ♻️ Code Refactoring
