@@ -29,7 +29,10 @@
 	appsec-install \
 	appsec-uninstall \
 	appsec-test \
-	tidy
+	tidy \
+	version-major \
+	version-minor \
+	version-bugfix
 
 help:
 	@echo ""
@@ -66,6 +69,9 @@ help:
 	@printf "  \033[36m%-24s\033[0m %s\n" "appsec-install" "Install security tools (Snyk, Gitleaks)"
 	@printf "  \033[36m%-24s\033[0m %s\n" "appsec-uninstall" "Uninstall security tools"
 	@printf "  \033[36m%-24s\033[0m %s\n" "appsec-test" "Run security tests (Snyk, Gitleaks)"
+	@printf "  \033[36m%-24s\033[0m %s\n" "version-major" "Increment major version (x.0.0) and create git tag"
+	@printf "  \033[36m%-24s\033[0m %s\n" "version-minor" "Increment minor version (0.x.0) and create git tag"
+	@printf "  \033[36m%-24s\033[0m %s\n" "version-bugfix" "Increment bugfix/patch version (0.0.x) and create git tag"
 	@echo "['.']:> =================================================="
 	@echo ""
 
@@ -183,3 +189,12 @@ appsec-pre-push:
 
 tidy:
 	go mod tidy
+
+version-major:
+	bash bin/app/version-major.sh
+
+version-minor:
+	bash bin/app/version-minor.sh
+
+version-bugfix:
+	bash bin/app/version-bugfix.sh
