@@ -18,15 +18,20 @@ func (s *Server) AckMessages(ctx context.Context, req *AckMessagesRequest) (*Ack
 		return nil, status.Error(codes.InvalidArgument, "too many ids, maximum is 100, your request have "+fmt.Sprint(len(req.QueueIds))+" ids")
 	}
 
+	var ids []types.SharedId
 	for _, idStr := range req.QueueIds {
 		id, err := types.NewSharedId(idStr)
 		if err != nil {
 			return nil, status.Error(codes.InvalidArgument, "invalid id format: "+idStr)
 		}
+		ids = append(ids, *id)
+	}
 
-		err = s.repository.AckMessage(ctx, id)
+	for _, id := range ids {
+		err := s.repository.AckMessage(ctx, &id)
 		if err != nil {
-			return nil, status.Errorf(codes.Internal, "failed to ack message %s: %v", idStr, err)
+			s.logger.Error(fmt.Sprintf("failed to ack message %s: %v", id.Value(), err))
+			continue
 		}
 	}
 
