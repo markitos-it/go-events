@@ -19,5 +19,5 @@ git commit -m "chore: update changelog for $NEW_TAG" || echo -e "\n\nNO CHANGES 
 echo "🚀 Bumping BUGFIX version: $LATEST_TAG -> $NEW_TAG"
 sleep 10
 git tag $NEW_TAG
-git push --tags
+git push origin main --tags
 echo "✅ Tag $NEW_TAG creado exitosamente."
