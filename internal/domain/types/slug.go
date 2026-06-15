@@ -1,8 +1,6 @@
 package types
 
 import (
-	"regexp"
-
 	"go-vents/internal/domain/shared"
 )
 
@@ -20,13 +18,7 @@ func NewSlug(value string) (*Slug, error) {
 }
 
 func isValidSlug(value string) bool {
-	if len(value) == 0 {
-		return false
-	}
-
-	pattern := `^[a-zA-Z]([a-zA-Z0-9._-]*[a-zA-Z0-9])?$`
-	matched, _ := regexp.MatchString(pattern, value)
-	return matched
+	return shared.IsValidSlug(value)
 }
 
 func (b *Slug) Value() string {
