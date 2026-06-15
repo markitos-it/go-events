@@ -51,11 +51,6 @@ func LoadConfiguration(configFilesPath string, logger types.Logger) (config Even
 
 	err = viper.Unmarshal(&config)
 	if err == nil {
-		logger.Info("['.']:> ✨ Configuración cargada correctamente ✨")
-		logger.Info("['.']:> ----------------------------------------")
-		logger.Info("['.']:> 🚀 gRPC Server.: " + config.GRPCServerAddress)
-		logger.Info("['.']:> 📁 Database DSN: " + config.DatabaseDsn)
-		logger.Info("['.']:> ----------------------------------------")
 		applyFallbackEnvVars(&config)
 	}
 

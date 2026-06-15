@@ -79,7 +79,12 @@ func loadConfiguration(logger types.Logger) {
 	}
 
 	config = loadedConfig
-	logger.Info("['.']:> configuration loaded")
+	logger.Info("['.']:> ✨ Configuración cargada correctamente ✨")
+	logger.Info("['.']:> ----------------------------------------")
+	logger.Info("['.']:> 🚀 gRPC Server.....: " + config.GRPCServerAddress)
+	logger.Info("['.']:> 📁 Database DSN....: " + config.DatabaseDsn)
+	logger.Info("['.']:> 🏎️  Database Driver.: " + config.DatabaseDriver)
+	logger.Info("['.']:> ----------------------------------------")
 
 }
 
