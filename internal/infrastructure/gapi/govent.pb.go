@@ -7,13 +7,12 @@
 package gapi
 
 import (
-	reflect "reflect"
-	sync "sync"
-	unsafe "unsafe"
-
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	reflect "reflect"
+	sync "sync"
+	unsafe "unsafe"
 )
 
 const (
@@ -808,11 +807,12 @@ func (x *CreateSubscriptionResponse) GetMessage() string {
 }
 
 type PullMessagesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	EventName     string                 `protobuf:"bytes,1,opt,name=event_name,json=eventName,proto3" json:"event_name,omitempty"`
-	Source        string                 `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	EventName      string                 `protobuf:"bytes,1,opt,name=event_name,json=eventName,proto3" json:"event_name,omitempty"`
+	Source         string                 `protobuf:"bytes,2,opt,name=source,proto3" json:"source,omitempty"`
+	SubscriberName string                 `protobuf:"bytes,3,opt,name=subscriber_name,json=subscriberName,proto3" json:"subscriber_name,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *PullMessagesRequest) Reset() {
@@ -855,6 +855,13 @@ func (x *PullMessagesRequest) GetEventName() string {
 func (x *PullMessagesRequest) GetSource() string {
 	if x != nil {
 		return x.Source
+	}
+	return ""
+}
+
+func (x *PullMessagesRequest) GetSubscriberName() string {
+	if x != nil {
+		return x.SubscriberName
 	}
 	return ""
 }
@@ -1135,11 +1142,12 @@ const file_govent_proto_rawDesc = "" +
 	"\x06source\x18\x03 \x01(\tR\x06source\"P\n" +
 	"\x1aCreateSubscriptionResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"L\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"u\n" +
 	"\x13PullMessagesRequest\x12\x1d\n" +
 	"\n" +
 	"event_name\x18\x01 \x01(\tR\teventName\x12\x16\n" +
-	"\x06source\x18\x02 \x01(\tR\x06source\"G\n" +
+	"\x06source\x18\x02 \x01(\tR\x06source\x12'\n" +
+	"\x0fsubscriber_name\x18\x03 \x01(\tR\x0esubscriberName\"G\n" +
 	"\x14PullMessagesResponse\x12/\n" +
 	"\bmessages\x18\x01 \x03(\v2\x13.event.QueueMessageR\bmessages\".\n" +
 	"\x11AckMessageRequest\x12\x19\n" +

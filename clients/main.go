@@ -12,6 +12,9 @@ import (
 )
 
 const HOW_MANY_EVENTS_CREATE = 3
+const TEST_EVENT_NAME = "DynamicTestEvent"
+const TEST_EVENT_SOURCE = "DynamicTestSource"
+const TEST_SUBSCRIBER_NAME = "DynamicTestSubscriber"
 
 func main() {
 	serverAddr := "localhost:30000"
@@ -30,14 +33,12 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*15)
 	defer cancel()
 
-	eventName := "DynamicTestEvent"
-	eventSource := "DynamicTestSource"
-	createSubscription(ctx, client, eventName, eventSource)
+	createSubscription(ctx, client, TEST_SUBSCRIBER_NAME, TEST_EVENT_NAME, TEST_EVENT_SOURCE)
 
-	eventIDs := createEvents(ctx, client, eventName, eventSource, HOW_MANY_EVENTS_CREATE)
+	eventIDs := createEvents(ctx, client, TEST_EVENT_NAME, TEST_EVENT_SOURCE, HOW_MANY_EVENTS_CREATE)
 	time.Sleep(1 * time.Second)
 
-	messages := pullMessages(ctx, client, eventName, eventSource)
+	messages := pullMessages(ctx, client, TEST_SUBSCRIBER_NAME, TEST_EVENT_NAME, TEST_EVENT_SOURCE)
 	if len(messages) > 0 {
 		ackMessage(ctx, client, messages[0].Id)
 	} else {
@@ -57,10 +58,10 @@ func main() {
 	deleteEvents(ctx, client, eventIDs)
 }
 
-func createSubscription(ctx context.Context, client gapi.EventserviceClient, eventName, source string) {
+func createSubscription(ctx context.Context, client gapi.EventserviceClient, subscriberName, eventName, source string) {
 	log.Println("\n=== 1. CreateSubscription ===")
 	subReq := &gapi.CreateSubscriptionRequest{
-		SubscriberName: "DynamicSubscriber",
+		SubscriberName: subscriberName,
 		EventName:      eventName,
 		Source:         source,
 	}
@@ -90,11 +91,12 @@ func createEvents(ctx context.Context, client gapi.EventserviceClient, eventName
 	return eventIDs
 }
 
-func pullMessages(ctx context.Context, client gapi.EventserviceClient, eventName, source string) []*gapi.QueueMessage {
+func pullMessages(ctx context.Context, client gapi.EventserviceClient, subscriberName, eventName, source string) []*gapi.QueueMessage {
 	log.Println("\n=== 3. PullMessages ===")
 	pullReq := &gapi.PullMessagesRequest{
-		EventName: eventName,
-		Source:    source,
+		EventName:      eventName,
+		Source:         source,
+		SubscriberName: subscriberName,
 	}
 	pullRes, err := client.PullMessages(ctx, pullReq)
 	if err != nil {

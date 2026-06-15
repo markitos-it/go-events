@@ -98,6 +98,7 @@ message CreateSubscriptionResponse {
 message PullMessagesRequest {
   string event_name = 1;
   string source = 2;
+  string subscriber_name = 3;
 }
 
 message PullMessagesResponse {
