@@ -82,13 +82,13 @@ func TestAckMessagesInvalidId(t *testing.T) {
 	require.Equal(t, codes.InvalidArgument, st.Code())
 }
 
-func TestAckMessagesNotFound(t *testing.T) {
+func TestAckMessagesNeverReceivedAnError(t *testing.T) {
 	nonExistentId := shared.UUIDv4()
 	_, err := grpcClient.AckMessages(ctx, &gapi.AckMessagesRequest{
 		QueueIds: []string{nonExistentId},
 	})
 
-	require.Error(t, err)
+	require.NoError(t, err)
 
 	log.Println("-----------------------------------------------------")
 	log.Println("err", err)

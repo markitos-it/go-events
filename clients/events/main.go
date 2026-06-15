@@ -13,7 +13,6 @@ import (
 
 func main() {
 	serverAddr := "localhost:30000"
-	queueId := "ee0fb233-d26b-419b-959b-6fb21a4dc727"
 
 	conn, err := grpc.NewClient(serverAddr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -30,16 +29,26 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	req := &gapi.AckMessageRequest{
-		QueueId: queueId,
+	req := &gapi.AllEventsBySlugAndSourceRequest{
+		Slug:   "LoadTestEventBravo",
+		Source: "LoadTestSource",
 	}
 
-	log.Printf("📡 Sending request to %s to ack message with Queue ID: '%s'...", serverAddr, req.QueueId)
+	log.Printf("📡 Sending request to %s to get events with Slug: '%s' and Source: '%s'...", serverAddr, req.Slug, req.Source)
 
-	res, err := client.AckMessage(ctx, req)
+	res, err := client.AllBySlugAndSource(ctx, req)
 	if err != nil {
-		log.Fatalf("❌ Error calling AckMessage: %v", err)
+		log.Fatalf("❌ Error calling AllBySlugAndSource: %v", err)
 	}
 
-	log.Printf("✅ Message acknowledged successfully! Success: %t", res.Success)
+	events := res.GetEvents()
+	if len(events) == 0 {
+		log.Println("ℹ️ No events found for the provided slug and source.")
+		return
+	}
+
+	log.Printf("✅ Found %d events:", len(events))
+	for i, ev := range events {
+		log.Printf("   [%d] ID: %s | Slug: %s | Source: %s | Payload: %s", i+1, ev.Id, ev.Slug, ev.Source, ev.Payload)
+	}
 }

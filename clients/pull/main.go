@@ -18,33 +18,42 @@ func main() {
 	if err != nil {
 		log.Fatalf("❌ Error connecting to gRPC server: %v", err)
 	}
-	defer conn.Close()
+	defer func() {
+		if err := conn.Close(); err != nil {
+			log.Printf("⚠️ Error closing connection: %v", err)
+		}
+	}()
 
 	client := gapi.NewEventserviceClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*5)
 	defer cancel()
 
-	req := &gapi.AllEventsBySlugAndSourceRequest{
-		Slug:   "LoadTestEventBravo",
-		Source: "LoadTestSource",
+	req := &gapi.PullMessagesRequest{
+		EventName: "LoadTestEventBravo",
+		Source:    "LoadTestSource",
 	}
 
-	log.Printf("📡 Sending request to %s to get events with Slug: '%s' and Source: '%s'...", serverAddr, req.Slug, req.Source)
+	log.Printf("📡 Sending request to %s to pull events with Slug: '%s' and Source: '%s'...", serverAddr, req.EventName, req.Source)
 
-	res, err := client.AllBySlugAndSource(ctx, req)
+	res, err := client.PullMessages(ctx, req)
 	if err != nil {
-		log.Fatalf("❌ Error calling AllBySlugAndSource: %v", err)
+		log.Fatalf("❌ Error calling PullMessages: %v", err)
 	}
 
-	events := res.GetEvents()
-	if len(events) == 0 {
-		log.Println("ℹ️ No events found for the provided slug and source.")
+	queue := res.Messages
+	if len(queue) == 0 {
+		log.Println("ℹ️ No queue messages found for the provided slug and source.")
 		return
 	}
 
-	log.Printf("✅ Found %d events:", len(events))
-	for i, ev := range events {
-		log.Printf("   [%d] ID: %s | Slug: %s | Source: %s | Payload: %s", i+1, ev.Id, ev.Slug, ev.Source, ev.Payload)
+	log.Printf("✅ Found %d queue:", len(queue))
+	for i, queueMessage := range queue {
+		log.Printf("   [%d] ID: %s | Status: %s | Subscriber: %s | Payload: %s",
+			i+1,
+			queueMessage.Id,
+			queueMessage.Status,
+			queueMessage.SubscriberName,
+			queueMessage.Payload)
 	}
 }
