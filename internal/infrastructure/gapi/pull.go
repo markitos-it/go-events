@@ -22,7 +22,7 @@ func (s *Server) PullMessages(ctx context.Context, req *PullMessagesRequest) (*P
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	source, err := types.NewSource(req.GetSource())
+	source, err := types.NewSlug(req.GetSource())
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}

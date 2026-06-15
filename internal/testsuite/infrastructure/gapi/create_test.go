@@ -3,6 +3,7 @@ package gapi_test
 import (
 	"testing"
 
+	"go-vents/internal/domain/shared"
 	"go-vents/internal/infrastructure/gapi"
 	internal_test "go-vents/internal/testsuite/internal"
 
@@ -12,10 +13,12 @@ import (
 )
 
 func TestEventCanCreate(t *testing.T) {
-	event := internal_test.NewRandomOnlyNameEvent()
+	event := internal_test.NewRandomEvent()
 
 	resp, err := grpcClient.CreateEvent(ctx, &gapi.CreateEventRequest{
-		Slug: event.Slug,
+		Slug:    event.Slug,
+		Source:  event.Source,
+		Payload: event.Payload,
 	})
 
 	require.NoError(t, err)
@@ -27,8 +30,9 @@ func TestEventCanCreate(t *testing.T) {
 
 func TestEventCantCreateWithoutName(t *testing.T) {
 	_, err := grpcClient.CreateEvent(ctx, &gapi.CreateEventRequest{
-		Slug: "",
-		/* ___CUSTOM_REQUIRED_VALUES___*/
+		Slug:    "",
+		Source:  shared.Slug(),
+		Payload: "{}",
 	})
 
 	require.Error(t, err)
@@ -39,7 +43,9 @@ func TestEventCantCreateWithoutName(t *testing.T) {
 
 func TestEventCantCreateWithoutValidName(t *testing.T) {
 	_, err := grpcClient.CreateEvent(ctx, &gapi.CreateEventRequest{
-		Slug: "!!!!!invalid!!!slug!!!",
+		Slug:    "!!!!!invalid!!!slug!!!",
+		Source:  shared.Slug(),
+		Payload: "{}",
 	})
 
 	require.Error(t, err)

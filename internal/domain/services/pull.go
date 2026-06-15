@@ -35,7 +35,7 @@ func (s PullService) Do(ctx context.Context, request PullRequest) (*PullResponse
 	if err != nil {
 		return nil, err
 	}
-	eventSource, err := types.NewSource(request.Source)
+	eventSource, err := types.NewSlug(request.Source)
 	if err != nil {
 		return nil, err
 	}

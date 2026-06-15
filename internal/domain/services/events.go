@@ -29,7 +29,7 @@ func (s EventAllService) Do(ctx context.Context, request EventAllRequest) (*Even
 	if err != nil {
 		return nil, err
 	}
-	eventSource, err := types.NewSource(request.Source)
+	eventSource, err := types.NewSlug(request.Source)
 	if err != nil {
 		return nil, err
 	}

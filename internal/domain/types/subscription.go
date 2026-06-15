@@ -1,9 +1,7 @@
 package types
 
 import (
-	"errors"
 	"log"
-	"strings"
 	"time"
 )
 
@@ -19,30 +17,33 @@ type Subscription struct {
 func NewSubscription(id, subscriberName, eventName, source string) (*Subscription, error) {
 	secureId, err := NewId(id)
 	if err != nil {
-		log.Printf("❌ DEBUG ERROR (NewId): %v\n", err)
+		log.Printf("❌ DEBUG ERROR (Id): %v\n", err)
 		return nil, err
 	}
 
-	if strings.TrimSpace(subscriberName) == "" {
-		log.Println("❌ DEBUG ERROR (NewSubscription): subscriber name cannot be empty")
-		return nil, errors.New("subscriber name cannot be empty")
+	secureEventName, err := NewSlug(eventName)
+	if err != nil {
+		log.Printf("❌ DEBUG ERROR (event_name): %v\n", err)
+		return nil, err
 	}
 
-	if strings.TrimSpace(eventName) == "" {
-		log.Println("❌ DEBUG ERROR (NewSubscription): event name cannot be empty")
-		return nil, errors.New("event name cannot be empty")
+	secureSubscriberName, err := NewSlug(subscriberName)
+	if err != nil {
+		log.Printf("❌ DEBUG ERROR (subscriber_name): %v\n", err)
+		return nil, err
 	}
 
-	if strings.TrimSpace(source) == "" {
-		log.Println("❌ DEBUG ERROR (NewSubscription): source cannot be empty")
-		return nil, errors.New("source cannot be empty")
+	secureSource, err := NewSlug(source)
+	if err != nil {
+		log.Printf("❌ DEBUG ERROR (source): %v\n", err)
+		return nil, err
 	}
 
 	return &Subscription{
 		Id:             secureId.Value(),
-		SubscriberName: strings.TrimSpace(subscriberName),
-		EventName:      strings.TrimSpace(eventName),
-		Source:         strings.TrimSpace(source),
+		SubscriberName: secureSubscriberName.Value(),
+		EventName:      secureEventName.Value(),
+		Source:         secureSource.Value(),
 		CreatedAt:      time.Now(),
 		UpdatedAt:      time.Now(),
 	}, nil

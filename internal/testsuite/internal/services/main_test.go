@@ -37,7 +37,7 @@ func NewMockSpyEventRepository() *MockSpyEventRepository {
 	}
 }
 
-func (m *MockSpyEventRepository) PullMessages(ctx context.Context, subscriberName *types.Slug, slug *types.Slug, source *types.Source) ([]*types.Queue, error) {
+func (m *MockSpyEventRepository) PullMessages(ctx context.Context, subscriberName *types.Slug, slug *types.Slug, source *types.Slug) ([]*types.Queue, error) {
 	slugValue := slug.Value()
 	sourceValue := source.Value()
 	subscriberNameValue := subscriberName.Value()
@@ -121,14 +121,14 @@ func (m *MockSpyEventRepository) OneHaveBeenCalledWith(eventId *string) bool {
 	return result
 }
 
-func (m *MockSpyEventRepository) AllBySlugAndSource(ctx context.Context, slug *types.Slug, source *types.Source) ([]*types.Event, error) {
+func (m *MockSpyEventRepository) AllBySlugAndSource(ctx context.Context, slug *types.Slug, source *types.Slug) ([]*types.Event, error) {
 	anEvent := internal_test.NewRandomEventWithSlugAndSource(slug.Value(), source.Value())
 	m.LastAllBySlugAndSource = append(m.LastAllBySlugAndSource, *anEvent)
 
 	return []*types.Event{anEvent}, nil
 }
 
-func (m *MockSpyEventRepository) LastAllBySlugAndSourceHaveBeenCalled(slug *types.Slug, source *types.Source) bool {
+func (m *MockSpyEventRepository) LastAllBySlugAndSourceHaveBeenCalled(slug *types.Slug, source *types.Slug) bool {
 	var result = m.LastAllBySlugAndSource[0].Slug == slug.Value() &&
 		m.LastAllBySlugAndSource[0].Source == source.Value()
 

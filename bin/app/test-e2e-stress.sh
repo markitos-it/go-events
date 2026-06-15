@@ -9,7 +9,6 @@ SERVER="localhost:30000"
 SERVICE="event.Eventservice"
 SOURCE="EventSource"
 
-# Constantes para evitar números mágicos
 NUM_USERS=10
 HOW_MANY_EVENTS_PER_USER=5
 TOTAL_EVENTS=$((NUM_USERS * HOW_MANY_EVENTS_PER_USER))

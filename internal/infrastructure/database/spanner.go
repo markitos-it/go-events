@@ -59,7 +59,7 @@ func (r *EventSpannerRepository) One(ctx context.Context, id *types.Id) (*types.
 	return &event, nil
 }
 
-func (r *EventSpannerRepository) AllBySlugAndSource(ctx context.Context, slug *types.Slug, source *types.Source) ([]*types.Event, error) {
+func (r *EventSpannerRepository) AllBySlugAndSource(ctx context.Context, slug *types.Slug, source *types.Slug) ([]*types.Event, error) {
 	var events []*types.Event
 	err := r.db.WithContext(ctx).
 		Where("slug = ? AND source = ?", slug.Value(), source.Value()).
@@ -100,7 +100,7 @@ func (r *EventSpannerRepository) PullMessages(
 	ctx context.Context,
 	subscriberName *types.Slug,
 	slug *types.Slug,
-	source *types.Source,
+	source *types.Slug,
 ) ([]*types.Queue, error) {
 
 	var results []*types.Queue

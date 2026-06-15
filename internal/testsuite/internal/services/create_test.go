@@ -6,17 +6,17 @@ import (
 
 	"go-vents/internal/domain/services"
 	"go-vents/internal/domain/shared"
-	"go-vents/internal/domain/types"
+	internal_test "go-vents/internal/testsuite/internal"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCanCreateAUser(t *testing.T) {
-	var event = types.Event{
-		Slug: shared.RandomSlug(),
-	}
+func TestCanCreateAnEvent(t *testing.T) {
+	event := internal_test.NewRandomEvent()
 	var request = services.EventCreateRequest{
-		Slug: event.Slug,
+		Slug:    event.Slug,
+		Source:  event.Source,
+		Payload: event.Payload,
 	}
 
 	var service = services.NewEventCreateService(repository)

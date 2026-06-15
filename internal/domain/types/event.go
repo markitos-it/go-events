@@ -27,7 +27,7 @@ func NewEvent(id, slug, source, payload string) (*Event, error) {
 		return nil, err
 	}
 
-	secureSource, err := NewSource(source)
+	secureSource, err := NewSlug(source)
 	if err != nil {
 		log.Printf("❌ DEBUG ERROR (Source): %v\n", err)
 		return nil, err
@@ -55,8 +55,8 @@ func (e *Event) GetSlug() *Slug {
 	return result
 }
 
-func (e *Event) GetSource() *Source {
-	result, _ := NewSource(e.Source)
+func (e *Event) GetSource() *Slug {
+	result, _ := NewSlug(e.Source)
 
 	return result
 }
