@@ -4,33 +4,52 @@ info:
   title: CHANGELOG
   repository_url: https://github.com/markitos-it/go-events
 options:
+  tag_filter_pattern: '^v?[0-9]+\.[0-9]+\.[0-9]+'
+  
   commits:
+    sort_by: Scope
     filters:
       Type:
         - feat
         - fix
         - perf
         - refactor
+        - docs
+        - style
+        - test
         - build
+        - ci
         - chore
+        
   commit_groups:
+    group_by: Type
+    sort_by: Title
     title_maps:
-      feat: ✨ Features
-      fix: 🐛 Bug Fixes
-      perf: ⚡ Performance Improvements
-      refactor: ♻️ Code Refactoring
-      build: 🏗️ Build System
-      chore: 🔧 Chores
+      feat: "✨ Features"
+      fix: "🐛 Bug Fixes"
+      perf: "⚡ Performance Improvements"
+      refactor: "♻️ Code Refactoring"
+      docs: "📝 Documentation"
+      style: "🎨 Styles"
+      test: "✅ Tests"
+      build: "🏗️ Build System"
+      ci: "💚 Continuous Integration"
+      chore: "🔧 Chores & Maintenance"
+      
   header:
-    pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$"
+    pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\!?\\:\\s(.*)$"
     pattern_maps:
       - Type
       - Scope
       - Subject
+      
   notes:
     keywords:
       - BREAKING CHANGE
       - BREAKING CHANGES
+      
   link_parsers:
     - pattern: "#([0-9]+)"
       href: "{{ .Info.RepositoryURL }}/issues/$1"
+    - pattern: "PR-#([0-9]+)"
+      href: "{{ .Info.RepositoryURL }}/pull/$1"
