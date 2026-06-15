@@ -27,8 +27,8 @@ int_to_letters() {
     echo "$letters"
 }
 
-# Nombres alfabéticos estáticos para los tipos de eventos
-EVENT_TYPES=("Alpha" "Bravo" "Charlie")
+EVENT_TYPES=("alpha-event-one" "bravo-event.2.two" "charlie-event_three")
+EVENT_SLUGS=("alpha-slug-one" "bravo-slug.2.two" "charlie-slug_three")
 
 echo "🚀 Iniciando script de Seed para gRPC en $SERVER..."
 echo "📦 Se crearán $NUM_RECORDS suscripciones y eventos (100% letras)."
@@ -47,7 +47,7 @@ for i in $(seq 1 "$NUM_RECORDS"); do
     
     # Construcción de variables usando solo caracteres alfabéticos
     EVENT_NAME="LoadTestEvent${EVENT_TYPES[$((i % 3))]}" 
-    SOURCE_NAME="LoadTestSource"
+    SOURCE_NAME="LoadTestSource${EVENT_SLUGS[$((i % 3))]}"
     SUB_NAME="SubscriberWorker${LETTERS_ID}"
     
     echo "1️⃣ Creando Suscripción para $SUB_NAME..."
@@ -62,7 +62,6 @@ EOF
     grpcurl -plaintext -d "$SUB_PAYLOAD" "$SERVER" "$SERVICE/CreateSubscription"
     
     echo "2️⃣ Creando Evento..."
-    # El payload ahora envía la iteración como texto ("A", "B") y remueve caracteres numéricos
     EVENT_PAYLOAD=$(cat <<EOF
 {
   "slug": "$EVENT_NAME",
