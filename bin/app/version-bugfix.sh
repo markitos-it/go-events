@@ -14,8 +14,10 @@ NEW_TAG="v${MAJOR}.${MINOR}.${PATCH}"
 
 git-chglog -o CHANGELOG.md
 git add CHANGELOG.md
-git commit -m "chore: update changelog for $NEW_TAG"
+git commit -m "chore: update changelog for $NEW_TAG" || echo -e "\n\nNO CHANGES ON CHANGELOG\n" && echo "continue with tag: $NEW_TAG" && sleep 5
 
 echo "🚀 Bumping BUGFIX version: $LATEST_TAG -> $NEW_TAG"
-git tag "$NEW_TAG" && git push --tags
+sleep 10
+git tag $NEW_TAG
+git push --tags
 echo "✅ Tag $NEW_TAG creado exitosamente."
