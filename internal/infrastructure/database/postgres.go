@@ -133,6 +133,7 @@ func (r *EventPostgresRepository) CreateSubscription(ctx context.Context, sub *t
 
 func (r *EventPostgresRepository) PullMessages(
 	ctx context.Context,
+	subscriberName *types.Name,
 	slug *types.Slug,
 	source *types.Source,
 ) ([]*types.Queue, error) {
@@ -142,7 +143,7 @@ func (r *EventPostgresRepository) PullMessages(
 	err := r.db.WithContext(ctx).
 		Table("queue q").
 		Joins("JOIN events e ON q.event_id = e.id").
-		Where("e.slug = ? AND e.source = ? AND q.status = ?", slug.Value(), source.Value(), "pending").
+		Where("q.subscriber_name = ? AND e.slug = ? AND e.source = ? AND q.status = ?", subscriberName.Value(), slug.Value(), source.Value(), "pending").
 		Clauses(clause.Locking{Strength: "UPDATE", Options: "SKIP LOCKED"}).
 		Find(&results).Error
 

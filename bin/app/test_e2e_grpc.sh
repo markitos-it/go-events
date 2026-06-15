@@ -62,6 +62,7 @@ echo "--------------------------------------------------"
 
 echo "3️⃣  Pulling Messages from Queue..."
 PULL_PAYLOAD='{
+  "subscriber_name": "marco",
   "event_name": "EventTest",
   "source": "EventSource"
 }'

@@ -96,14 +96,27 @@ func (r *EventSpannerRepository) CreateSubscription(ctx context.Context, sub *ty
 		Create(sub).Error
 }
 
-func (r *EventSpannerRepository) PullMessages(ctx context.Context, slug *types.Slug, source *types.Source) ([]*types.Queue, error) {
+func (r *EventSpannerRepository) PullMessages(
+	ctx context.Context,
+	subscriberName *types.Name,
+	slug *types.Slug,
+	source *types.Source,
+) ([]*types.Queue, error) {
+
 	var results []*types.Queue
+
 	err := r.db.WithContext(ctx).
-		Table("queue q").
-		Joins("JOIN events e ON q.event_id = e.id").
-		Where("e.slug = ? AND e.source = ? AND q.status = ?", slug.Value(), source.Value(), "pending").
+		Table("queue").
+		Select("queue.*").
+		Joins("JOIN events ON queue.event_id = events.id").
+		Where("queue.subscriber_name = ? AND events.slug = ? AND events.source = ? AND queue.status = ?", subscriberName.Value(), slug.Value(), source.Value(), "pending").
 		Find(&results).Error
-	return results, err
+
+	if err != nil {
+		return nil, err
+	}
+
+	return results, nil
 }
 
 func (r *EventSpannerRepository) AckMessage(ctx context.Context, id *types.SharedId) error {

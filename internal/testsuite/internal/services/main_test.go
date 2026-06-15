@@ -10,36 +10,42 @@ import (
 )
 
 type MockSpyEventRepository struct {
-	LastCreatedEventName         *string
-	LastDeleteEventId            *string
-	LastOneEventId               *string
-	LastAllBySlugAndSource       []types.Event
-	LastCreatedSubscriptionEvent *string
-	LastAckMessageId             *string
-	LastAckMessagesIds           []string
-	LastPullMessagesName         *string
-	LastPullMessagesSource       *string
+	LastCreatedEventName           *string
+	LastDeleteEventId              *string
+	LastOneEventId                 *string
+	LastAllBySlugAndSource         []types.Event
+	LastCreatedSubscriptionEvent   *string
+	LastAckMessageId               *string
+	LastAckMessagesIds             []string
+	LastPullMessagesName           *string
+	LastPullMessagesSource         *string
+	LastPullMessagesSubscriberName *string
 }
 
 func NewMockSpyEventRepository() *MockSpyEventRepository {
 	return &MockSpyEventRepository{
-		LastCreatedEventName:         nil,
-		LastDeleteEventId:            nil,
-		LastOneEventId:               nil,
-		LastAllBySlugAndSource:       nil,
-		LastCreatedSubscriptionEvent: nil,
-		LastAckMessageId:             nil,
-		LastAckMessagesIds:           nil,
-		LastPullMessagesName:         nil,
-		LastPullMessagesSource:       nil,
+		LastCreatedEventName:           nil,
+		LastDeleteEventId:              nil,
+		LastOneEventId:                 nil,
+		LastAllBySlugAndSource:         nil,
+		LastCreatedSubscriptionEvent:   nil,
+		LastAckMessageId:               nil,
+		LastAckMessagesIds:             nil,
+		LastPullMessagesName:           nil,
+		LastPullMessagesSource:         nil,
+		LastPullMessagesSubscriberName: nil,
 	}
 }
 
-func (m *MockSpyEventRepository) PullMessages(ctx context.Context, slug *types.Slug, source *types.Source) ([]*types.Queue, error) {
-	n := slug.Value()
-	s := source.Value()
-	m.LastPullMessagesName = &n
-	m.LastPullMessagesSource = &s
+func (m *MockSpyEventRepository) PullMessages(ctx context.Context, subscriberName *types.Name, slug *types.Slug, source *types.Source) ([]*types.Queue, error) {
+	slugValue := slug.Value()
+	sourceValue := source.Value()
+	subscriberNameValue := subscriberName.Value()
+
+	m.LastPullMessagesName = &slugValue
+	m.LastPullMessagesSource = &sourceValue
+	m.LastPullMessagesSubscriberName = &subscriberNameValue
+
 	return []*types.Queue{}, nil
 }
 
