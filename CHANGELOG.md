@@ -43,6 +43,10 @@ Todos los cambios notables de este proyecto serán documentados en este archivo 
 - Makefile commits-help *(2026-06-13)* ([eed1097](https://github.com/markitos-it/go-events/commit/eed1097cd46cc798d45f2d6f1f229e33d00be944))
 - Makefile commits-help *(2026-06-13)* ([2eef8eb](https://github.com/markitos-it/go-events/commit/2eef8ebdaf189870fce7693b413efcc42b9f2d9c))
 
+### 🔧 Chores & Maintenance
+
+- update changelog for v0.0.2 *(2026-06-15)* ([6464eb9](https://github.com/markitos-it/go-events/commit/6464eb932c1dd301dbe182ddb9aeaa9748d4b783))
+
 
 ## v0.0.1 — *(2026-06-13)*
 
