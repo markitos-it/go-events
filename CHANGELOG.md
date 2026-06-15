@@ -45,6 +45,7 @@ Todos los cambios notables de este proyecto serán documentados en este archivo 
 
 ### 🔧 Chores & Maintenance
 
+- update changelog for v0.0.2 *(2026-06-15)* ([3a1ee65](https://github.com/markitos-it/go-events/commit/3a1ee6519891e67ab71ba3babf538881d9912c63))
 - update changelog for v0.0.2 *(2026-06-15)* ([e8fa677](https://github.com/markitos-it/go-events/commit/e8fa677dddf06447db8fbf5b52e005f9429779cd))
 - update changelog for v0.0.2 *(2026-06-15)* ([6464eb9](https://github.com/markitos-it/go-events/commit/6464eb932c1dd301dbe182ddb9aeaa9748d4b783))
 

@@ -1,5 +1,4 @@
 - remove omit empty at proto file when refactor is finished
-- pull queue ok, get all events ok
 - secure methods (logic validation)
 - cascade
 - delete must be die
