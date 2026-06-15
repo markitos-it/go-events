@@ -3,6 +3,47 @@
 Todos los cambios notables de este proyecto serán documentados en este archivo de acuerdo a los estándares de [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [v0.0.2](https://github.com/markitos-it/go-events/compare/v0.0.1...v0.0.2) — *(2026-06-15)*
+
+### ♻️ Code Refactoring
+
+- versions sh *(2026-06-15)* ([0c01695](https://github.com/markitos-it/go-events/commit/0c0169509791fe97fcdf042667f1ad69aed962f3))
+- moving logs *(2026-06-15)* ([7bd4bb8](https://github.com/markitos-it/go-events/commit/7bd4bb849d624c7f6e326efa51352d28df49f283))
+- extract function *(2026-06-15)* ([6674f4a](https://github.com/markitos-it/go-events/commit/6674f4a96e64efd653be45ecee61a413f47197ce))
+- cooling startup *(2026-06-13)* ([bb0cbd6](https://github.com/markitos-it/go-events/commit/bb0cbd6bf53498228c2ef614f9ba8863d56bdf88))
+
+### ✨ Features
+
+- off actions *(2026-06-15)* ([3e7f4d1](https://github.com/markitos-it/go-events/commit/3e7f4d1b35818570678083554a92396e114c7024))
+- make version- major minor bugfix *(2026-06-15)* ([e3a11cf](https://github.com/markitos-it/go-events/commit/e3a11cf87885bf1b50e54d5cec3e26d75116d9aa))
+- queue have slug as name *(2026-06-15)* ([cee229e](https://github.com/markitos-it/go-events/commit/cee229ef52115d6623e9a2b3635be5b55e753c93))
+- pull queue need subscriber *(2026-06-15)* ([f0c8980](https://github.com/markitos-it/go-events/commit/f0c8980e9660cffc36f4f4e3153c336875c0af8b))
+- client only 1 *(2026-06-15)* ([081c4c8](https://github.com/markitos-it/go-events/commit/081c4c87dd941131a441981cb3073f04a04aaa23))
+- client unified *(2026-06-15)* ([e577cd2](https://github.com/markitos-it/go-events/commit/e577cd2d31cd06fa471e809144f4ef219de5316d))
+- clients for delete *(2026-06-15)* ([4877aba](https://github.com/markitos-it/go-events/commit/4877aba498188303816f267550db55cf2541c0cc))
+- clients for each operation before remove allby.... by pull *(2026-06-15)* ([90ff5e7](https://github.com/markitos-it/go-events/commit/90ff5e719d05625fc04db2c84306c77b15257fe5))
+- clients for each operation before remove allby.... by pull *(2026-06-15)* ([b3826b6](https://github.com/markitos-it/go-events/commit/b3826b6a829afa15d806fc0c70bfc4337f3c2238))
+- dinamic test stress *(2026-06-13)* ([b0925f3](https://github.com/markitos-it/go-events/commit/b0925f3ffb58983538fcaa7c0fd214fa286f0616))
+- ackmessages all ids and make test-e2e-stress *(2026-06-13)* ([0448ee0](https://github.com/markitos-it/go-events/commit/0448ee07986d6fc6e041230a99cfbea27104ac46))
+- ackmessages all ids and make test-e2e-stress *(2026-06-13)* ([24ca87b](https://github.com/markitos-it/go-events/commit/24ca87b0d48daf5e527967b1e00945f6faad8e99))
+- test.sh remove -p 1 *(2026-06-13)* ([6cf8bdc](https://github.com/markitos-it/go-events/commit/6cf8bdc0c115b4e821f2bacec0a094a94a29d9a3))
+- remove redis *(2026-06-13)* ([840a512](https://github.com/markitos-it/go-events/commit/840a51262e6cfb0bcbcb967ad70066987a2ce5b7))
+- added redis decorator(NOT IN USE YET) and fix seeders *(2026-06-13)* ([fd09b44](https://github.com/markitos-it/go-events/commit/fd09b44d0d0b7219c49d65e330342f0fe227afb7))
+- added redis decorator(NOT IN USE YET) and fix seeders *(2026-06-13)* ([12cb7be](https://github.com/markitos-it/go-events/commit/12cb7bedc9f57da0650eef63804cd9a5fad9a9dd))
+
+### 🐛 Bug Fixes
+
+- versions sh *(2026-06-15)* ([a70ea35](https://github.com/markitos-it/go-events/commit/a70ea3506a5d7d4e9f3a0035e87870af959beacd))
+
+### 📝 Documentation
+
+- changelog *(2026-06-15)* ([33d1ad4](https://github.com/markitos-it/go-events/commit/33d1ad47e36abc5c908bfa12ee65c5c045d9891e))
+- CHANGELOG.md *(2026-06-15)* ([a9eacec](https://github.com/markitos-it/go-events/commit/a9eacecc1b6d5d43d08be0e79cc7a4b630e1042e))
+- Makefile commits help *(2026-06-13)* ([f050a69](https://github.com/markitos-it/go-events/commit/f050a6961e4e8fe4f21b05b223b4012607b522cb))
+- Makefile commits-help *(2026-06-13)* ([eed1097](https://github.com/markitos-it/go-events/commit/eed1097cd46cc798d45f2d6f1f229e33d00be944))
+- Makefile commits-help *(2026-06-13)* ([2eef8eb](https://github.com/markitos-it/go-events/commit/2eef8ebdaf189870fce7693b413efcc42b9f2d9c))
+
+
 ## v0.0.1 — *(2026-06-13)*
 
 ### ♻️ Code Refactoring
