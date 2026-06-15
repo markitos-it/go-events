@@ -24,7 +24,7 @@ func NewAckMessageService(repository types.EventRepository) AckMessageService {
 }
 
 func (s AckMessageService) Do(ctx context.Context, request AckMessageRequest) error {
-	id, err := types.NewSharedId(request.QueueId)
+	id, err := types.NewId(request.QueueId)
 	if err != nil {
 		return err
 	}

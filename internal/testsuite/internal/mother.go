@@ -32,7 +32,7 @@ func NewRandomEventWithSlugAndSource(slug, source string) *types.Event {
 	return event
 }
 
-func NewRandomEventWithCustomId(eventId *types.SharedId) *types.Event {
+func NewRandomEventWithCustomId(eventId *types.Id) *types.Event {
 	event, _ := types.NewEvent(
 		eventId.Value(),
 		shared.RandomSlug(),

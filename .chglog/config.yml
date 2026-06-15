@@ -11,12 +11,16 @@ options:
         - fix
         - perf
         - refactor
+        - build
+        - chore
   commit_groups:
     title_maps:
-      feat: Features
-      fix: Bug Fixes
-      perf: Performance Improvements
-      refactor: Code Refactoring
+      feat: ✨ Features
+      fix: 🐛 Bug Fixes
+      perf: ⚡ Performance Improvements
+      refactor: ♻️ Code Refactoring
+      build: 🏗️ Build System
+      chore: 🔧 Chores
   header:
     pattern: "^(\\w*)(?:\\(([\\w\\$\\.\\-\\*\\s]*)\\))?\\:\\s(.*)$"
     pattern_maps:
@@ -27,3 +31,6 @@ options:
     keywords:
       - BREAKING CHANGE
       - BREAKING CHANGES
+  link_parsers:
+    - pattern: "#([0-9]+)"
+      href: "{{ .Info.RepositoryURL }}/issues/$1"

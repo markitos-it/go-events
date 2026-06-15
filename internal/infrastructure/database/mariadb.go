@@ -48,7 +48,7 @@ func (r *EventMariaDBRepository) Create(ctx context.Context, event *types.Event)
 	})
 }
 
-func (r *EventMariaDBRepository) One(ctx context.Context, id *types.SharedId) (*types.Event, error) {
+func (r *EventMariaDBRepository) One(ctx context.Context, id *types.Id) (*types.Event, error) {
 	var event types.Event
 	err := r.db.WithContext(ctx).First(&event, "id = ?", id.Value()).Error
 	if err != nil {
@@ -69,7 +69,7 @@ func (r *EventMariaDBRepository) AllBySlugAndSource(ctx context.Context, slug *t
 	return events, err
 }
 
-func (r *EventMariaDBRepository) Delete(ctx context.Context, id *types.SharedId) error {
+func (r *EventMariaDBRepository) Delete(ctx context.Context, id *types.Id) error {
 	result := r.db.WithContext(ctx).Where("id = ?", id.Value()).Delete(&types.Event{})
 	if result.Error != nil {
 		return result.Error
@@ -99,7 +99,7 @@ func (r *EventMariaDBRepository) CreateSubscription(ctx context.Context, sub *ty
 
 func (r *EventMariaDBRepository) PullMessages(
 	ctx context.Context,
-	subscriberName *types.Name,
+	subscriberName *types.Slug,
 	slug *types.Slug,
 	source *types.Source,
 ) ([]*types.Queue, error) {
@@ -120,7 +120,7 @@ func (r *EventMariaDBRepository) PullMessages(
 	return results, nil
 }
 
-func (r *EventMariaDBRepository) AckMessage(ctx context.Context, id *types.SharedId) error {
+func (r *EventMariaDBRepository) AckMessage(ctx context.Context, id *types.Id) error {
 	result := r.db.WithContext(ctx).
 		Model(&types.Queue{}).
 		Where("id = ? AND status = ?", id.Value(), "pending").
@@ -137,7 +137,7 @@ func (r *EventMariaDBRepository) AckMessage(ctx context.Context, id *types.Share
 	return nil
 }
 
-func (r *EventMariaDBRepository) AckMessages(ctx context.Context, ids []*types.SharedId) error {
+func (r *EventMariaDBRepository) AckMessages(ctx context.Context, ids []*types.Id) error {
 	if len(ids) == 0 {
 		return nil
 	}

@@ -37,7 +37,7 @@ func NewMockSpyEventRepository() *MockSpyEventRepository {
 	}
 }
 
-func (m *MockSpyEventRepository) PullMessages(ctx context.Context, subscriberName *types.Name, slug *types.Slug, source *types.Source) ([]*types.Queue, error) {
+func (m *MockSpyEventRepository) PullMessages(ctx context.Context, subscriberName *types.Slug, slug *types.Slug, source *types.Source) ([]*types.Queue, error) {
 	slugValue := slug.Value()
 	sourceValue := source.Value()
 	subscriberNameValue := subscriberName.Value()
@@ -49,13 +49,13 @@ func (m *MockSpyEventRepository) PullMessages(ctx context.Context, subscriberNam
 	return []*types.Queue{}, nil
 }
 
-func (m *MockSpyEventRepository) AckMessage(ctx context.Context, id *types.SharedId) error {
+func (m *MockSpyEventRepository) AckMessage(ctx context.Context, id *types.Id) error {
 	v := id.Value()
 	m.LastAckMessageId = &v
 	return nil
 }
 
-func (m *MockSpyEventRepository) AckMessages(ctx context.Context, ids []*types.SharedId) error {
+func (m *MockSpyEventRepository) AckMessages(ctx context.Context, ids []*types.Id) error {
 	var strIds []string
 	for _, id := range ids {
 		strIds = append(strIds, id.Value())
@@ -91,7 +91,7 @@ func (m *MockSpyEventRepository) CreateSubscriptionHaveBeenCalledWith(eventName 
 	return result
 }
 
-func (m *MockSpyEventRepository) Delete(ctx context.Context, id *types.SharedId) error {
+func (m *MockSpyEventRepository) Delete(ctx context.Context, id *types.Id) error {
 	value := id.Value()
 	m.LastDeleteEventId = &value
 
@@ -106,7 +106,7 @@ func (m *MockSpyEventRepository) DeleteHaveBeenCalledWith(eventId *string) bool 
 	return result
 }
 
-func (m *MockSpyEventRepository) One(ctx context.Context, id *types.SharedId) (*types.Event, error) {
+func (m *MockSpyEventRepository) One(ctx context.Context, id *types.Id) (*types.Event, error) {
 	value := id.Value()
 	m.LastOneEventId = &value
 

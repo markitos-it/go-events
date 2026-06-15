@@ -17,7 +17,7 @@ type Subscription struct {
 }
 
 func NewSubscription(id, subscriberName, eventName, source string) (*Subscription, error) {
-	secureId, err := NewSharedId(id)
+	secureId, err := NewId(id)
 	if err != nil {
 		log.Printf("❌ DEBUG ERROR (NewId): %v\n", err)
 		return nil, err

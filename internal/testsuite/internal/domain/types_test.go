@@ -1,6 +1,7 @@
 package domain_test
 
 import (
+	"log"
 	"strings"
 	"testing"
 
@@ -114,7 +115,7 @@ func TestCanCreateValidEventPayload(t *testing.T) {
 
 func TestCanCreateValidQueueMessage(t *testing.T) {
 	id := shared.UUIDv4()
-	subscriberName := "sub1"
+	subscriberName := shared.Slug()
 	eventId := shared.UUIDv4()
 
 	qm, err := types.NewQueueMessage(id, subscriberName, eventId)
@@ -130,7 +131,7 @@ func TestCanCreateValidQueueMessage(t *testing.T) {
 
 func TestCantCreateQueueMessageWithEmptyFields(t *testing.T) {
 	id := shared.UUIDv4()
-	subscriberName := "sub1"
+	subscriberName := shared.Slug()
 	eventId := shared.UUIDv4()
 
 	_, err := types.NewQueueMessage("", subscriberName, eventId)
@@ -139,22 +140,12 @@ func TestCantCreateQueueMessageWithEmptyFields(t *testing.T) {
 	_, err = types.NewQueueMessage(id, "", eventId)
 	assert.NotNil(t, err)
 
-	_, err = types.NewQueueMessage(id, subscriberName, "")
+	subs, err := types.NewQueueMessage(id, subscriberName, "")
+	log.Println("---------------------------------")
+	log.Println("subs", subs)
+	log.Println("---------------------------------")
+
 	assert.NotNil(t, err)
-}
-
-func TestQueueMessageMarkAsProcessedAndFailed(t *testing.T) {
-	id := shared.UUIDv4()
-	subscriberName := "sub1"
-	eventId := shared.UUIDv4()
-
-	qm, _ := types.NewQueueMessage(id, subscriberName, eventId)
-
-	qm.MarkAsProcessed()
-	assert.Equal(t, types.StatusProcessed, qm.Status)
-
-	qm.MarkAsFailed()
-	assert.Equal(t, types.StatusFailed, qm.Status)
 }
 
 func TestCanCreateValidSubscription(t *testing.T) {

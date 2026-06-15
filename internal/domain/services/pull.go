@@ -26,7 +26,7 @@ func NewPullService(repository types.EventRepository) PullService {
 }
 
 func (s PullService) Do(ctx context.Context, request PullRequest) (*PullResponse, error) {
-	subscriberName, err := types.NewName(request.SubscriberName)
+	subscriberName, err := types.NewSlug(request.SubscriberName)
 	if err != nil {
 		return nil, err
 	}

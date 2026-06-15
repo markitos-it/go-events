@@ -15,7 +15,7 @@ type Event struct {
 }
 
 func NewEvent(id, slug, source, payload string) (*Event, error) {
-	secureId, err := NewSharedId(id)
+	secureId, err := NewId(id)
 	if err != nil {
 		log.Printf("❌ DEBUG ERROR (Id): %v\n", err)
 		return nil, err

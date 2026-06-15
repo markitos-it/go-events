@@ -2,18 +2,18 @@ package types
 
 import "go-vents/internal/domain/shared"
 
-type SharedId struct {
+type Id struct {
 	value string
 }
 
-func NewSharedId(value string) (*SharedId, error) {
+func NewId(value string) (*Id, error) {
 	if shared.IsUUIDv4(value) {
-		return &SharedId{value}, nil
+		return &Id{value}, nil
 	}
 
 	return nil, shared.ErrEventBadRequest
 }
 
-func (b *SharedId) Value() string {
+func (b *Id) Value() string {
 	return b.value
 }

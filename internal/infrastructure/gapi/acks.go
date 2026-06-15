@@ -18,9 +18,9 @@ func (s *Server) AckMessages(ctx context.Context, req *AckMessagesRequest) (*Ack
 		return nil, status.Error(codes.InvalidArgument, "too many ids, maximum is 100, your request have "+fmt.Sprint(len(req.QueueIds))+" ids")
 	}
 
-	var ids []types.SharedId
+	var ids []types.Id
 	for _, idStr := range req.QueueIds {
-		id, err := types.NewSharedId(idStr)
+		id, err := types.NewId(idStr)
 		if err != nil {
 			return nil, status.Error(codes.InvalidArgument, "invalid id format: "+idStr)
 		}

@@ -1,9 +1,7 @@
 package types
 
 import (
-	"errors"
 	"log"
-	"strings"
 	"time"
 )
 
@@ -29,37 +27,30 @@ func (Queue) TableName() string {
 }
 
 func NewQueueMessage(id, subscriberName, eventId string) (*Queue, error) {
-	if strings.TrimSpace(id) == "" {
-		log.Println("❌ DEBUG ERROR (NewQueueMessage): queue message id cannot be empty")
-		return nil, errors.New("queue message id cannot be empty")
+	secureId, err := NewId(id)
+	if err != nil {
+		log.Printf("❌ DEBUG ERROR (Id): %v\n", err)
+		return nil, err
 	}
 
-	if strings.TrimSpace(subscriberName) == "" {
-		log.Println("❌ DEBUG ERROR (NewQueueMessage): subscriber name cannot be empty")
-		return nil, errors.New("subscriber name cannot be empty")
+	secureEventId, err := NewId(eventId)
+	if err != nil {
+		log.Printf("❌ DEBUG ERROR (event_id): %v\n", err)
+		return nil, err
 	}
 
-	if strings.TrimSpace(eventId) == "" {
-		log.Println("❌ DEBUG ERROR (NewQueueMessage): event id cannot be empty")
-		return nil, errors.New("event id cannot be empty")
+	secureSubscriberName, err := NewSlug(subscriberName)
+	if err != nil {
+		log.Printf("❌ DEBUG ERROR (subscriber_name): %v\n", err)
+		return nil, err
 	}
 
 	return &Queue{
-		Id:             strings.TrimSpace(id),
-		SubscriberName: strings.TrimSpace(subscriberName),
-		EventId:        strings.TrimSpace(eventId),
+		Id:             secureId.Value(),
+		SubscriberName: secureSubscriberName.Value(),
+		EventId:        secureEventId.Value(),
 		Status:         StatusPending,
 		CreatedAt:      time.Now(),
 		UpdatedAt:      time.Now(),
 	}, nil
-}
-
-func (q *Queue) MarkAsProcessed() {
-	q.Status = StatusProcessed
-	q.UpdatedAt = time.Now()
-}
-
-func (q *Queue) MarkAsFailed() {
-	q.Status = StatusFailed
-	q.UpdatedAt = time.Now()
 }

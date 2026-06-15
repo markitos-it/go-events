@@ -63,7 +63,7 @@ func (r *EventPostgresRepository) Create(ctx context.Context, event *types.Event
 	})
 }
 
-func (r *EventPostgresRepository) One(ctx context.Context, id *types.SharedId) (*types.Event, error) {
+func (r *EventPostgresRepository) One(ctx context.Context, id *types.Id) (*types.Event, error) {
 	var event types.Event
 
 	err := r.db.WithContext(ctx).
@@ -99,7 +99,7 @@ func (r *EventPostgresRepository) AllBySlugAndSource(ctx context.Context, slug *
 	return events, nil
 }
 
-func (r *EventPostgresRepository) Delete(ctx context.Context, id *types.SharedId) error {
+func (r *EventPostgresRepository) Delete(ctx context.Context, id *types.Id) error {
 	result := r.db.WithContext(ctx).
 		Where("id = ?", id.Value()).
 		Delete(&types.Event{})
@@ -133,7 +133,7 @@ func (r *EventPostgresRepository) CreateSubscription(ctx context.Context, sub *t
 
 func (r *EventPostgresRepository) PullMessages(
 	ctx context.Context,
-	subscriberName *types.Name,
+	subscriberName *types.Slug,
 	slug *types.Slug,
 	source *types.Source,
 ) ([]*types.Queue, error) {
@@ -154,7 +154,7 @@ func (r *EventPostgresRepository) PullMessages(
 	return results, nil
 }
 
-func (r *EventPostgresRepository) AckMessage(ctx context.Context, id *types.SharedId) error {
+func (r *EventPostgresRepository) AckMessage(ctx context.Context, id *types.Id) error {
 	result := r.db.WithContext(ctx).
 		Table("queue").
 		Where("id = ? AND status = ?", id.Value(), "pending").
@@ -173,7 +173,7 @@ func (r *EventPostgresRepository) AckMessage(ctx context.Context, id *types.Shar
 	return nil
 }
 
-func (r *EventPostgresRepository) AckMessages(ctx context.Context, ids []*types.SharedId) error {
+func (r *EventPostgresRepository) AckMessages(ctx context.Context, ids []*types.Id) error {
 	if len(ids) == 0 {
 		return nil
 	}

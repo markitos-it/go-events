@@ -16,7 +16,7 @@ import (
 )
 
 func TestEventCreate(t *testing.T) {
-	if os.Getenv("DATABASE_DRIVER") == "spanner" {
+	if os.Getenv("DATABASE_DRIVER") == "spanner" || os.Getenv("DATABASE_DRIVER") == "mariadb" {
 		t.Skip("Skipping Postgres test when using Spanner driver")
 	}
 	var event = internal_test.NewRandomEvent()
@@ -43,7 +43,7 @@ func TestEventDelete(t *testing.T) {
 
 	repository := database.NewEventPostgresRepository(testdb.GetDB())
 
-	id, _ := types.NewSharedId(event.Id)
+	id, _ := types.NewId(event.Id)
 	err := repository.Delete(context.TODO(), id)
 	require.NoError(t, err)
 }
@@ -56,7 +56,7 @@ func TestEventOne(t *testing.T) {
 	_ = testdb.GetRepository().Create(context.TODO(), event)
 
 	repository := database.NewEventPostgresRepository(testdb.GetDB())
-	id, _ := types.NewSharedId(event.Id)
+	id, _ := types.NewId(event.Id)
 
 	result, err := repository.One(context.TODO(), id)
 	require.NoError(t, err)

@@ -12,7 +12,7 @@ import (
 const DEFAULT_LIMIT_PULL = 10
 
 func (s *Server) PullMessages(ctx context.Context, req *PullMessagesRequest) (*PullMessagesResponse, error) {
-	subscriberName, err := types.NewName(req.GetSubscriberName())
+	subscriberName, err := types.NewSlug(req.GetSubscriberName())
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
