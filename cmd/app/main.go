@@ -31,6 +31,7 @@ import (
 
 var repository types.EventRepository
 var config configuration.EventConfiguration
+var logger types.Logger
 
 // #[.'.]:> Main function that orchestrates the startup and controlled shutdown of the application
 // #[.'.]:> STEP 1: Show startup banner
@@ -44,8 +45,7 @@ var config configuration.EventConfiguration
 // #[.'.]:> STEP 5: Show shutdown banner when finished
 // #[.'.]:> These logs clearly mark the end of the service execution
 func main() {
-	logger := slogcolored.NewColoredSLogger()
-	logger.OpenGroup("main")
+	loadLogger()
 
 	logger.Info("['.']:>--------------------------------------------")
 	logger.Info("['.']:>-- - <starting markitos-it-go-events>    ---")
@@ -58,6 +58,10 @@ func main() {
 	logger.Info("['.']:>--------------------------------------------")
 	logger.Info("['.']:>---   <markitos-it-go-events stopped>    ---")
 	logger.Info("['.']:>")
+}
+
+func loadLogger() {
+	logger = slogcolored.NewColoredSLogger()
 }
 
 // #[.'.]:> This function loads the service configuration
