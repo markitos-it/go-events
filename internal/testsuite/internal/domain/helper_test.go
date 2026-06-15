@@ -51,3 +51,32 @@ func TestCanValidateUUIDv4(t *testing.T) {
 		require.False(t, shared.IsUUIDv4(validUUID))
 	}
 }
+
+func TestCanValidateSlug(t *testing.T) {
+	validSlugs := []string{
+		"ab",
+		"a1",
+		"valid-slug",
+		"another_valid.slug123",
+		"markitos.com.es.org",
+		"markitos1234-123-asda-2",
+		"a-very-long-slug-that-is-valid-and-under-or-equal-to-100-characters-which-is-the-maximum-allowed-1",
+	}
+	for _, valid := range validSlugs {
+		require.True(t, shared.IsValidSlug(valid), "Expected slug to be valid: %s", valid)
+	}
+
+	invalidSlugs := []string{
+		"a",
+		"1slug",
+		"-slug",
+		"slug-",
+		"slug_",
+		"slug.",
+		"invalid@slug",
+		"a-very-long-slug-that-is-invalid-because-it-exceeds-the-one-hundred-character-maximum-limit-allowed-here",
+	}
+	for _, invalid := range invalidSlugs {
+		require.False(t, shared.IsValidSlug(invalid), "Expected slug to be invalid: %s", invalid)
+	}
+}

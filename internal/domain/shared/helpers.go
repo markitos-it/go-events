@@ -133,3 +133,10 @@ func Slug() string {
 
 	return strings.Join(result, "-")
 }
+
+func IsValidSlug(slug string) bool {
+	slugRegex := `^[a-zA-Z][a-zA-Z0-9._-]{0,98}[a-zA-Z0-9]$`
+	matched, err := regexp.MatchString(slugRegex, slug)
+
+	return err == nil && matched
+}

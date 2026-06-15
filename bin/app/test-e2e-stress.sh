@@ -7,7 +7,7 @@ source $ENVIRONMENT_FILE
 
 SERVER="localhost:30000"
 SERVICE="event.Eventservice"
-SOURCE="EventSource"
+SOURCE="EventSource.As.Slug"
 
 NUM_USERS=10
 HOW_MANY_EVENTS_PER_USER=5
