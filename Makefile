@@ -7,6 +7,7 @@
 	test-e2e \
 	test-e2e-stress \
 	proto \
+	changelog \
 	db-start \
 	db-stop \
 	db-create \
@@ -48,6 +49,7 @@ help:
 	@printf "  \033[36m%-24s\033[0m %s\n" "test-e2e" "Run End-to-End tests via gRPC"
 	@printf "  \033[36m%-24s\033[0m %s\n" "test-e2e-stress" "Run End-to-End stress tests via gRPC"
 	@printf "  \033[36m%-24s\033[0m %s\n" "proto" "Generate code files from gRPC .proto files"
+	@printf "  \033[36m%-24s\033[0m %s\n" "changelog" "Generate changelog or update file"
 	@printf "  \033[36m%-24s\033[0m %s\n" "lint" "Analyze Go code with golangci-lint"
 	@printf "  \033[36m%-24s\033[0m %s\n" "lint-fix" "Format Go code automatically (gofmt, goimports)"
 	@printf "  \033[36m%-24s\033[0m %s\n" "tidy" "Clean and update Go dependencies (go mod tidy)"
@@ -110,6 +112,9 @@ test-verbose:
 
 proto:
 	bash bin/app/proto.sh
+
+changelog:
+	bash bin/app/changelog.sh
 
 db-start:
 	bash bin/database/postgres/start.sh
