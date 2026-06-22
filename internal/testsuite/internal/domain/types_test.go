@@ -74,8 +74,9 @@ func TestCanCreateValidQueueMessage(t *testing.T) {
 	id := shared.UUIDv4()
 	subscriberName := shared.Slug()
 	eventId := shared.UUIDv4()
+	payload := ""
 
-	qm, err := types.NewQueueMessage(id, subscriberName, eventId)
+	qm, err := types.NewQueueMessage(id, subscriberName, eventId, payload)
 	assert.Nil(t, err)
 	assert.NotNil(t, qm)
 	assert.Equal(t, id, qm.Id)
@@ -90,14 +91,15 @@ func TestCantCreateQueueMessageWithEmptyFields(t *testing.T) {
 	id := shared.UUIDv4()
 	subscriberName := shared.Slug()
 	eventId := shared.UUIDv4()
+	payload := ""
 
-	_, err := types.NewQueueMessage("", subscriberName, eventId)
+	_, err := types.NewQueueMessage("", subscriberName, eventId, payload)
 	assert.NotNil(t, err)
 
-	_, err = types.NewQueueMessage(id, "", eventId)
+	_, err = types.NewQueueMessage(id, "", eventId, payload)
 	assert.NotNil(t, err)
 
-	subs, err := types.NewQueueMessage(id, subscriberName, "")
+	subs, err := types.NewQueueMessage(id, subscriberName, "", payload)
 	log.Println("---------------------------------")
 	log.Println("subs", subs)
 	log.Println("---------------------------------")

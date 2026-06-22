@@ -35,7 +35,7 @@ func (r *EventSpannerRepository) Create(ctx context.Context, event *types.Event)
 
 		for _, subscriber := range subscribers {
 			queueId := uuid.New().String()
-			msg, err := types.NewQueueMessage(queueId, subscriber, event.Id)
+			msg, err := types.NewQueueMessage(queueId, subscriber, event.Id, event.Payload)
 			if err != nil {
 				return err
 			}

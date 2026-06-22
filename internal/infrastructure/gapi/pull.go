@@ -39,7 +39,7 @@ func (s *Server) PullMessages(ctx context.Context, req *PullMessagesRequest) (*P
 			EventId:        msg.EventId,
 			SubscriberName: msg.SubscriberName,
 			Status:         string(msg.Status),
-			Payload:        "fakepayload",
+			Payload:        msg.Payload,
 		})
 	}
 
