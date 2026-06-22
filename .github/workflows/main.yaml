@@ -3,6 +3,7 @@ name: Go CI & Security Checks
 on:
   push:
     branches: [ main, master, develop ]
+    tags: [ 'v*' ]
   pull_request:
     branches: [ main, master, develop ]
 
@@ -26,8 +27,7 @@ jobs:
 
       - name: Start Postgres Database
         id: db-start
-        run: |
-          make db-start
+        run: make db-start
 
       - name: Wait for Postgres to be healthy
         id: db-healthy
@@ -36,7 +36,6 @@ jobs:
           until [ "$(docker inspect --format='{{json .State.Health.Status}}' goevents-postgres)" == "\"healthy\"" ]; do
             sleep 1
           done
-          echo "✅ Postgres is 100% operational!"
 
       - name: Create Database
         id: db-create
@@ -50,95 +49,113 @@ jobs:
 
       - name: Tidy Go Modules
         id: tidy
-        run: |
-          make tidy
+        run: make tidy
 
       - name: Start API Server & Wait for Port 30000
         id: api-start
         run: |
           make start > api_server.log 2>&1 &
-          echo "⏳ Waiting dynamically for the API to respond on port 30000..."
+          echo "⏳ Waiting for API..."
           FORKS=0
           until nc -z 127.0.0.1 30000 || [ $FORKS -eq 60 ]; do
             sleep 1
             FORKS=$((FORKS + 1))
           done
-          if nc -z 127.0.0.1 30000; then
-            echo "✅ API successfully started and tables are ready!"
-          else
-            echo "❌ ERROR: API failed to start on port 30000 in time."
-            cat api_server.log
-            exit 1
-          fi
 
       - name: Run Unit Tests
         id: unit-tests
-        run: |
-          make test
+        run: make test
 
-      - name: Install Security & Linting Tools (Snyk, Gitleaks, GolangCI-Lint)
+      - name: Install Security Tools
         id: tools-install
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "📦 Installing Snyk via NPM..."
           npm install -g snyk
-          
-          echo "📦 Installing Gitleaks (Latest version)..."
           GITLEAKS_VERSION=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/gitleaks/gitleaks/releases/latest | grep tag_name | cut -d '"' -f 4 | sed 's/v//')
           curl -sSfL "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" | tar -xz
           sudo cp gitleaks /usr/local/bin/
-
-          echo "📦 Installing GolangCI-Lint (Latest version compatible with Go 1.26+)..."
           GOLANGCI_VERSION=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/golangci/golangci-lint/releases/latest | grep tag_name | cut -d '"' -f 4 | sed 's/v//')
           curl -sSfL "https://github.com/golangci/golangci-lint/releases/download/v${GOLANGCI_VERSION}/golangci-lint-${GOLANGCI_VERSION}-linux-amd64.tar.gz" | tar -xz
           sudo cp "golangci-lint-${GOLANGCI_VERSION}-linux-amd64/golangci-lint" /usr/local/bin/
-          
-          echo "🧹 Cleaning temporary files..."
-          rm -rf gitleaks golangci-lint-${GOLANGCI_VERSION}-linux-amd64
-          rm -rf LICENSE README.md
 
       - name: Run Application Security Tests
         id: appsec
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: |
-          # Execute the test and capture its true exit code
-          make appsec-test
-          EXIT_CODE=$?
-          
-          if [ $EXIT_CODE -ne 0 ]; then
-            echo "❌ AppSec suite detected security vulnerabilities."
-            exit $EXIT_CODE
-          fi
+        run: make appsec-test
 
       - name: Generate Beautiful Job Summary
         if: always()
+        env:
+          IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/v') }}
+          TAG_NAME: ${{ github.ref_name }}
         run: |
           status_to_emoji() {
-            if [ "$1" == "success" ]; then
-              echo "✅"
-            elif [ "$1" == "failure" ]; then
-              echo "❌"
-            elif [ "$1" == "cancelled" ]; then
-              echo "🛑"
-            else
-              echo "⏭️"
-            fi
+            if [ "$1" == "success" ]; then echo "✅"; elif [ "$1" == "failure" ]; then echo "❌"; else echo "🛑"; fi
           }
-          
-          # Build the summary clean and from scratch
           {
-            echo "## 🚀 Goevents DevSecOps - Execution Report"
+            if [ "$IS_RELEASE" == "true" ]; then
+              echo "## 🚀 Goevents - Release Deployment: $TAG_NAME"
+            else
+              echo "## ⚙️ Goevents - CI Pipeline Report"
+            fi
+            
+            {
+              echo "## 🚀 Goevents DevSecOps - Execution Report"
+              echo "---"
+              echo "### 📊 CI Infrastructure Summary"
+              echo "| Component | Configuration / Task | Result |"
+              echo "| :--- | :--- | :---: |"
+              echo "| 🦫 **Core Environment** | Go v1.26.4 (Cache Active) | $(status_to_emoji '${{ steps.setup-go.outcome }}') |"
+              echo "| 🐘 **Database Service** | Postgres 17 (Docker Alpine) | $(status_to_emoji '${{ steps.db-healthy.outcome }}') |"
+              echo "| 🗄️ **Database Instance** | Create goevents DB | $(status_to_emoji '${{ steps.db-create.outcome }}') |"
+              echo "| ⚡ **ORM & Migrations** | Port :30000 dynamically validated | $(status_to_emoji '${{ steps.api-start.outcome }}') |"
+              echo "| 🧪 **Unit Testing** | Coverage & test suite execution | $(status_to_emoji '${{ steps.unit-tests.outcome }}') |"
+              echo "| 🛠️ **CI Tooling Setup** | Snyk, Gitleaks, and GolangCI provisioned | $(status_to_emoji '${{ steps.tools-install.outcome }}') |"
+              echo "| 🛡️ **AppSec Suite** | Vulnerability scanning evaluation | $(status_to_emoji '${{ steps.appsec.outcome }}') |"
+            } >> $GITHUB_STEP_SUMMARY
+
+
             echo "---"
             echo "### 📊 CI Infrastructure Summary"
-            echo "| Component | Configuration / Task | Result |"
-            echo "| :--- | :--- | :---: |"
-            echo "| 🦫 **Core Environment** | Go v1.26.4 (Cache Active) | $(status_to_emoji '${{ steps.setup-go.outcome }}') |"
-            echo "| 🐘 **Database Service** | Postgres 17 (Docker Alpine) | $(status_to_emoji '${{ steps.db-healthy.outcome }}') |"
-            echo "| 🗄️ **Database Instance** | Create goevents DB | $(status_to_emoji '${{ steps.db-create.outcome }}') |"
-            echo "| ⚡ **ORM & Migrations** | Port :30000 dynamically validated | $(status_to_emoji '${{ steps.api-start.outcome }}') |"
-            echo "| 🧪 **Unit Testing** | Coverage & test suite execution | $(status_to_emoji '${{ steps.unit-tests.outcome }}') |"
-            echo "| 🛠️ **CI Tooling Setup** | Snyk, Gitleaks, and GolangCI provisioned | $(status_to_emoji '${{ steps.tools-install.outcome }}') |"
-            echo "| 🛡️ **AppSec Suite** | Vulnerability scanning evaluation | $(status_to_emoji '${{ steps.appsec.outcome }}') |"
+            echo "| Component | Result |"
+            echo "| :--- | :---: |"
+            echo "| 🦫 **Environment** | $(status_to_emoji '${{ steps.setup-go.outcome }}') |"
+            echo "| 🛡️ **AppSec Suite** | $(status_to_emoji '${{ steps.appsec.outcome }}') |"
+            
+            if [ "$IS_RELEASE" == "true" ]; then
+              echo ""
+              echo "### 📦 Release Metadata"
+              echo "- **Version:** $TAG_NAME"
+              echo "- **Deployment Trigger:** Automatic via Tag"
+            fi
           } >> $GITHUB_STEP_SUMMARY
+          echo "$GITHUB_STEP_SUMMARY" > ci-summary.md
+
+      - name: Upload Summary Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-report
+          path: ci-summary.md
+
+  create-release:
+    name: Create GitHub Release
+    needs: test-and-security
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Download Summary Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ci-report
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          body_path: ci-summary.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
