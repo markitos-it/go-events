@@ -25,6 +25,7 @@
 	lint \
 	support-install-linter \
 	support-uninstall-linter \
+	support-install-grpc-tools \
 	build \
 	appsec-install \
 	appsec-uninstall \
@@ -64,6 +65,7 @@ help:
 	@printf "  \033[36m%-24s\033[0m %s\n" "mariadb-create" "Create the database in MariaDB"
 	@printf "  \033[36m%-24s\033[0m %s\n" "mariadb-drop" "Completely drop the database in MariaDB"
 	@printf "  \033[36m%-24s\033[0m %s\n" "mariadb-seed" "Seed the MariaDB database with test data"
+	@printf "  \033[36m%-24s\033[0m %s\n" "support-install-grpc-tools" "Install the golangci grpc and protoc"
 	@printf "  \033[36m%-24s\033[0m %s\n" "support-install-linter" "Install the golangci-lint tool"
 	@printf "  \033[36m%-24s\033[0m %s\n" "support-uninstall-linter" "Uninstall the golangci-lint tool"
 	@printf "  \033[36m%-24s\033[0m %s\n" "appsec-install" "Install security tools (Snyk, Gitleaks)"
@@ -159,6 +161,12 @@ lint:
 
 lint-fix:
 	bash bin/code/lint-fix.sh
+
+support-uninstall-grpc-tools:
+	bash bin/support/uninstall-grpc-tools.sh
+
+support-install-grpc-tools:
+	bash bin/support/install-grpc-tools.sh
 
 support-install-linter:
 	bash bin/support/install-linter.sh
