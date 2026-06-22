@@ -162,11 +162,17 @@ lint:
 lint-fix:
 	bash bin/code/lint-fix.sh
 
-support-uninstall-grpc-tools:
-	bash bin/support/uninstall-grpc-tools.sh
+support-install-changeloger:
+	bash bin/support/install-changeloger.sh
+
+support-uninstall-changeloger:
+	bash bin/support/uninstall-changeloger.sh
 
 support-install-grpc-tools:
 	bash bin/support/install-grpc-tools.sh
+
+support-uninstall-grpc-tools:
+	bash bin/support/uninstall-grpc-tools.sh
 
 support-install-linter:
 	bash bin/support/install-linter.sh
