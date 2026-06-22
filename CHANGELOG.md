@@ -3,6 +3,21 @@
 Todos los cambios notables de este proyecto serán documentados en este archivo de acuerdo a los estándares de [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [v1.0.2](https://github.com/markitos-it/go-events/compare/v1.0.1...v1.0.2) — *(2026-06-22)*
+
+### ✨ Features
+
+- make changelog *(2026-06-22)* ([abd63cb](https://github.com/markitos-it/go-events/commit/abd63cb354755b2420e1fa8cc7171c6c16ef61c1))
+
+### 🐛 Bug Fixes
+
+- piepline releasestep *(2026-06-22)* ([b32afb2](https://github.com/markitos-it/go-events/commit/b32afb2ee774847abaca7ea3c02c31b9e495f91b))
+
+### 📝 Documentation
+
+- CHLOG *(2026-06-22)* ([9942a4e](https://github.com/markitos-it/go-events/commit/9942a4e909509e994ac1cc88345bf4e99f7e971a))
+
+
 ## [v1.0.1](https://github.com/markitos-it/go-events/compare/v1.0.0...v1.0.1) — *(2026-06-22)*
 
 ### ♻️ Code Refactoring
