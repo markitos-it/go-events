@@ -3,6 +3,19 @@
 Todos los cambios notables de este proyecto serán documentados en este archivo de acuerdo a los estándares de [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/) y [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [v1.0.1](https://github.com/markitos-it/go-events/compare/v1.0.0...v1.0.1) — *(2026-06-22)*
+
+### ♻️ Code Refactoring
+
+- make summary with release *(2026-06-22)* ([e291f25](https://github.com/markitos-it/go-events/commit/e291f25be3583c452185f4b9ebf097138bacaffe))
+
+### ✨ Features
+
+- install-changeloger uninstall-changeloger git-chlog *(2026-06-22)* ([723d76d](https://github.com/markitos-it/go-events/commit/723d76d33ad3a093f937c73c925e039377f2f3ff))
+- changelog 4 test pipeline releases *(2026-06-22)* ([da05a63](https://github.com/markitos-it/go-events/commit/da05a634e9c5b1e1f4678e4efc4f8bf68fe13706))
+- support install uninstall protoc tools *(2026-06-22)* ([533c8c7](https://github.com/markitos-it/go-events/commit/533c8c709235a644d17426b023e270fd4e69c7bb))
+
+
 ## [v1.0.0](https://github.com/markitos-it/go-events/compare/v0.0.2...v1.0.0) — *(2026-06-15)*
 
 ### ♻️ Code Refactoring
