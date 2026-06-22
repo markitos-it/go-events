@@ -24,6 +24,10 @@ Todos los cambios notables de este proyecto serán documentados en este archivo 
 
 - update changelog and debt *(2026-06-15)* ([4967cdd](https://github.com/markitos-it/go-events/commit/4967cdd7b774cb97762fde00464f04caef9d93b5))
 
+### 🔧 Chores & Maintenance
+
+- release v1.0.0 *(2026-06-15)* ([42b1326](https://github.com/markitos-it/go-events/commit/42b1326bacb7a3d9225557a7aebe98677f4e3ab7))
+
 
 ## [v0.0.2](https://github.com/markitos-it/go-events/compare/v0.0.1...v0.0.2) — *(2026-06-15)*
 
