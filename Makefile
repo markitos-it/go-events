@@ -6,6 +6,7 @@
 	test \
 	test-e2e \
 	test-e2e-stress \
+	subscriber \
 	proto \
 	changelog \
 	db-start \
@@ -48,6 +49,7 @@ help:
 	@printf "  \033[36m%-24s\033[0m %s\n" "test" "Run the application test suite"
 	@printf "  \033[36m%-24s\033[0m %s\n" "test-e2e" "Run End-to-End tests via gRPC"
 	@printf "  \033[36m%-24s\033[0m %s\n" "test-e2e-stress" "Run End-to-End stress tests via gRPC"
+	@printf "  \033[36m%-24s\033[0m %s\n" "subscriber" "Pull and Ack messages for a subscriber via gRPC"
 	@printf "  \033[36m%-24s\033[0m %s\n" "proto" "Generate code files from gRPC .proto files"
 	@printf "  \033[36m%-24s\033[0m %s\n" "changelog" "Generate changelog or update file"
 	@printf "  \033[36m%-24s\033[0m %s\n" "lint" "Analyze Go code with golangci-lint"
@@ -106,6 +108,9 @@ test-e2e:
 
 test-e2e-stress:
 	bash bin/app/test-e2e-stress.sh
+
+subscriber:
+	bash bin/app/subscriber.sh "$(subscriberName)" "$(eventSlug)" "$(sourceSlug)"
 
 test-verbose:
 	bash bin/app/test-verbose.sh
